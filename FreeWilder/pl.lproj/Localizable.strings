@@ -1,0 +1,154 @@
+/* 
+  Localizable.strings
+  FreeWilder
+
+  Created by Koustov Basu on 01/03/16.
+  Copyright © 2016 Koustov Basu. All rights reserved.
+*/
+
+
+
+
+"LOG_IN" = "Zaloguj się";
+
+"Log_in_with_your"="Zaloguj się swoim";
+
+"Dnt_hv_acnt"="Nie masz konta ?";
+
+"Frgt_pass"="Zapomniałeś hasła?";
+
+"sign_up"="Zapisz się";
+
+"Do_u_hv_bsns"="Czy masz BIZNES?";
+
+"Get_Started"="Zaczynać";
+
+"Find_ur_intrst"="ZNAJDŹ zainteresowanie";
+
+"Product_Listing"="Lista produktów";
+
+"Details:"="Bliższe dane:";
+
+"Reviews"="Recenzje";
+
+"Booking_details"="Rezerwacja Szczegóły";
+
+"Check In"="Odprawa lotnicza";
+
+"Check Out"="Sprawdź";
+
+"Request To Book"="Zapytanie do Księgi";
+
+"Direct Book"="Bezpośredni Rezerwuj";
+
+"Reviews"="Recenzje";
+
+"Available"="Do dyspozycji";
+
+"From"="Od";
+
+"To"="Do";
+
+"Last available date"="Ostatnio dostępny data";
+
+
+"Next available date"="Następny dostępny data";
+
+"Always available"="Zawsze dostępne";
+
+
+"Direct Book"="Bezpośredni Rezerwu";
+
+"is currently not available"="jest obecnie niedostępny";
+
+"Quantity"="Ilość";
+
+"Price Details"="Cena Szczegóły";
+
+"Service Fee"="Opłata za usługę";
+
+"Admin Charge"="Admin Charge";
+
+"Total"="Całkowity";
+
+"ASK QUESTION"="ZADAJ PYTANIE";
+
+"Subject"="Przedmiot";
+
+"Message"="Wiadomość";
+
+"Attach file"="Dołącz plik:";
+
+"Please enter a message"="Wprowadź treść wiadomości";
+
+"Product Search"="Szukaj produktów";
+
+"SEARCH"="WYSZUKAJ";
+
+"Business or Service"="Biznes i usługi";
+
+"Location"="Lokalizacja";
+
+"Start Date"="Data rozpoczęcia";
+
+"End Date"="Data końcowa";
+
+"Ok"="Ok";
+
+"Cancel"="Anuluj";
+
+"Confirm Password"="Potwierdź hasło";
+
+"Email"="E-mail";
+
+"Name"="Imię";
+
+"Password"="Hasło";
+
+"Sign up for Free"="Zarejestruj się za darmo";
+
+"Date of Birth"="Data urodzenia";
+
+"Select your Gender"="Wybierz płeć";
+
+"SIGN UP"="ZAPISZ SIĘ";
+
+"Male"="męski";
+
+"Female"="Płeć żeńska";
+
+"Log out"="Wyloguj";
+
+"Language & Currency"="Język i waluty";
+
+"Account"="Konto";
+
+"Service"="Usługa";
+
+"Business Information"="Informacje biznesowe";
+
+"Profile"="Profil";
+
+"Rate App"="Oceń aplikację";
+
+"Invite Friends"="Zaprosić przyjaciół";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

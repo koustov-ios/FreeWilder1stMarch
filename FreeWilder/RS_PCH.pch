@@ -1,0 +1,21 @@
+//
+//  RS_PCH.pch
+//  AiCafe
+//
+//  Created by Rahul Singha Roy on 22/05/15.
+//  Copyright (c) 2015 Esolz Tech. All rights reserved.
+//
+
+#ifndef AiCafe_RS_PCH_pch
+#define AiCafe_RS_PCH_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+
+#define App_Domain_Url @"http://www.esolz.co.in/lab6/freewilder/"
+
+
+
+
+#endif

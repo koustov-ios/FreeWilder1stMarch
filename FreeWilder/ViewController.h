@@ -7,9 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FW_JsonClass.h"
+#import "ForgotpasswordViewController.h"
+#import <CoreLocation/CoreLocation.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<CLLocationManagerDelegate>
+{
+    IBOutlet UITextField *forgot_Password;
+    NSMutableArray *forgotArray;
+    CLLocationManager *locationManager;
+}
 
+- (IBAction)login_button:(id)sender;
+- (IBAction)sign_up:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *lblLogin;
+@property (weak, nonatomic) IBOutlet UILabel *lblFacebook;
+@property (weak, nonatomic) IBOutlet UILabel *lbldontHaveAccount;
+@property (weak, nonatomic) IBOutlet UIButton *btnSignUp;
+@property (weak, nonatomic) IBOutlet UIButton *btnForgetPassword;
+@property (weak, nonatomic) IBOutlet UIButton *btnlogin;
 
 @end
 

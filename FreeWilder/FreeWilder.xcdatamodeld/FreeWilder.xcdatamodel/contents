@@ -1,4 +1,83 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="14F27" minimumToolsVersion="Automatic">
+    <entity name="CategoryFeatureList" syncable="YES">
+        <attribute name="categoryName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="langid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="CategoryList" syncable="YES">
+        <attribute name="categoryName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="langid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="LanguageTable" syncable="YES">
+        <attribute name="langDic" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="langId" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Message" syncable="YES">
+        <attribute name="allmessage" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="archive" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="read" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="star" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="unread" optional="YES" attributeType="Binary" syncable="YES"/>
+    </entity>
+    <entity name="ProductDetails" syncable="YES">
+        <attribute name="productdata" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="productid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="ProductList" syncable="YES">
+        <attribute name="categoryId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastupdate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="product" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="productid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user_id" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="ServiceList" syncable="YES">
+        <attribute name="categoryDetail" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="serviceId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="serviceName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stepToList" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="UserBooking" syncable="YES">
+        <attribute name="booking_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="buyer_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="buyer_user_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="check_in_date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order_date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="payment_status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="seller_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="seller_user_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="service_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="service_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="total_amount" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="WishList" syncable="YES">
+        <attribute name="product" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="productid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Wishlistupdate" syncable="YES">
+        <attribute name="timestamp" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CategoryFeatureList" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="CategoryList" positionX="-54" positionY="18" width="128" height="105"/>
+        <element name="LanguageTable" positionX="-36" positionY="45" width="128" height="75"/>
+        <element name="Message" positionX="-18" positionY="54" width="128" height="120"/>
+        <element name="ProductDetails" positionX="-9" positionY="144" width="128" height="30"/>
+        <element name="ProductList" positionX="0" positionY="90" width="128" height="120"/>
+        <element name="ServiceList" positionX="18" positionY="108" width="128" height="150"/>
+        <element name="UserBooking" positionX="36" positionY="153" width="128" height="255"/>
+        <element name="WishList" positionX="-9" positionY="135" width="128" height="90"/>
+        <element name="Wishlistupdate" positionX="-9" positionY="135" width="128" height="75"/>
+    </elements>
 </model>

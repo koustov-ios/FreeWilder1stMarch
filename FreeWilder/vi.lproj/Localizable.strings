@@ -1,0 +1,147 @@
+/* 
+  Localizable.strings
+  FreeWilder
+
+  Created by Koustov Basu on 01/03/16.
+  Copyright © 2016 Koustov Basu. All rights reserved.
+*/
+
+
+
+"LOG_IN" = "Đăng nhập";
+
+"Log_in_with_your"="Đăng nhập với bạn";//
+
+"Dnt_hv_acnt"="Không có tài khoản?";//
+
+"Frgt_pass"="Quên mật khẩu";//
+
+"sign_up"="Đăng ký";//
+
+"Do_u_hv_bsns"="BẠN CÓ KINH DOANH?";//
+
+"Get_Started"="Bắt đầu";//
+
+"Find_ur_intrst"="TÌM LÃI CỦA BẠN";//
+
+"Product_Listing"="Liệt kê sản phẩm";//
+
+"Details:"="Thông tin chi tiết :";//
+
+"Reviews"="Nhận xét";//
+
+"Booking_details"="Chi tiết đặt";//
+
+"Check In"="Đăng ký vào";//
+
+"Check Out"="Kiểm tra";//
+
+"Request To Book"="Yêu cầu Để Book";//
+
+"Direct Book"="Sách Direct";//
+
+"Reviews"="Nhận xét";//
+
+"Available"="có sẵn";//
+
+"From"="Từ";//
+
+"To"="Đến";//
+
+"Last available date"="Cuối cùng có sẵn ngày";
+
+"Next available date"="Tiếp theo ngày có sẵn";
+
+"Always available"="Luôn luôn sẵn sàng";
+
+"Direct Book"="Sách Direct";
+
+"is currently not available"="hiện tại không có sẵn";
+
+"Quantity"="Số lượng";
+
+"Price Details"="Chi tiết giá";
+
+"Service Fee"="Phí dịch vụ";
+
+"Admin Charge"="Admin Charge";
+
+"Total"="Tổng số";
+
+"ASK QUESTION"="HỎI CÂU HỎI";
+
+"Subject"="Bộ môn";
+
+"Message"="Lời nhắn";
+
+"Attach file"="Đính kèm tập tin:";
+
+"Please enter a message"="Vui lòng nhập thông";
+
+"Product Search"="Tìm kiếm Sản phẩm";
+
+"SEARCH"="TÌM KIẾM";
+
+"Business or Service"="Kinh doanh hoặc dịch vụ";
+
+"Location"="Vị trí";
+
+"Start Date"="ngày bắt đầu";
+
+"End Date"="Ngày cuối";
+
+"Ok"="Được";
+
+"Cancel"="hủy bỏ";
+
+"Confirm Password"="Xác nhận mật khẩu";
+
+"Email"="E-mail";
+
+"Name"="Tên";
+
+"Password"="mật khẩu";
+
+"Sign up for Free"="Đăng kí miễn phí";
+
+"Date of Birth"="Ngày sinh";
+
+"Select your Gender"="Chọn giới tính của bạn";
+
+"SIGN UP"="ĐĂNG KÝ";
+
+"Male"="Nam";
+
+"Female"="Nữ";
+
+"Log out"="Đăng xuất";
+
+"Language & Currency"="Ngôn ngữ & ngoại tệ";
+
+"Account"="Tài khoản";
+
+"Service"="Dịch vụ";
+
+"Business Information"="Thông tin kinh doanh";
+
+"Profile"="Hồ sơ";
+
+"Rate App"="Đánh giá ứng dụng";
+
+"Invite Friends"="Mời bạn bè";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,147 @@
+/* 
+  Localizable.strings
+  FreeWilder
+
+  Created by Koustov Basu on 01/03/16.
+  Copyright © 2016 Koustov Basu. All rights reserved.
+*/
+
+
+"LOG_IN" = "Log In";
+
+"Log_in_with_your"="Log in with your";
+
+"Dnt_hv_acnt"="Don't have an account ?";
+
+"Frgt_pass"="Forgot Password";
+
+"sign_up"="Sign up";
+
+"Do_u_hv_bsns"="DO YOUA HAVE A BUSINESS?";
+
+"Get_Started"="Get Started";
+
+"Find_ur_intrst"="FIND YOUR INTEREST";
+
+"Product_Listing"="Product Listing";
+
+"Details:"="Details:";
+
+"Reviews"="Reviews";
+
+"Booking_details"="Booking Details";
+
+"Check In"="Check In";
+
+"Check Out"="Check Out";
+
+"Request To Book"="Request To Book";
+
+"Direct Book"="Direct Book";
+
+"Reviews"="Reviews";
+
+"Available"="Available";
+
+"From"="From";
+
+"To"="To";
+
+"Last available date"="Last available date";
+
+"Next available date"="Next available date";
+
+"Always available"="Always available";
+
+"Direct Book"="Direct Book";
+
+"is currently not available"="is currently not available";
+
+"Quantity"="Quantity";
+
+"Price Details"="Price Details";
+
+"Service Fee"="Service Fee";
+
+"Admin Charge"="Admin Charge";
+
+"Total"="Total";
+
+"ASK QUESTION"="ASK QUESTION";
+
+"Subject"="Subject";
+
+"Message"="Message";
+
+"Attach file"="Attach file:";
+
+"Please enter a message"="Please enter a message";
+
+"Product Search"="Product Search";
+
+"SEARCH"="SEARCH";
+
+"Business or Service"="Business or Service";
+
+"Location"="Location";
+
+"Start Date"="Start Date";
+
+"End Date"="End Date";
+
+"Ok"="Ok";
+
+"Cancel"="Cancel";
+
+"Confirm Password"="Confirm Password";
+
+"Email"="Email";
+
+"Name"="Name";
+
+"Password"="Password";
+
+"Sign up for Free"="Sign up for Free";
+
+"Date of Birth"="Date of Birth";
+
+"Select your Gender"="Select your Gender";
+
+"SIGN UP"="SIGN UP";
+
+"Male"="Male";
+
+"Female"="Female";
+
+"Log out"="Log out";
+
+"Language & Currency"="Language & Currency";
+
+"Account"="Account";
+
+"Service"="Service";
+
+"Business Information"="Business Information";
+
+"Profile"="Profile";
+
+"Rate App"="Rate App";
+
+"Invite Friends"="Invite Friends";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
