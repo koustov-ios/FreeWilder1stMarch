@@ -40,6 +40,7 @@
 #import "AddServiceViewController.h"
 #import "FW_InviteFriendViewController.h"
 #import "BusinessProfileViewController.h"
+#import "FWServiceOrProductAddingViewController.h"
 
 //New side menu file
 
@@ -1763,7 +1764,14 @@
         {
     
     
-            DashboardViewController *obj=[self.storyboard instantiateViewControllerWithIdentifier:@"add_service_page"];
+//            DashboardViewController *obj=[self.storyboard instantiateViewControllerWithIdentifier:@"add_service_page"];
+//            
+//            [self PushViewController:obj WithAnimation:kCAMediaTimingFunctionEaseIn];
+            
+            UIStoryboard *addServiceStoryBoard=[UIStoryboard storyboardWithName:@"FWAddService" bundle:nil];
+            
+            FWServiceOrProductAddingViewController *obj=[addServiceStoryBoard instantiateViewControllerWithIdentifier:@"FWServiceOrProductAdding"];
+            
             [self PushViewController:obj WithAnimation:kCAMediaTimingFunctionEaseIn];
     
         }

@@ -6,6 +6,10 @@
 //  Copyright (c) 2015 Esolz Tech. All rights reserved.
 //
 
+
+#import "AFHTTPClient.h"
+#import "AFNetworking.h"
+#import <AFNetworking/AFNetworking.h>
 #import "Photos & Videos ViewController.h"
 #import "ImageResize.h"
 #import "FW_JsonClass.h"
@@ -232,40 +236,12 @@
     
     img = [ImageResize imageWithImage:[info valueForKey:UIImagePickerControllerOriginalImage] scaledToSize:CGSizeMake(150, 146)];
     
-  //  [self processImageThenPostToServer:img];
-    
-    
     NSData *pictureData = UIImageJPEGRepresentation(img, .5);
     
     pictureData=[NSData dataWithData:pictureData];
     
-   // NSString *finalImagePath = [self base64forData:pictureData];
-    
-    
-     //  NSString *strImageData = [finalImagePath stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
-    
-    // NSLog(@"Picture data-----> %@",strImageData);
-    
-   //[self image_uploadWithImage:pictureData];
-    
-    //NSData* pictureData=UIImageJPEGRepresentation(img, 1);
 
-//    NSString *base64String = [pictureData base64EncodedStringWithOptions:kNilOptions];
-//    NSString *encodedString2 = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( NULL,  (CFStringRef)base64String,    NULL,   CFSTR("!*'();:@&=+$,/?%#[]\" "),   kCFStringEncodingUTF8));
-    
-//    NSString *url = [NSString stringWithFormat:@"%@app_prof_img_upload?userid=%@&photo_img=%@",App_Domain_Url,userid,finalImagePath];
-//    
-//  
-//    [obj GlobalDict:url Globalstr:@"array" Withblock:^(id result, NSError *error) {
-//        
-//        NSLog(@"Result------> %@",result);
-//        
-//        
-//    }];
-//
- 
-    
-//----------  USING JSON CLASS  ----------->>>>>>>
+//<<<<<<----------  USING JSON CLASS  ----------->>>>>>>
     
     
     if (pictureData.length>0)
@@ -273,11 +249,16 @@
         [spinner startAnimating];
         
         
-        NSString *url = [NSString stringWithFormat:@"%@app_prof_img_upload?userid=%@",App_Domain_Url,userid];
+        NSString *url = [NSString stringWithFormat:@"%@app_prof_img_upload?userid=%@",App_Domain_Url, userid];
         
-       [obj GlobalDict_image:url Globalstr_image:@"array" globalimage:pictureData Withblock:^(id result, NSError *error) {
+       // NSString *url = [NSString stringWithFormat:@"http://esolz.co.in/lab6/freewilder/app_prof_img_upload?user_id=30"];//userid=%@
+        
+        
+        
+       [obj GlobalDict_image1:url Globalstr_image:@"array" globalimage:pictureData Withblock:^(id result, NSError *error) {
             
-            
+            NSLog(@"result====%@",url);
+            NSLog(@"result====%@",result);
             
             if ([[result valueForKey:@"response" ]isEqualToString:@"Success"])
             {
@@ -285,10 +266,12 @@
                 
                 profileImageview.image =[UIImage imageWithData:pictureData];
                 
+               //  NSLog(@"result====%@",result);
+                
             }
             else
             {
-                 NSLog(@"result====%@",result);
+                
             }
             
             

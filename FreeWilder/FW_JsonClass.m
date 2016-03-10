@@ -93,6 +93,8 @@
  _responce = [responce copy];
  }
  */
+
+
 -(NSString *) GlobalDict_image:(NSString *)parameter Globalstr_image:(NSString *)parametercheck globalimage:(NSData *)imageparameter
 {
     
@@ -125,7 +127,7 @@
         
         [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"photoimg\"; filename=\".jpg\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"photoimg1\"; filename=\"fw.png\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
         
         [body appendData:[[NSString stringWithFormat:@"Content-Type: application/octet-stream\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
         
@@ -206,7 +208,7 @@
 
 
 
--(void) GlobalDict_image:(NSString *)parameter Globalstr_image:(NSString *)parametercheck globalimage:(NSData *)imageparameter Withblock:(Urlresponceblock)responce
+-(void) GlobalDict_image_new:(NSString *)parameter Globalstr_image:(NSString *)parametercheck globalimage:(NSData *)imageparameter Withblock:(Urlresponceblock)responce
 {
     
     //  check  = parametercheck;
@@ -235,9 +237,10 @@
         
         [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         
-       // [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"photo_img\"; filename=\".png\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        NSLog(@" flie name: %@",[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"front_doc\"; filename=\".png\"\r\n"] );
+
         
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"photoimg\" filename=\".jpg\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"front_doc\" filename=\".png\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
         
         [body appendData:[[NSString stringWithFormat:@"Content-Type: application/octet-stream\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
         
@@ -286,7 +289,10 @@
         
         [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         
+        NSLog(@" flie nema: %@",[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"front_doc\"; filename=\".png\"\r\n"] );
+        
         [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"front_doc\"; filename=\".png\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        
         
         [body appendData:[[NSString stringWithFormat:@"Content-Type: application/octet-stream\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
         

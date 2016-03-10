@@ -3079,103 +3079,30 @@
     if(emailAddresses.count>0)
     {
     
-    //app_user_service/app_invite_email?user_id=30&email=
         
         NSString *emailString=[emailAddresses componentsJoinedByString:@","];//
         
-        //NSString *urlstring=[NSString stringWithFormat:@"%@app_user_service/app_invite_email?user_id=%@&email=%@",App_Domain_Url,[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"],emailString];
-        NSString *urlstring=[NSString stringWithFormat:@"%@app_user_service/app_invite_email",App_Domain_Url];
-        
-     //   NSString *urlstring=[NSString stringWithFormat:@"http://esolz.co.in/lab6/Referralonline/app_edit_client_seeking"];
-      //  urlstring=[urlstring stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        
-      //  NSLog(@"URL>>>>>>>> %@",urlstring);
-        
-//        [globalobj GlobalDict:urlstring Globalstr:@"array" Withblock:^(id result, NSError *error) {
-//            
-//            NSLog(@"Response----- %@",result);
-//            
-//            
-//        }];
-        
-       
 
-        
-#pragma mark--URL fire 1
-        
-//        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlstring]];
-//        
-//        [request setHTTPMethod:@"POST"];
-//        
-//        NSString *postData =[NSString stringWithFormat:@"userid=52"]; // [NSString stringWithFormat:@"user_id=%@&email=%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"],emailString];
-//        
-//        NSLog(@"url post ---%@",postData);
-//        
-//        [request setValue:@"application/x-www-form-urlencoded; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-//        
-//        [request setHTTPBody:[postData dataUsingEncoding:NSUTF8StringEncoding]];
-//
-//        [globalobj GlobalDict_post:request Globalstr:@"array" Withblock:^(id result, NSError *error) {
-//        
-//        
-//            NSLog(@"result %@",result);
-//        
-//            if([[result valueForKey:@"response"] isEqualToString:@"success"])
-//            {
-//            
-//                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:@"Invitation successfully sent" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//                [alert show];
-//                
-//                self.cellSelected=[[NSMutableArray alloc]init];
-//                if(emailAddresses.count>0)
-//                {
-//                    [emailAddresses removeAllObjects];
-//                    
-//                }
-//                
-//                [inviteTable reloadData];
-//            
-//            }
-//        
-//        
-//        }];
-        
- 
- #pragma mark--URL fire 2
-        
-        
-        
-   //---> http://esolz.co.in/lab6/Referralonline/app_edit_client_seeking?userid=52
-        
-       // http://esolz.co.in/lab6/freewilder/app_category/invite_email
-        
         NSString *post =[NSString stringWithFormat:@"user_id=30&email=%@",emailString];
         post=[post stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];//[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"]
-        
-        //[NSString stringWithFormat:@"userid=52&clactyp=I&client_range=20&gender=m&marital=s&fmarital=f@&hobies=bp&occu=op&income_lev=23&geo_loc=Kolkata&description=Hello"];
-        
-        NSLog(@"------ >  %@  < -------",post);
+             NSLog(@"------%@-------",post);
         
         NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding ];//[post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.esolz.co.in/lab6/freewilder/app_user_service/app_invite_email?"/*,App_Domain_Url*/]]];
-        
-        //[NSURL URLWithString:[NSString stringWithFormat:@"http://esolz.co.in/lab6/Referralonline/app_edit_client_seeking?"]]
-        
+        [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://esolz.co.in/lab6/freewilder/app_user_service/app_invite_email"/*,App_Domain_Url*/]]];
         
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [request setHTTPBody:postData];
-        //[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        
-        
         
         NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
         
         if(conn) {
             NSLog(@"Connection Successful");
+            
+            
         } else {
             NSLog(@"Connection could not be made");
         }
@@ -3240,6 +3167,24 @@
     result=[NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:nil];
     
     NSLog(@"Response----> %@",result);
+    
+    
+    if ([[result valueForKey:@"response"] isEqualToString:@"success"]) {
+        
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:[result valueForKey:@"message"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                            [alert show];
+        
+    }
+    
+    else
+    {
+    
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:@"Something wrong happened." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    
+    }
+    
+    
 }
 
 - (IBAction)option:(id)sender {
