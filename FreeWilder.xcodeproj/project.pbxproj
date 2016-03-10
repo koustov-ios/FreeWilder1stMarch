@@ -1192,7 +1192,6 @@
 				E0E491E11C85727600564622 /* Main.storyboard */,
 				E0A538FE1C857B59000553ED /* Launch Screen.storyboard */,
 				E0E491E71C85727600564622 /* Assets.xcassets */,
-				E0E491EC1C85727600564622 /* Info.plist */,
 				E0E491E41C85727600564622 /* FreeWilder.xcdatamodeld */,
 				E0E491D81C85727600564622 /* Supporting Files */,
 				E0C9C8051C91437400DA903C /* FWAddService.storyboard */,
@@ -1203,6 +1202,7 @@
 		E0E491D81C85727600564622 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E0E491EC1C85727600564622 /* Info.plist */,
 				E0E491D91C85727600564622 /* main.m */,
 			);
 			name = "Supporting Files";
