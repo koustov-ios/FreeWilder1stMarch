@@ -7780,18 +7780,6 @@ We Can Send Money To People In Pitcairn Islands With These Payout Methods. Which
                                         <rect key="frame" x="85" y="101" width="150" height="150"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RRI-Ca-KRd">
-                                        <rect key="frame" x="7" y="342" width="307" height="31"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <string key="text">Add Video Url :
-Add Video Url :
-https://www.youtube.com/watch?v=
-Add Video Url :
-https://www.youtube.com/watch?v=</string>
-                                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
-                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Kwz-lF-k0x">
                                         <rect key="frame" x="7" y="271" width="307" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -7852,6 +7840,17 @@ https://www.youtube.com/watch?v=</string>
                                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="13"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="YouTube-96" id="Xyn-zM-Dvc">
+                                        <rect key="frame" x="134" y="319" width="55" height="52"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="link" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Awc-uI-Y0p">
+                                        <rect key="frame" x="141" y="372" width="42" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -7887,6 +7886,8 @@ https://www.youtube.com/watch?v=</string>
                         <outlet property="proImageBtn" destination="Sb2-kW-fNr" id="VX7-xR-10Q"/>
                         <outlet property="profileImageview" destination="VfJ-RU-XG8" id="Mmr-04-2Bg"/>
                         <outlet property="spinner" destination="UHX-8q-ynp" id="tUx-Nt-ulq"/>
+                        <outlet property="update_videoBtn" destination="zcP-iG-gGI" id="XUL-aH-toU"/>
+                        <outlet property="upload_imageBtn" destination="Kwz-lF-k0x" id="kGO-fE-gS9"/>
                         <outlet property="videocodetxt" destination="tgB-sv-FlM" id="Qqf-Jf-7Rx"/>
                     </connections>
                 </viewController>
@@ -8308,6 +8309,7 @@ https://www.youtube.com/watch?v=</string>
         <image name="US Dollar-52" width="52" height="52"/>
         <image name="Unchecked Checkbox-50" width="50" height="50"/>
         <image name="UnfilledGreenHearts" width="33" height="33"/>
+        <image name="YouTube-96" width="96" height="96"/>
         <image name="ask-questions" width="135" height="41"/>
         <image name="back-arrow" width="103" height="103"/>
         <image name="back_arrow" width="37" height="29"/>

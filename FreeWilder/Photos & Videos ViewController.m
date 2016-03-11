@@ -52,6 +52,8 @@
 {
     
     UIButton *closeBtn,*uploadImageButton;
+    __weak IBOutlet UIButton *upload_imageBtn;
+    __weak IBOutlet UIButton *update_videoBtn;
     
     UIImageView *scrollImageView,*zoomingImageView,*doubleTappedImageview;
     UIView *blackViewForZooming,*blackViewForImageSlider;
@@ -105,7 +107,6 @@
     
     
 }
-
 @end
 
 @implementation Photos___Videos_ViewController
@@ -123,6 +124,13 @@
     
     dntCreate=YES;
     deleteBtnVisible=NO;
+    
+    upload_imageBtn.layer.cornerRadius=6.0f;
+    upload_imageBtn.clipsToBounds=YES;
+    
+    update_videoBtn.layer.cornerRadius=6.0f;
+    update_videoBtn.clipsToBounds=YES;
+    
     
 #pragma mark - Footer variables initialization
     
