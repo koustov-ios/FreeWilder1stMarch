@@ -62,6 +62,8 @@
     BOOL dntCreate;
     
     
+    __weak IBOutlet UILabel *dynamicHeaderLbl;
+    __weak IBOutlet UILabel *reviewersNameLbl;
     
     
      sideMenu *leftMenu;
@@ -228,6 +230,13 @@
     UIButton *crossBtnForAminities;
     
     
+    // Scroll animation related variables
+    
+    UIView *topAnimatingView;
+    
+    __weak IBOutlet UILabel *priceHeaderLbl;
+    
+    
     
     
 }
@@ -263,6 +272,14 @@
     [super viewDidLoad];
     
     //EnableCollectionView
+    
+    
+   // topAnimatingView=[[UIView alloc]init];
+    
+    //topAnimatingView.frame=_imageGallery.frame;//CGRectMake(0, 0, _imageGallery.frame.size.width, _imageGallery.frame.size.height);
+    
+   // [_imageGallery addSubview:topAnimatingView];
+    
     
     // For Side menu
     
@@ -384,7 +401,7 @@
     
     
     youtubePlayerView.hidden=YES;
-    youtubePlayerView.delegate=self;
+    //youtubePlayerView.delegate=self;
     
     mapView=[[MKMapView alloc]init];
     locArray=[[NSMutableArray alloc]init];
@@ -2419,14 +2436,33 @@
           
             
             NSLog(@"Details dic----> %@",detailsDic);
+            NSLog(@"Review dic---> %@",reviewDescArr);
             
             if(reviewDescArr.count>0)
             {
+                
+                
+                
+                reviewersNameLbl.text=[NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[[[detailsDic valueForKey:@"review_desc"] objectAtIndex:0] valueForKey:@"user_name"]]];
+                
             [reviewerImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[[detailsDic valueForKey:@"review_desc"] objectAtIndex:0] valueForKey:@"user_image"]]] placeholderImage:[UIImage imageNamed:@"Profile_image_placeholder"]];
                 
                 reviewShowMoreBtn.hidden=NO;
+                [reviewShowMoreBtn setTitle:@"SHOW MORE" forState:UIControlStateNormal];
+                reviewShowMoreBtn.layer.cornerRadius=4.0f;
+                reviewShowMoreBtn.clipsToBounds=YES;
+                
                 [reviewShowMoreBtn addTarget:self action:@selector(showReview:) forControlEvents:UIControlEventTouchUpInside];
                 
+            }
+            
+            else if (reviewDescArr.count==0)
+            {
+            
+                overallReviewView.frame=CGRectMake(overallReviewView.frame.origin.x, overallReviewView.frame.origin.y, overallReviewView.frame.size.width, 0);
+              updatedOrigin_y=0+overallReviewView.frame.origin.y;
+                [overallReviewView removeFromSuperview];
+            
             }
 
             
@@ -2669,17 +2705,21 @@
     if([[[detailsDic valueForKey:@"service_desc"] valueForKey:@"service_video"] length]>0)
     {
         
+       // NSLog(@"I am here... %@",[[detailsDic valueForKey:@"service_desc"] valueForKey:@"service_video"]);
+        
         youtubePlayerView.hidden=NO;
         
         youtubePlayerView.frame=CGRectMake(0, updatedOrigin_y-5, self.view.bounds.size.width, self.view.bounds.size.height/2.5);
         
-        [youtubePlayerView loadWithVideoId:[[detailsDic valueForKey:@"service_desc"] valueForKey:@"service_video"]];
+        [youtubePlayerView loadWithVideoId:@"MNym7FIMZoI"];//[[detailsDic valueForKey:@"service_desc"] valueForKey:@"service_video"]
+        
+       
         
         [_scroll_view addSubview:youtubePlayerView];
         
         updatedOrigin_y=youtubePlayerView.frame.size.height+youtubePlayerView.frame.origin.y+2;
         
-        //youtubePlayerView.backgroundColor=[UIColor blackColor];
+        youtubePlayerView.backgroundColor=[UIColor blackColor];
         
     }
     
@@ -4193,15 +4233,22 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    
+   // NSLog(@"croll point----> %f",scrollView.contentOffset.y);
 
     if(scrollView==_scroll_view)
     {
     
+        topAnimatingView.backgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"topbar"]];
+        topAnimatingView.alpha=scrollView.contentOffset.y*.01;
+        
+        [self.view addSubview:_backBtn];
+        
     
         if(scrollView.contentOffset.y<0)
         {
         
-            
+            //-----  Elastic effect  -----
             
             // NSLog(@"scroll pos : %f",scrollView.contentOffset.y);
             
@@ -4224,132 +4271,164 @@
         
         }
         
-        else if(scrollView.contentOffset.y>=scrollPoint)//6.45454545
-        {
+       else if(scrollView.contentOffset.y>=scrollPoint)//6.45454545
+    {
+        
+        [UIView animateWithDuration:0.3 delay:0.6 options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
             
-            //6.45454545
+             dynamicHeaderLbl.text=[NSString stringWithFormat:@"%@",[[detailsDic valueForKey:@"service_desc"] valueForKey:@"service_product_name"]];
             
-            
-            CGRect tempRect;
-            
-            if([UIScreen mainScreen].bounds.size.height==568)
-            {
-                
-                tempRect=CGRectMake(_imageGallery.frame.origin.x, -self.view.bounds.size.height/3.3, _imageGallery.frame.size.width, _imageGallery.frame.size.height);
-                
-            }
-            
-            else
-            {
-                tempRect=CGRectMake(_imageGallery.frame.origin.x, -self.view.bounds.size.height/3.9, _imageGallery.frame.size.width, _imageGallery.frame.size.height);
-            }
-            
-            _imageGallery.frame=tempRect;
-            
-            _overlayView.frame=CGRectMake(_overlayView.frame.origin.x, _imageGallery.frame.origin.y, _overlayView.frame.size.width, _imageGallery.frame.size.height);
-            
-            _overlayView.image = [UIImage imageWithCGImage: _overlayView.image.CGImage scale: 1.0f orientation: UIImageOrientationDownMirrored];
-            
-            //_overlayView.alpha=0.5;
-            
-            _profileImage.frame=CGRectMake(_profileImage.frame.origin.x, 20, _profileImage.frame.size.width, _profileImage.frame.size.height);
+        } completion:^(BOOL finished) {
             
             
-            _backBtn.frame=CGRectMake(_backBtn.frame.origin.x, 2, _backBtn.frame.size.width, _backBtn.frame.size.height);
-            
-           // _topLabel.frame=CGRectMake(_backBtn.frame.origin.x+_backBtn.frame.size.width+3, 10, _topLabel.frame.size.width, _topLabel.frame.size.height);
-            
-            
-            
-            
-            //            [UIView animateWithDuration:0.6 delay:0 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-            
-            
-            [self.view addSubview:_imageGallery];
-            [self.view addSubview:_overlayView];
-            
-            
-            
-            
-            [_overlayView addSubview:topaskBtn];
-            [_overlayView addSubview:favBtn];
-            [_overlayView addSubview:favIcon];
-            [_overlayView addSubview:shareBtn];
-            [_overlayView addSubview:shareIcon];
-            //[_scroll_view addSubview:subDescLbl];
-            
-            [_overlayView bringSubviewToFront:topaskBtn];
-            [_overlayView bringSubviewToFront:favBtn];
-            [_overlayView bringSubviewToFront:favIcon];
-            [_overlayView bringSubviewToFront:shareBtn];
-            [_overlayView bringSubviewToFront:shareIcon];
-            //[_overlayView bringSubviewToFront:_backBtn];
-            
-            
-            [_overlayView setUserInteractionEnabled:YES];
-            
-            
-            // [self.view addSubview:_profileImage];
-            //[self.view addSubview:_topLabel];
-            
-            [self.view addSubview:_backBtn];
-            
-            
-            
-            //     } completion:nil];
-            
-            
-            _imageGallery.userInteractionEnabled=NO;
-            
-        }
+        }];
+        
+       
+        
+//            
+//            CGRect tempRect;
+//            
+//            if([UIScreen mainScreen].bounds.size.height==568)
+//            {
+//                
+//                tempRect=CGRectMake(_imageGallery.frame.origin.x, -self.view.bounds.size.height/3.3, _imageGallery.frame.size.width, _imageGallery.frame.size.height);
+//                
+//            }
+//            
+//            else
+//            {
+//                tempRect=CGRectMake(_imageGallery.frame.origin.x, -self.view.bounds.size.height/3.9, _imageGallery.frame.size.width, _imageGallery.frame.size.height);
+//            }
+//            
+//            _imageGallery.frame=tempRect;
+//            
+//            
+//            
+//            _overlayView.frame=CGRectMake(_overlayView.frame.origin.x, _imageGallery.frame.origin.y, _overlayView.frame.size.width, _imageGallery.frame.size.height);
+//            
+//            _overlayView.image = [UIImage imageWithCGImage: _overlayView.image.CGImage scale: 1.0f orientation: UIImageOrientationDownMirrored];
+//            
+//            //_overlayView.alpha=0.5;
+//            
+//            _profileImage.frame=CGRectMake(_profileImage.frame.origin.x, 20, _profileImage.frame.size.width, _profileImage.frame.size.height);
+//            
+//            [UIView animateWithDuration:0.2 animations:^{
+//                
+//                _backBtn.frame=CGRectMake(_backBtn.frame.origin.x, 2, _backBtn.frame.size.width, _backBtn.frame.size.height);
+//
+//            }];
+//            
+//            
+//           // _topLabel.frame=CGRectMake(_backBtn.frame.origin.x+_backBtn.frame.size.width+3, 10, _topLabel.frame.size.width, _topLabel.frame.size.height);
+//            
+//            
+//            
+//            
+//            //            [UIView animateWithDuration:0.6 delay:0 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+//            
+//            
+//            [self.view addSubview:_imageGallery];
+//            [self.view addSubview:_overlayView];
+//           
+//            
+//            
+//            //************
+//            
+//           
+//            
+//            //************
+//            
+//            
+//            
+//            
+//            [_overlayView addSubview:topaskBtn];
+//            [_overlayView addSubview:favBtn];
+//            [_overlayView addSubview:favIcon];
+//            [_overlayView addSubview:shareBtn];
+//            [_overlayView addSubview:shareIcon];
+//            //[_scroll_view addSubview:subDescLbl];
+//            
+//            [_overlayView bringSubviewToFront:topaskBtn];
+//            [_overlayView bringSubviewToFront:favBtn];
+//            [_overlayView bringSubviewToFront:favIcon];
+//            [_overlayView bringSubviewToFront:shareBtn];
+//            [_overlayView bringSubviewToFront:shareIcon];
+//            //[_overlayView bringSubviewToFront:_backBtn];
+//            
+//            
+//            [_overlayView setUserInteractionEnabled:YES];
+//            
+//            
+//            // [self.view addSubview:_profileImage];
+//            //[self.view addSubview:_topLabel];
+//            
+//            [self.view addSubview:_backBtn];
+//            
+//            
+//            
+//            //     } completion:nil];
+//            
+//            
+//            _imageGallery.userInteractionEnabled=NO;
+//            
+      }
         
         else if(scrollView.contentOffset.y<=scrollPoint)//6.45454545
             
         {
             
-            _overlayView.image = [UIImage imageWithCGImage: _overlayView.image.CGImage scale: 1.0f orientation: UIImageOrientationUpMirrored];
-            
-            _profileImage.frame=proImageFrame;
-            _imageGallery.frame=galleryFrame;
-           // _topLabel.frame=labelFrame;
-            _overlayView.frame=overlayFrame;
-            
-            _backBtn.frame=backbtnFrame;
-            
-            topaskBtn.frame=topAskFrame;
-            favBtn.frame=favBtnFrame;
-            favIcon.frame=favIconFrame;
-            shareBtn.frame=shareBtnFrame;
-            shareIcon.frame=shareIconFrame;
-            subDescLbl.frame=subDescLblframe;
-            
-            
-            _overlayView.alpha=1;
+            [UIView animateWithDuration:0.3 animations:^{
+                
+                dynamicHeaderLbl.text=[NSString stringWithFormat:@"Product Details"];
+                
+            }];
             
             
             
-            [imageGalleryContainer addSubview:_imageGallery];
-            [_scroll_view addSubview:_overlayView];
-            [_scroll_view addSubview:_profileImage];
-           // [_scroll_view addSubview:_topLabel];
-            [imageGalleryContainer addSubview:_backBtn];
-            [imageGalleryContainer addSubview:_backBtn];
-            
-            [_scroll_view addSubview:topaskBtn];
-            [_scroll_view addSubview:favBtn];
-            [_scroll_view addSubview:favIcon];
-            [_scroll_view addSubview:shareBtn];
-            [_scroll_view addSubview:shareIcon];
-            [_scroll_view addSubview:subDescLbl];
-            
-            
-            imageGalleryContainer.autoresizesSubviews=YES;
-            
-            imageGalleryContainer.frame =CGRectMake(0,scrollView.contentOffset.y/2.75, fixedWidthForImageGalleryView, fixedHeightForImageGalleryView);
-
-            
-            _imageGallery.userInteractionEnabled=YES;
-        }
+//
+//            _overlayView.image = [UIImage imageWithCGImage: _overlayView.image.CGImage scale: 1.0f orientation: UIImageOrientationUpMirrored];
+//            
+//            _profileImage.frame=proImageFrame;
+//            _imageGallery.frame=galleryFrame;
+//           // _topLabel.frame=labelFrame;
+//            _overlayView.frame=overlayFrame;
+//            
+//            _backBtn.frame=backbtnFrame;
+//            
+//            topaskBtn.frame=topAskFrame;
+//            favBtn.frame=favBtnFrame;
+//            favIcon.frame=favIconFrame;
+//            shareBtn.frame=shareBtnFrame;
+//            shareIcon.frame=shareIconFrame;
+//            subDescLbl.frame=subDescLblframe;
+//            
+//            
+//            _overlayView.alpha=1;
+//            
+//            
+//            
+//            [imageGalleryContainer addSubview:_imageGallery];
+//            [_scroll_view addSubview:_overlayView];
+//            [_scroll_view addSubview:_profileImage];
+//           // [_scroll_view addSubview:_topLabel];
+//            //[imageGalleryContainer addSubview:_backBtn];
+//            //[imageGalleryContainer addSubview:_backBtn];
+//            
+//            [_scroll_view addSubview:topaskBtn];
+//            [_scroll_view addSubview:favBtn];
+//            [_scroll_view addSubview:favIcon];
+//            [_scroll_view addSubview:shareBtn];
+//            [_scroll_view addSubview:shareIcon];
+//            [_scroll_view addSubview:subDescLbl];
+//            
+//            
+//            imageGalleryContainer.autoresizesSubviews=YES;
+//            
+//            imageGalleryContainer.frame =CGRectMake(0,scrollView.contentOffset.y/2.75, fixedWidthForImageGalleryView, fixedHeightForImageGalleryView);
+//
+//            
+//            _imageGallery.userInteractionEnabled=YES;
+      }
 
  
      

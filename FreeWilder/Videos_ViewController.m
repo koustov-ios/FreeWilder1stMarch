@@ -8,7 +8,7 @@
 
 #import "Videos_ViewController.h"
 
-@interface Videos_ViewController ()<YTPlayerViewDelegate>
+@interface Videos_ViewController ()
 
 
 
@@ -32,7 +32,7 @@
     
     if (self.videoCode.length>0  || self.videoCode !=NULL)
     {
-        [self.playerView loadWithVideoId:self.videoCode];
+       // [self.playerView loadWithVideoId:self.videoCode];
     }
     
     

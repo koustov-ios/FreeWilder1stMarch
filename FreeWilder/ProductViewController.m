@@ -188,7 +188,7 @@ typedef void(^addressCompletion)(NSString *);
     
     productidArr_ldb=[[NSArray alloc]init];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:kReachabilityChangedNotification object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:kReachabilityChangedNotification object:nil];
     
     
     // For Side menu

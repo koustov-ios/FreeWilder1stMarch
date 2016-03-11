@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YTPlayerView.h"
+@class YTPlayerView;
+
 @interface Videos_ViewController : UIViewController
 
 @property (strong,nonatomic)NSString *videoCode;
