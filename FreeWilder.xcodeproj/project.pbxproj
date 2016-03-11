@@ -211,6 +211,7 @@
 		E0A539161C857BE7000553ED /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A539151C857BE7000553ED /* SystemConfiguration.framework */; };
 		E0A539181C857C0A000553ED /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A539171C857C0A000553ED /* MobileCoreServices.framework */; };
 		E0A5391E1C859579000553ED /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E0A539201C859579000553ED /* Localizable.strings */; };
+		E0B8F3A81C92921200F26022 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B8F3A71C92921200F26022 /* QuartzCore.framework */; };
 		E0C66A951C8FF6AC00CCA383 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C66A941C8FF6AC00CCA383 /* AFNetworking.framework */; };
 		E0C9C8001C913F6000DA903C /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C9C7FF1C913F6000DA903C /* AFNetworking.framework */; };
 		E0C9C8011C913F6500DA903C /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C9C7FF1C913F6000DA903C /* AFNetworking.framework */; };
@@ -594,6 +595,7 @@
 		E0A5391F1C859579000553ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E0A539211C85957C000553ED /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E0A539221C85957E000553ED /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E0B8F3A71C92921200F26022 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E0C66A941C8FF6AC00CCA383 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AFNetworking.framework; sourceTree = "<group>"; };
 		E0C9C7FF1C913F6000DA903C /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = ../../Downloads/Carthage/Build/iOS/AFNetworking.framework; sourceTree = "<group>"; };
 		E0C9C8051C91437400DA903C /* FWAddService.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FWAddService.storyboard; sourceTree = "<group>"; };
@@ -623,6 +625,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0B8F3A81C92921200F26022 /* QuartzCore.framework in Frameworks */,
 				E0C9C8001C913F6000DA903C /* AFNetworking.framework in Frameworks */,
 				E0C9C8011C913F6500DA903C /* AFNetworking.framework in Frameworks */,
 				E0A539181C857C0A000553ED /* MobileCoreServices.framework in Frameworks */,
@@ -1133,6 +1136,7 @@
 		E0E491CC1C85727600564622 = {
 			isa = PBXGroup;
 			children = (
+				E0B8F3A71C92921200F26022 /* QuartzCore.framework */,
 				E0C9C7FF1C913F6000DA903C /* AFNetworking.framework */,
 				E0A539171C857C0A000553ED /* MobileCoreServices.framework */,
 				E0A539151C857BE7000553ED /* SystemConfiguration.framework */,

@@ -14,6 +14,7 @@
 #import "ImageResize.h"
 #import "FW_JsonClass.h"
 #import "AFNetworking.h"
+#import <QuartzCore/QuartzCore.h>
 
 #pragma mark - Footer related imports
 #import "FW_JsonClass.h"
@@ -50,7 +51,7 @@
 @interface Photos___Videos_ViewController ()<UIPickerViewDelegate,UIPickerViewDataSource,UIGestureRecognizerDelegate,Slide_menu_delegate,footerdelegate,Serviceview_delegate,Profile_delegate,accountsubviewdelegate,accountsubviewdelegate,sideMenu,UITextFieldDelegate>
 {
     
-    UIButton *closeBtn;
+    UIButton *closeBtn,*uploadImageButton;
     
     UIImageView *scrollImageView,*zoomingImageView,*doubleTappedImageview;
     UIView *blackViewForZooming,*blackViewForImageSlider;
@@ -152,7 +153,10 @@
     
     
     //Footer ends here------>
+    
+    videocodetxt.layer.sublayerTransform = CATransform3DMakeTranslation(10, 0, 0);
 
+   //  videocodetxt.layer.cornerRadius=
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     userid=[prefs valueForKey:@"UserId"];
@@ -234,6 +238,8 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     
+    uploadImageButton.userInteractionEnabled=NO;
+    
     img = [ImageResize imageWithImage:[info valueForKey:UIImagePickerControllerOriginalImage] scaledToSize:CGSizeMake(150, 146)];
     
     NSData *pictureData = UIImageJPEGRepresentation(img, .5);
@@ -241,7 +247,6 @@
     pictureData=[NSData dataWithData:pictureData];
     
 
-//<<<<<<----------  USING JSON CLASS  ----------->>>>>>>
     
     
     if (pictureData.length>0)
@@ -249,11 +254,7 @@
         [spinner startAnimating];
         
         
-        NSString *url = [NSString stringWithFormat:@"%@app_prof_img_upload?userid=%@",App_Domain_Url, userid];
-        
-       // NSString *url = [NSString stringWithFormat:@"http://esolz.co.in/lab6/freewilder/app_prof_img_upload?user_id=30"];//userid=%@
-        
-        
+        NSString *url = [NSString stringWithFormat:@"%@app_prof_img_upload?userid=%@",App_Image_domain, userid];
         
        [obj GlobalDict_image1:url Globalstr_image:@"array" globalimage:pictureData Withblock:^(id result, NSError *error) {
             
@@ -262,16 +263,21 @@
             
             if ([[result valueForKey:@"response" ]isEqualToString:@"Success"])
             {
-               // [self profilepic];
                 
                 profileImageview.image =[UIImage imageWithData:pictureData];
                 
-               //  NSLog(@"result====%@",result);
+                [spinner stopAnimating];
                 
+                uploadImageButton.userInteractionEnabled=YES;
+                
+                
+                [[NSUserDefaults standardUserDefaults]setValue:[result valueForKey:@"image"] forKey:@"UserImage"];
+                
+                [[NSUserDefaults standardUserDefaults]synchronize];
             }
             else
             {
-                
+                uploadImageButton.userInteractionEnabled=YES;
             }
             
             
@@ -282,110 +288,9 @@
     }
     
     
-//--------------------->>>>>>>
-    
-    NSLog(@"Image===%@",img);
-//
-//    
-    
-    
     [_imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 
-
-//
-//- (void)processImageThenPostToServer:(UIImage *)image
-//{
-//    {
-//        NSData   *imageFileData;
-//        NSString *imageFileName;
-//        // check if there is an image to upload
-//        if (image != nil) {
-//            // yes, let's convert the image
-//            // UIImageJPEGRepresentation accepts a UIImage and compression parameter
-//            // use UIImagePNGRepresentation(self.userImage) for .PNG types
-//            
-//            imageFileData = UIImageJPEGRepresentation(image, 0.33f);
-//            
-//            imageFileName = @"profileImage.jpg";
-//            
-//            // post to server
-//            
-//        [self uploadToServerUsingImage:imageFileData andFileName:imageFileName];
-//        
-//        }
-//        else
-//        {
-//            NSLog(@"processImageThenPostToServer:self.userImage IS nil.");
-//        }
-//    }
-//
-//}
-
-//- (void)uploadToServerUsingImage:(NSData *)imageData andFileName:(NSString *)filename {
-//    // set this to your server's address
-//    
-//   // NSString *urlString = @"http://fineuploader.com/demos.html#amazon-demo";
-//    
-//    NSString *urlString = [NSString stringWithFormat:@"%@app_prof_img_upload?userid=%@",App_Domain_Url,userid];
-//    
-//    // set the content type, in this case it needs to be: "Content-Type: image/jpg"
-//    // Extract 'jpg' or 'png' from the last three characters of 'filename'
-//    
-//    if (([filename length] -3 ) > 0)
-//    {
-//        NSString *contentType = [NSString stringWithFormat:@"Content-Type: image/%@", [filename substringFromIndex:[filename length] - 3]];
-//    }
-//    
-//    // allocate and initialize the mutable URLRequest, set URL and method.
-//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-//    [request setURL:[NSURL URLWithString:urlString]];
-//    [request setHTTPMethod:@"POST"];
-//    
-//    // define the boundary and newline values
-//    NSString *boundary = @"uwhQ9Ho7y873Ha";
-//    NSString *kNewLine = @"\r\n";
-//    
-//    // Set the URLRequest value property for the HTTP Header
-//    // Set Content-Type as a multi-part form with boundary identifier
-//    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
-//    [request setValue:contentType forHTTPHeaderField: @"Content-Type"];
-//    
-//    // prepare a mutable data object used to build message body
-//    NSMutableData *body = [NSMutableData data] ;
-//    
-//    // set the first boundary
-//    [body appendData:[[NSString stringWithFormat:@"--%@%@", boundary, kNewLine] dataUsingEncoding:NSUTF8StringEncoding]];
-//    
-//    // Set the form type and format
-//    
-//    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"%@", @"photoimg", filename, kNewLine] dataUsingEncoding:NSUTF8StringEncoding]];
-//    
-//    [body appendData:[[NSString stringWithFormat:@"Content-Type: image/jpg"] dataUsingEncoding:NSUTF8StringEncoding]];
-//    
-//    // Now append the image itself.  For some servers, two carriage-return line-feeds are necessary before the image
-//    [body appendData:[[NSString stringWithFormat:@"%@%@", kNewLine, kNewLine] dataUsingEncoding:NSUTF8StringEncoding]];
-//    [body appendData:imageData];
-//    [body appendData:[kNewLine dataUsingEncoding:NSUTF8StringEncoding]];
-//    
-//    // Add the terminating boundary marker & append a newline
-//    [body appendData:[[NSString stringWithFormat:@"--%@--", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-//    [body appendData:[kNewLine dataUsingEncoding:NSUTF8StringEncoding]];
-//    
-//    // Setting the body of the post to the request.
-//    [request setHTTPBody:body];
-//    
-//    // TODO: Next three lines are only used for testing using synchronous conn.
-//    
-//    NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-//    
-//    NSString *returnString = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
-//    
-//    NSLog(@"==> sendSyncReq returnString: %@", returnString);
-//    
-//    // You will probably want to replace above 3 lines with asynchronous connection
-//    //    NSURLConnection *connection = [[NSURLConnection alloc]initWithRequest:request delegate:self];
-//}
 
 
 -(NSString *)base64forData:(NSData*)theData
@@ -1255,9 +1160,12 @@
 
 - (IBAction)uploadImage:(id)sender
 {
-    UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:@"Choose option:" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:
-                            @"Galary",
-                            @"Camera",nil];
+    
+    uploadImageButton=(UIButton *)sender;
+    
+    UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:@"option:" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:
+                            @"Choose Photo",
+                            @"Take Photo",nil];
     
     
     [popup showInView:mainView];
