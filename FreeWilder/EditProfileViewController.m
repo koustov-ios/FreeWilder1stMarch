@@ -76,7 +76,7 @@
 //-(BOOL)prefersStatusBarHidden
 //{
 //    return YES;
-//    
+//
 //}
 
 - (void)viewDidLoad {
@@ -98,7 +98,7 @@
     
     
     ///Side menu ends here
-
+    
     
     
     CGRect screenBounds=[[UIScreen mainScreen] bounds];
@@ -114,7 +114,7 @@
     else if (screenBounds.size.height == 667  && screenBounds.size.width == 375)
     {
         topbar.frame = CGRectMake(0, 0, 375, 60);
-         mainscroll.frame = CGRectMake(0, 60, 375, 550);
+        mainscroll.frame = CGRectMake(0, 60, 375, 550);
         btckbtn.frame=CGRectMake(0, 0, 96, 60);
         hdrlbl.frame=CGRectMake(118, 32, 136, 22);
     }
@@ -127,7 +127,7 @@
         hdrlbl.frame=CGRectMake(135, 35, 136, 46);
         mainscroll.frame = CGRectMake(0, 106, 414, 568);
     }
-
+    
     
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     /// initializing app footer view
@@ -161,21 +161,21 @@
     
     /// Getting side from Xib & creating a black overlay
     
-//    overlay=[[UIView alloc]initWithFrame:CGRectMake(0,0,[UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-//    overlay.backgroundColor=[[UIColor blackColor]colorWithAlphaComponent:.6];
-//    overlay.hidden=YES;
-//    overlay.userInteractionEnabled=YES;
-//    [self.view addSubview:overlay];
-//    
-//    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(Slide_menu_off)];
-//    tapGesture.numberOfTapsRequired=1;
-//    [overlay addGestureRecognizer:tapGesture];
+    //    overlay=[[UIView alloc]initWithFrame:CGRectMake(0,0,[UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    //    overlay.backgroundColor=[[UIColor blackColor]colorWithAlphaComponent:.6];
+    //    overlay.hidden=YES;
+    //    overlay.userInteractionEnabled=YES;
+    //    [self.view addSubview:overlay];
+    //
+    //    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(Slide_menu_off)];
+    //    tapGesture.numberOfTapsRequired=1;
+    //    [overlay addGestureRecognizer:tapGesture];
     
     
     
     sidemenu=[[Side_menu alloc]init];
     
-   // CGRect screenBounds=[[UIScreen mainScreen] bounds];
+    // CGRect screenBounds=[[UIScreen mainScreen] bounds];
     
     if(screenBounds.size.height == 568  && screenBounds.size.width == 320)
         
@@ -219,7 +219,7 @@
         
     }
     
-
+    
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     
     NSLog(@"lang code=%@, curr_id=%@",[prefs valueForKey:@"lang_code"],[prefs valueForKey:@"curr_id"]);
@@ -228,7 +228,7 @@
     
     NSLog(@"Email-----------> %@",[prefs valueForKey:@"email"]);
     
-     NSLog(@"Image-----------> %@",[NSString stringWithFormat:@"%@",[prefs valueForKey:@"UserImage"]]);
+    NSLog(@"Image-----------> %@",[NSString stringWithFormat:@"%@",[prefs valueForKey:@"UserImage"]]);
     
     emaillbl.text=[prefs valueForKey:@"email"];
     
@@ -277,10 +277,10 @@
     }
     
     
-   
-
     
-
+    
+    
+    
     
     [self ProfileDetailUrl];
     
@@ -305,6 +305,7 @@
 -(void)ProfileDetailUrl
 {
     NSString *urlstring=[NSString stringWithFormat:@"%@app_edit_profile?userid=%@",App_Domain_Url,[UserId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
     BOOL net=[globalobj connectedToNetwork];
     if (net==YES)
     {
@@ -314,24 +315,76 @@
             if([[result valueForKey:@"response"] isEqualToString:@"success"])
                 
             {
-               
-
+                
+                
                 
                 
                 
                 NSDictionary * detail = [result valueForKey:@"inforarray"];
-                NSString *school = [detail valueForKey:@"school"];
-                
-                NSArray *schoolname = [school componentsSeparatedByString:@","];
                 
                 
-                NSString *language = [detail valueForKey:@"language"];
+                NSArray *schoolname =[detail valueForKey:@"school"];
+                
+                NSArray *language = [detail valueForKey:@"language"];
+                
+                
+                
+                
+                for (int i=0; i<schoolname.count; i++)
+                {
+                    if (i==0)
+                    {
+                        schoolname1txt.text = [[schoolname objectAtIndex:i] valueForKey:@"school_name"];
+                    }
+                    
+                    else if (i==1)
+                    {
+                        schoolname2txt.text = [[schoolname objectAtIndex:i] valueForKey:@"school_name"];
+                    }
+                    else if (i==2)
+                    {
+                        schoolname3txt.text = [[schoolname objectAtIndex:i] valueForKey:@"school_name"];
+                    }
+                    
+                    else if (i==3)
+                    {
+                        schoolname4txt.text = [[schoolname objectAtIndex:i] valueForKey:@"school_name"];
+                    }
+                    else if (i==4)
+                    {
+                        schoolname5txt.text = [[schoolname objectAtIndex:i] valueForKey:@"school_name"];
+                    }
+                    
+                }
+                
+                
+                for (int i=0; i<language.count; i++)
+                {
+                    
+                    
+                    if (i==0)
+                    {
+                        language1txt.text = [[language objectAtIndex:i] valueForKey:@"lang_name"];
+                    }
+                    else if (i==1)
+                    {
+                        language2txt.text = [[language objectAtIndex:i] valueForKey:@"lang_name"];
+                    }
+                    
+                    else if (i==2)
+                    {
+                        language3txt.text = [[language objectAtIndex:i] valueForKey:@"lang_name"];
+                    }
+                    else if (i==3)
+                    {
+                        language4txt.text = [[language objectAtIndex:i] valueForKey:@"lang_name"];
+                    }
+                }
+                
                 
                 emaillbl.text = [detail valueForKey:@"email"];
                 txtUserName.text = [detail valueForKey:@"name"];
                 countrylbl.text = [detail valueForKey:@"country"];
-                
-                
                 
                 
                 if (countrylbl.text.length>0)
@@ -346,97 +399,16 @@
                 
                 if (statelbl.text.length>0)
                 {
-                     [stateBtn setTitle:@"" forState:UIControlStateNormal];
-                   
+                    [stateBtn setTitle:@"" forState:UIControlStateNormal];
+                    
                     statelbl.textColor=[UIColor blackColor];
                     
                 }
+                
+                
                 citytxt.text = [detail valueForKey:@"city"];
                 phonenotxt.text = [detail valueForKey:@"phone_no"];
                 worktxt.text=[detail valueForKey:@"work"];
-                
-                
-                
-                                
-                if (schoolname.count>0)
-                {
-                    if (schoolname.count==1)
-                    {
-                        schoolname1txt.text = [schoolname objectAtIndex:0];
-                    }
-                    
-                    else if (schoolname.count==2)
-                    {
-                        schoolname1txt.text = [schoolname objectAtIndex:0];
-                         schoolname2txt.text =[schoolname objectAtIndex:1];
-                    }
-                    
-                    else if (schoolname.count==3)
-                    {
-                        schoolname1txt.text = [schoolname objectAtIndex:0];
-                        schoolname2txt.text =[schoolname objectAtIndex:1];
-                        schoolname3txt.text =[schoolname objectAtIndex:2];
-                    }
-                    
-                    else if (schoolname.count==4)
-                    {
-                        schoolname1txt.text = [schoolname objectAtIndex:0];
-                        schoolname2txt.text =[schoolname objectAtIndex:1];
-                        schoolname3txt.text =[schoolname objectAtIndex:2];
-                        schoolname4txt.text =[schoolname objectAtIndex:3];
-                    }
-                    
-                    else if (schoolname.count==5)
-                    {
-                        schoolname1txt.text = [schoolname objectAtIndex:0];
-                        schoolname2txt.text =[schoolname objectAtIndex:1];
-                        schoolname3txt.text =[schoolname objectAtIndex:2];
-                        schoolname4txt.text =[schoolname objectAtIndex:3];
-                        schoolname5txt.text =[schoolname objectAtIndex:4];
-                    }
-
-                    
-                }
-                
-                
-                 NSArray *languageArray = [language componentsSeparatedByString:@","];
-                
-               
-                if (languageArray.count>0)
-                {
-                    if (languageArray.count==1)
-                    {
-                        language1txt.text = [languageArray objectAtIndex:0];
-                    }
-                    
-                    else if (languageArray.count==2)
-                    {
-                        language1txt.text = [languageArray objectAtIndex:0];
-                        language2txt.text =[languageArray objectAtIndex:1];
-                    }
-                    
-                    else if (languageArray.count==3)
-                    {
-                        language1txt.text = [languageArray objectAtIndex:0];
-                        language2txt.text =[languageArray objectAtIndex:1];
-                        language3txt.text =[languageArray objectAtIndex:2];
-                    }
-                    
-                    else if (languageArray.count==4)
-                    {
-                        language1txt.text = [languageArray objectAtIndex:0];
-                        language2txt.text =[languageArray objectAtIndex:1];
-                        language3txt.text =[languageArray objectAtIndex:2];
-                        language4txt.text =[languageArray objectAtIndex:3];
-                    }
-                    
-                    
-                    
-                }
-
-                
-                
-               
                 
                 
                 
@@ -455,9 +427,107 @@
                 
                 country_id =  [detail valueForKey:@"country_id"];
                 state_id =  [detail valueForKey:@"state_id"];
-
                 
                 
+                /*
+                 NSString *school = [detail valueForKey:@"school"];
+                 
+                 NSArray *schoolname = [school componentsSeparatedByString:@","];
+                 
+                 
+                 NSString *language = [detail valueForKey:@"language"];
+                 
+                 emaillbl.text = [detail valueForKey:@"email"];
+                 txtUserName.text = [detail valueForKey:@"name"];
+                 countrylbl.text = [detail valueForKey:@"country"];
+                 
+                 
+                 
+                 
+                 if (countrylbl.text.length>0)
+                 {
+                 [countrybtn setTitle:@"" forState:UIControlStateNormal];
+                 
+                 countrylbl.textColor = [UIColor blackColor];
+                 }
+                 
+                 statelbl.text = [detail valueForKey:@"state"];
+                 
+                 
+                 if (statelbl.text.length>0)
+                 {
+                 [stateBtn setTitle:@"" forState:UIControlStateNormal];
+                 
+                 statelbl.textColor=[UIColor blackColor];
+                 
+                 }
+                 citytxt.text = [detail valueForKey:@"city"];
+                 phonenotxt.text = [detail valueForKey:@"phone_no"];
+                 worktxt.text=[detail valueForKey:@"work"];
+                 
+                 
+                 
+                 
+                 
+                 NSArray *languageArray = [language componentsSeparatedByString:@","];
+                 
+                 
+                 if (languageArray.count>0)
+                 {
+                 if (languageArray.count==1)
+                 {
+                 language1txt.text = [languageArray objectAtIndex:0];
+                 }
+                 
+                 else if (languageArray.count==2)
+                 {
+                 language1txt.text = [languageArray objectAtIndex:0];
+                 language2txt.text =[languageArray objectAtIndex:1];
+                 }
+                 
+                 else if (languageArray.count==3)
+                 {
+                 language1txt.text = [languageArray objectAtIndex:0];
+                 language2txt.text =[languageArray objectAtIndex:1];
+                 language3txt.text =[languageArray objectAtIndex:2];
+                 }
+                 
+                 else if (languageArray.count==4)
+                 {
+                 language1txt.text = [languageArray objectAtIndex:0];
+                 language2txt.text =[languageArray objectAtIndex:1];
+                 language3txt.text =[languageArray objectAtIndex:2];
+                 language4txt.text =[languageArray objectAtIndex:3];
+                 }
+                 
+                 
+                 
+                 }
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 dateofbirthlbl.text = [detail valueForKey:@"date_of_birth"];
+                 shortdescriptiontextview.text = [detail valueForKey:@"short_desc"];
+                 
+                 if (shortdescriptiontextview.text.length>0)
+                 {
+                 shortdeclbl.hidden=YES;
+                 }
+                 
+                 
+                 
+                 
+                 
+                 
+                 country_id =  [detail valueForKey:@"country_id"];
+                 state_id =  [detail valueForKey:@"state_id"];
+                 
+                 
+                 */
                 
                 
                 
@@ -472,7 +542,7 @@
             }
             
             
-           
+            
             
             
             NSString *url = [NSString stringWithFormat:@"%@app_photo_video?userid=%@",App_Domain_Url,UserId];
@@ -496,18 +566,18 @@
                          
                          
                          [ProfileImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"UserImage"]]] placeholderImage:[UIImage imageNamed:@"demo_image"] options:/* DISABLES CODE */ (0) == 0?SDWebImageRefreshCached : 0];
-
+                         
                          
                          
                          
                          //[ProfileImg sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[imagelinkArray [0] valueForKey:@"link"]]]];
-                     
-                     
+                         
+                         
                          ProfileImg.contentMode=UIViewContentModeScaleAspectFill;
                          ProfileImg.clipsToBounds = YES;
                          ProfileImg.layer.cornerRadius = ProfileImg.frame.size.width/2;
-                     
-                     
+                         
+                         
                      }
                      
                      
@@ -515,10 +585,10 @@
                  
                  NSLog(@"Image Array===%@",imagelinkArray);
                  
-            
-             
-             
-             
+                 
+                 
+                 
+                 
                  if (stateArray.count==0)
                  {
                      
@@ -562,15 +632,15 @@
                      
                      
                  }
-             
-             
-             
-             
-             
-             
-             
-             
-             
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
              }];
             
             
@@ -931,116 +1001,116 @@
 //    //    overlay.hidden=YES;
 //    //    overlay.userInteractionEnabled=YES;
 //    [self.view addSubview:overlay];
-//    
+//
 //    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(Slide_menu_off)];
 //    tapGesture.numberOfTapsRequired=1;
 //    [overlay addGestureRecognizer:tapGesture];
-//    
-//    
+//
+//
 //    sidemenu=[[Side_menu alloc]init];
-//    
+//
 //    CGRect screenBounds=[[UIScreen mainScreen] bounds];
-//    
+//
 //    if(screenBounds.size.height == 568  && screenBounds.size.width == 320)
-//        
+//
 //    {
-//        
+//
 //        sidemenu.frame=CGRectMake([UIScreen mainScreen].bounds.size.width,0,160,[UIScreen mainScreen].bounds.size.height);
-//        
+//
 //        sidemenu.ProfileImage.frame = CGRectMake(46, 26, 77, 77);
-//        
+//
 //        [sidemenu.lblUserName setFont:[UIFont fontWithName:@"Lato" size:16]];
-//        
+//
 //        sidemenu.btn1.titleLabel.font = [UIFont fontWithName:@"Lato" size:14.0];
-//        
+//
 //        sidemenu.btn2.titleLabel.font = [UIFont fontWithName:@"Lato" size:14.0];
-//        
+//
 //        sidemenu.btn3.titleLabel.font = [UIFont fontWithName:@"Lato" size:14.0];
-//        
+//
 //        sidemenu.btn4.titleLabel.font = [UIFont fontWithName:@"Lato" size:13.5];
-//        
+//
 //        sidemenu.btn5.titleLabel.font = [UIFont fontWithName:@"Lato" size:14.0];
-//        
+//
 //        sidemenu.btn6.titleLabel.font = [UIFont fontWithName:@"Lato" size:14.0];
-//        
+//
 //        sidemenu.btn7.titleLabel.font = [UIFont fontWithName:@"Lato" size:14.0];
-//        
+//
 //        sidemenu.btn8.titleLabel.font = [UIFont fontWithName:@"Lato" size:13.0];
-//        
+//
 //        sidemenu.btn9.titleLabel.font = [UIFont fontWithName:@"Lato" size:14.0];
-//        
-//        
-//        
-//        
-//        
-//        
-//        
+//
+//
+//
+//
+//
+//
+//
 //    }
-//    
+//
 //    else{
-//        
+//
 //        sidemenu.frame=CGRectMake([UIScreen mainScreen].bounds.size.width,0,sidemenu.frame.size.width,[UIScreen mainScreen].bounds.size.height);
-//        
+//
 //    }
-//    
-//    
-//    
-//    
-//    
+//
+//
+//
+//
+//
 //    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 //    //  NSLog(@"user name=%@",[prefs valueForKey:@"UserName"]);
 //    sidemenu.lblUserName.text=[prefs valueForKey:@"UserName"];
-//    
+//
 //    [sidemenu.ProfileImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[prefs valueForKey:@"UserImage"]]] placeholderImage:[UIImage imageNamed:@"ProfileImage"] options:/* DISABLES CODE */ (0) == 0?SDWebImageRefreshCached : 0];
 //    //  sidemenu.ProfileImage.contentMode=UIViewContentModeScaleAspectFit;
 //    // sidemenu.hidden=YES;
-//    
-//    
+//
+//
 //    userid=[prefs valueForKey:@"UserId"];
-//    
+//
 //    NSString *url= [NSString stringWithFormat:@"%@/app_phone_verification?userid=%@",App_Domain_Url,userid];
-//    
-//    
+//
+//
 //    [globalobj GlobalDict:url Globalstr:@"array" Withblock:^(id result, NSError *error) {
-//        
+//
 //        if ([[result valueForKey:@"response" ]isEqualToString:@"success"])
 //        {
 //            jsonArray = [result valueForKey:@"infoarray"];
-//            
+//
 //            phoneno = [jsonArray [0]valueForKey:@"phone_no"];
-//            
+//
 //        }
-//        
-//        
+//
+//
 //        NSLog(@"phone----%@",phoneno);
-//        
-//        
+//
+//
 //    }];
 //
-//    
-//    
+//
+//
 //    sidemenu.SlideDelegate=self;
 //    [self.view addSubview:sidemenu];
-//    
+//
 //}
 //-(void)Slide_menu_off
 //{
 //    CGRect screenBounds=[[UIScreen mainScreen] bounds];
-//    
-//    
+//
+//
 //    [UIView animateWithDuration:.4 animations:^{
-//        
-//        
-//        
+//
+//
+//
 //        service.frame=CGRectMake(500,240,service.frame.size.width,service.frame.size.height);
-//        
+//
 //        profileview.frame=CGRectMake([UIScreen mainScreen].bounds.size.width,200,profileview.frame.size.width,profileview.frame.size.height);
-//        
-//        
+//
+//
 //        if(screenBounds.size.width == 320)
 //        {
 //            subview.frame=CGRectMake([UIScreen mainScreen].bounds.size.width,210,sidemenu.frame.size.width,subview.frame.size.height);
-//            
+//
 //        }
 //        else if(screenBounds.size.width == 375)
 //        {
@@ -1050,32 +1120,32 @@
 //        {
 //            subview.frame=CGRectMake([UIScreen mainScreen].bounds.size.width,320,sidemenu.frame.size.width,subview.frame.size.height);
 //        }
-//        
-//        
-//        
-//        
+//
+//
+//
+//
 //    }
-//     
-//     
+//
+//
 //                     completion:^(BOOL finished)
 //     {
-//         
+//
 //         [subview removeFromSuperview];
-//         
+//
 //         [UIView animateWithDuration:.3 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0.6
 //                             options:1 animations:^{
-//                                 
-//                                 
-//                                 
-//                                 
+//
+//
+//
+//
 //                                 sidemenu.frame=CGRectMake([UIScreen mainScreen].bounds.size.width,0,sidemenu.frame.size.width,[UIScreen mainScreen].bounds.size.height);
-//                                 
+//
 //                             }
-//          
-//          
-//          
+//
+//
+//
 //                          completion:^(BOOL finished)
-//          
+//
 //          {
 //              [sidemenu.btn5 setBackgroundColor:[UIColor clearColor]];
 //              [sidemenu.btn6 setBackgroundColor:[UIColor clearColor]];
@@ -1083,19 +1153,19 @@
 //              sidemenu.hidden=YES;
 //              overlay.hidden=YES;
 //              overlay.userInteractionEnabled=NO;
-//              
-//              
+//
+//
 //          }];
-//         
-//         
-//         
-//         
-//         
-//         
-//         
+//
+//
+//
+//
+//
+//
+//
 //     }];
-//    
-//    
+//
+//
 //}
 
 
@@ -1358,13 +1428,13 @@
         [self PushViewController:obj WithAnimation:kCAMediaTimingFunctionEaseIn];
         
     }
-        else if (sender.tag==1)
-        {
-            
-            DashboardViewController *dashVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"Dashboard"];
-            [self PushViewController:dashVC WithAnimation:kCAMediaTimingFunctionEaseIn];
-            
-        }
+    else if (sender.tag==1)
+    {
+        
+        DashboardViewController *dashVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"Dashboard"];
+        [self PushViewController:dashVC WithAnimation:kCAMediaTimingFunctionEaseIn];
+        
+    }
     
     
 }
@@ -1869,7 +1939,7 @@
                  [subview removeFromSuperview];
                  [service removeFromSuperview];
                  NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
-                // [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+                 // [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
                  
                  
                  
@@ -1878,7 +1948,7 @@
                  [self deleteAllEntities:@"WishList"];
                  [self deleteAllEntities:@"CategoryFeatureList"];
                  [self deleteAllEntities:@"CategoryList"];
-                // [self deleteAllEntities:@"ContactList"];
+                 // [self deleteAllEntities:@"ContactList"];
                  [self deleteAllEntities:@"ServiceList"];
                  
                  
@@ -2289,7 +2359,7 @@
 {
     //  self.view.frame=CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y+20, self.view.frame.size.width, self.view.frame.size.width);
     pview.hidden=YES;
-     [myview removeFromSuperview];
+    [myview removeFromSuperview];
     
     [textField becomeFirstResponder];
     CGRect screenBounds=[[UIScreen mainScreen] bounds];
@@ -2565,49 +2635,49 @@
 
 - (IBAction)SaveClick:(id)sender
 {
-   /* if ([self TarminateWhiteSpace:txtUserName.text].length==0)
-    {
-        txtUserName.text=@"";
-        NSAttributedString *nn3=[[NSAttributedString alloc]initWithString:@"Please Enter name" attributes:@{NSForegroundColorAttributeName:[UIColor grayColor]}];
-        txtUserName.attributedPlaceholder=nn3;
-    }
+    /* if ([self TarminateWhiteSpace:txtUserName.text].length==0)
+     {
+     txtUserName.text=@"";
+     NSAttributedString *nn3=[[NSAttributedString alloc]initWithString:@"Please Enter name" attributes:@{NSForegroundColorAttributeName:[UIColor grayColor]}];
+     txtUserName.attributedPlaceholder=nn3;
+     }
+     
+     else if (countrylbl.text.length==0)
+     {
+     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"Select Country" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+     [alert show];
+     }
+     
+     else if ([self TarminateWhiteSpace:citytxt.text].length==0)
+     {
+     citytxt.text=@"";
+     NSAttributedString *nn3=[[NSAttributedString alloc]initWithString:@"Please Enter City" attributes:@{NSForegroundColorAttributeName:[UIColor grayColor]}];
+     citytxt.attributedPlaceholder=nn3;
+     }
+     
+     
+     else if ([self TarminateWhiteSpace:phonenotxt.text].length==0)
+     {
+     phonenotxt.text=@"";
+     NSAttributedString *nn3=[[NSAttributedString alloc]initWithString:@"Please Enter Phone No" attributes:@{NSForegroundColorAttributeName:[UIColor grayColor]}];
+     phonenotxt.attributedPlaceholder=nn3;
+     }
+     else if (countrylbl.text.length==0)
+     {
+     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"Select Country" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+     [alert show];
+     }
+     
+     
+     else if(shortdescriptiontextview.text.length==0)
+     {
+     shortdeclbl.text =@"Enter short Description";
+     }
+     
+     */
     
-    else if (countrylbl.text.length==0)
-    {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"Select Country" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-    }
+    [self UpdateProfileUrl];
     
-    else if ([self TarminateWhiteSpace:citytxt.text].length==0)
-    {
-        citytxt.text=@"";
-        NSAttributedString *nn3=[[NSAttributedString alloc]initWithString:@"Please Enter City" attributes:@{NSForegroundColorAttributeName:[UIColor grayColor]}];
-        citytxt.attributedPlaceholder=nn3;
-    }
-    
-    
-    else if ([self TarminateWhiteSpace:phonenotxt.text].length==0)
-    {
-        phonenotxt.text=@"";
-        NSAttributedString *nn3=[[NSAttributedString alloc]initWithString:@"Please Enter Phone No" attributes:@{NSForegroundColorAttributeName:[UIColor grayColor]}];
-        phonenotxt.attributedPlaceholder=nn3;
-    }
-    else if (countrylbl.text.length==0)
-    {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"Select Country" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-    }
-    
-    
-    else if(shortdescriptiontextview.text.length==0)
-    {
-        shortdeclbl.text =@"Enter short Description";
-    }
-    
-    */
-    
-        [self UpdateProfileUrl];
-   
     
     
 }
@@ -2639,7 +2709,7 @@
                 [self ProfileDetailUrl];
                 
                 
-              
+                
                 
             }
             else
@@ -2649,10 +2719,10 @@
             
             
         }];
-       
-    
-    
-    
+        
+        
+        
+        
     }
     else{
         
@@ -2663,7 +2733,7 @@
 - (IBAction)ImageClick:(id)sender
 {
     pview.hidden=YES;
-    actionsheet=[[UIActionSheet alloc]initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera", @"Photo Library", nil];
+    actionsheet=[[UIActionSheet alloc]initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo", @"Choose Photo", nil];
     [actionsheet showInView:self.view];
     [myview removeFromSuperview];
     pview.hidden=YES;
@@ -2690,7 +2760,7 @@
     
     done=1;
     
-   // [stateBtn setTitle:@"Select State" forState:UIControlStateNormal];
+    // [stateBtn setTitle:@"Select State" forState:UIControlStateNormal];
     
     //statelbl.text=@"";
     stateName=@"";
@@ -2712,7 +2782,7 @@
         [countrybtn setTitle:@"" forState:UIControlStateNormal];
         
     }
-
+    
     
     
     [myview removeFromSuperview];
@@ -2733,73 +2803,73 @@
     [language3txt resignFirstResponder];
     [language4txt resignFirstResponder];
     
-  /*  NSString *curl =[NSString stringWithFormat:@"http://esolzdemos.com/lab1/countries-object-array.json"];
-    
-    [txtUserName resignFirstResponder];
-    
-    [globalobj GlobalDict:curl Globalstr:@"array" Withblock:^(id result, NSError *error)
+    /*  NSString *curl =[NSString stringWithFormat:@"http://esolzdemos.com/lab1/countries-object-array.json"];
+     
+     [txtUserName resignFirstResponder];
+     
+     [globalobj GlobalDict:curl Globalstr:@"array" Withblock:^(id result, NSError *error)
      {
-         
-         [countrybtn setTitle:@"Select Country" forState:UIControlStateNormal];
-         countrylbl.text=@"";
-         
-         countryArry = [result valueForKey:@"name"];
-         
-         country=countryArry[0];
-         
-         countryPicker.dataSource=self;
-         countryPicker.delegate=self;
-         
-         
-         
-         CGRect screenBounds=[[UIScreen mainScreen] bounds];
-         if(screenBounds.size.height == 568  && screenBounds.size.width == 320)
-         {
-             [self.mainscroll setContentOffset:CGPointMake(0.0f,67.0f) animated:YES];
-             
-         }
-         else if (screenBounds.size.height == 667  && screenBounds.size.width == 375)
-         {
-             
-            [self.mainscroll setContentOffset:CGPointMake(0.0f, 20.0f) animated:YES];
-             
-         }
-         
-         else
-         {
-             
-             [self.mainscroll setContentOffset:CGPointMake(0.0f, 15.0f) animated:YES];
-             
-             //pview.frame =CGRectMake(0, 400, self.view.bounds.size.width, self.view.bounds.size.height);
-         }
-         
-         
-         
-         
-         
-         pview.hidden=NO;
-         pview.frame =CGRectMake(0, self.view.frame.size.height-pview.frame.size.height, pview.frame.size.width, pview.frame.size.height);
-         [self.view addSubview:pview];
-         
-         
-         
-         mainscroll.scrollEnabled=NO;
-         
-         NSLog(@"countryArry===%@",countryArry);
+     
+     [countrybtn setTitle:@"Select Country" forState:UIControlStateNormal];
+     countrylbl.text=@"";
+     
+     countryArry = [result valueForKey:@"name"];
+     
+     country=countryArry[0];
+     
+     countryPicker.dataSource=self;
+     countryPicker.delegate=self;
+     
+     
+     
+     CGRect screenBounds=[[UIScreen mainScreen] bounds];
+     if(screenBounds.size.height == 568  && screenBounds.size.width == 320)
+     {
+     [self.mainscroll setContentOffset:CGPointMake(0.0f,67.0f) animated:YES];
+     
+     }
+     else if (screenBounds.size.height == 667  && screenBounds.size.width == 375)
+     {
+     
+     [self.mainscroll setContentOffset:CGPointMake(0.0f, 20.0f) animated:YES];
+     
+     }
+     
+     else
+     {
+     
+     [self.mainscroll setContentOffset:CGPointMake(0.0f, 15.0f) animated:YES];
+     
+     //pview.frame =CGRectMake(0, 400, self.view.bounds.size.width, self.view.bounds.size.height);
+     }
+     
+     
+     
+     
+     
+     pview.hidden=NO;
+     pview.frame =CGRectMake(0, self.view.frame.size.height-pview.frame.size.height, pview.frame.size.width, pview.frame.size.height);
+     [self.view addSubview:pview];
+     
+     
+     
+     mainscroll.scrollEnabled=NO;
+     
+     NSLog(@"countryArry===%@",countryArry);
      }];
-    */
+     */
     
     NSString *curl =[NSString stringWithFormat:@"%@/app_country",App_Domain_Url];
     
     
-   // countrylbl.text=@"Loading Country.....";
+    // countrylbl.text=@"Loading Country.....";
     [globalobj GlobalDict:curl Globalstr:@"array" Withblock:^(id result, NSError *error)
      {
          
          
-        
-        // [countrybtn setTitle:@"Select Country" forState:UIControlStateNormal];
-        // countrylbl.text=@"";
+         
+         // [countrybtn setTitle:@"Select Country" forState:UIControlStateNormal];
+         // countrylbl.text=@"";
          
          NSMutableArray  *temp ;
          temp= [[result valueForKey:@"infoarray" ] mutableCopy];
@@ -2872,15 +2942,15 @@
          
          mainscroll.scrollEnabled=NO;
          
-           [countryPicker selectRow:0 inComponent:0 animated:NO];
+         [countryPicker selectRow:0 inComponent:0 animated:NO];
          
          
          countryPicker.dataSource=self;
          countryPicker.delegate=self;
          
-        
          
-        
+         
+         
          
      }];
     
@@ -2998,26 +3068,26 @@
     }
     else
     {
-       [countrybtn setTitle:@"Select Country" forState:UIControlStateNormal];
+        [countrybtn setTitle:@"Select Country" forState:UIControlStateNormal];
     }
     
     [UIView animateWithDuration:.2 animations:^{
         
         
         pview.frame =CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, pview.frame.size.height);
-       
-       
-
+        
+        
+        
     }
-     completion:^(BOOL finished) {
-         
-         
-         
-         pview.hidden=YES;
-     }];
+                     completion:^(BOOL finished) {
+                         
+                         
+                         
+                         pview.hidden=YES;
+                     }];
     
     
-       mainscroll.scrollEnabled=YES;
+    mainscroll.scrollEnabled=YES;
     
 }
 
@@ -3029,7 +3099,7 @@
     
     if (done==1)
     {
-       
+        
         stateArray = [[NSMutableArray alloc]init];
         stateid_Array =[[NSMutableArray alloc]init];
         
@@ -3058,45 +3128,45 @@
         if (stateArray.count==0)
         {
             
-       
-        
-        NSString *curl =[NSString stringWithFormat:@"%@app_user_service/app_state?country_id=%@",App_Domain_Url,country_id];
-        
-        
-        // countrylbl.text=@"Loading Country.....";
-        [globalobj GlobalDict:curl Globalstr:@"array" Withblock:^(id result, NSError *error)
-         {
-             if ([[result valueForKey:@"response"]isEqualToString:@"success"])
+            
+            
+            NSString *curl =[NSString stringWithFormat:@"%@app_user_service/app_state?country_id=%@",App_Domain_Url,country_id];
+            
+            
+            // countrylbl.text=@"Loading Country.....";
+            [globalobj GlobalDict:curl Globalstr:@"array" Withblock:^(id result, NSError *error)
              {
-                 NSMutableArray *temp = [[result valueForKey:@"infoarray"] mutableCopy];
-                 
-                 if (temp.count>0)
+                 if ([[result valueForKey:@"response"]isEqualToString:@"success"])
                  {
-                     state_id = [[temp objectAtIndex:0]valueForKey:@"state_id"];
-                     stateName = [[temp objectAtIndex:0]valueForKey:@"state_name"];
-                 }
-                 
-                 
-                 
-                 for (int i= 0; i<temp.count; i++)
-                 {
-                     NSString *stateid  = [[temp objectAtIndex:i]valueForKey:@"state_id"];
-                     NSString *statename = [[temp objectAtIndex:i]valueForKey:@"state_name"];
+                     NSMutableArray *temp = [[result valueForKey:@"infoarray"] mutableCopy];
+                     
+                     if (temp.count>0)
+                     {
+                         state_id = [[temp objectAtIndex:0]valueForKey:@"state_id"];
+                         stateName = [[temp objectAtIndex:0]valueForKey:@"state_name"];
+                     }
                      
                      
-                     [stateid_Array insertObject:stateid atIndex:i];
-                     [stateArray insertObject:statename atIndex:i];
+                     
+                     for (int i= 0; i<temp.count; i++)
+                     {
+                         NSString *stateid  = [[temp objectAtIndex:i]valueForKey:@"state_id"];
+                         NSString *statename = [[temp objectAtIndex:i]valueForKey:@"state_name"];
+                         
+                         
+                         [stateid_Array insertObject:stateid atIndex:i];
+                         [stateArray insertObject:statename atIndex:i];
+                     }
+                     
+                     
+                     
+                     
                  }
                  
-                 
-                 
-                 
-             }
-             
-         }];
-        
-        
-        
+             }];
+            
+            
+            
         }
         
         
@@ -3105,7 +3175,7 @@
         statelbl.text=@"";
         [stateBtn setTitle:@"Select State" forState:UIControlStateNormal];
         
-
+        
     }
     
     
@@ -3141,9 +3211,9 @@
         
         
     }
-
-
-
+    
+    
+    
 }
 
 
@@ -3171,11 +3241,11 @@
     
     
     
-     [mainscroll setContentOffset:CGPointMake(0.0f, 880.0f) animated:YES];
+    [mainscroll setContentOffset:CGPointMake(0.0f, 880.0f) animated:YES];
     
-     myview = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-pview.frame.size.height, self.view.frame.size.width, pview.frame.size.height)];
+    myview = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-pview.frame.size.height, self.view.frame.size.width, pview.frame.size.height)];
     
-      [myview setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
+    [myview setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
     
     
     UIButton *btn=[[UIButton alloc]initWithFrame:CGRectMake(0,pview.frame.size.height-42,self.view.frame.size.width/2,42)];
@@ -3184,17 +3254,17 @@
     [btn addTarget:self action:@selector(ok:) forControlEvents:UIControlEventTouchUpInside];
     [Datepicker addTarget:self action:@selector(LabelTitle:) forControlEvents:UIControlEventValueChanged];
     [myview addSubview:btn];
-
+    
     
     
     UIButton *btn1=[[UIButton alloc]initWithFrame:CGRectMake(btn.frame.size.width,pview.frame.size.height-42,self.view.frame.size.width/2,42)];
     btn1.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
     [btn1 addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
     [btn1 setTitle: @"CANCEL" forState: UIControlStateNormal];
-   [myview addSubview:btn1];
+    [myview addSubview:btn1];
     
     
-     Datepicker =[[UIDatePicker alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width,pview.frame.size.height-btn.frame.size.height)];
+    Datepicker =[[UIDatePicker alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width,pview.frame.size.height-btn.frame.size.height)];
     
     Datepicker.datePickerMode=UIDatePickerModeDate;
     
@@ -3203,7 +3273,7 @@
     
     NSDate *minYearDate = [[NSDate date] dateByAddingTimeInterval: -473040000.0];
     Datepicker.maximumDate=minYearDate;
-
+    
     
     
     [myview addSubview:Datepicker];
@@ -3215,194 +3285,194 @@
     
     
     
- /*   CGRect screenBounds=[[UIScreen mainScreen] bounds];
-    
-    
-    if (screenBounds.size.height == 568 && screenBounds.size.width == 320) {
-        
-        
-        myview = [[UIView alloc] initWithFrame:CGRectMake(0, 300, self.view.bounds.size.width, self.view.bounds.size.height)];
-        [myview setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
-        
-        
-        Datepicker =[[UIDatePicker alloc]initWithFrame:CGRectMake(0,10,self.view.bounds.size.width, self.view.bounds.size.height)];
-        [Datepicker setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
-        [myview addSubview:Datepicker];
-        
-        
-        Datepicker.datePickerMode=UIDatePickerModeDate;
-        
-        
-        NSDate *minYearDate = [[NSDate date] dateByAddingTimeInterval: -473040000.0];
-        Datepicker.maximumDate=minYearDate;
-        
-        
-        UIButton *btn=[[UIButton alloc]initWithFrame:CGRectMake(-15,227,187,42)];
-        btn.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
-        [btn setTitle: @"OK" forState: UIControlStateNormal];
-        [btn addTarget:self action:@selector(ok:) forControlEvents:UIControlEventTouchUpInside];
-        [Datepicker addTarget:self action:@selector(LabelTitle:) forControlEvents:UIControlEventValueChanged];
-        [myview addSubview:btn];
-        
-        
-        UIButton *btn1=[[UIButton alloc]initWithFrame:CGRectMake(150,227,188,42)];
-        btn1.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
-        [btn1 addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
-        [btn1 setTitle: @"CANCEL" forState: UIControlStateNormal];
-        [myview addSubview:btn1];
-        
-        
-        CGRect rc=[mainscroll bounds];
-        CGPoint pt;
-        rc=[mainscroll convertRect:rc toView:mainscroll];
-        
-        pt=rc.origin;
-        pt.x=0;
-        pt.y=830+50;
-        [mainscroll setContentOffset:pt animated:YES];
-        
-        
-        
-        [self.view addSubview:myview];
-        
-    }
-    else if(screenBounds.size.height == 667 && screenBounds.size.width == 375)
-    {
-        myview = [[UIView alloc] initWithFrame:CGRectMake(0, 400, self.view.bounds.size.width, self.view.bounds.size.height)];
-        [myview setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
-        // [myview setBackgroundColor:[UIColor grayColor]];
-        
-        
-        Datepicker =[[UIDatePicker alloc]initWithFrame:CGRectMake(0,10,self.view.bounds.size.width, self.view.bounds.size.height)];
-        [Datepicker setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
-        [myview addSubview:Datepicker];
-        
-        //[picker setBackgroundColor:[UIColor clearColor]];
-        //  [Datepicker setBackgroundColor: [UIColor colorWithRed:(245.0f/255.0f) green:(245.0f/255.0f) blue:(245.0f/255.0f) alpha:1]];
-        
-        Datepicker.datePickerMode=UIDatePickerModeDate;
-        //    picker.hidden=NO;
-        
-        
-        NSDate *minYearDate = [[NSDate date] dateByAddingTimeInterval: -473040000.0];
-        Datepicker.maximumDate=minYearDate;
-        
-        
-        UIButton *btn=[[UIButton alloc]initWithFrame:CGRectMake(0,228,185,40)];
-        btn.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
-        [btn setTitle: @"OK" forState: UIControlStateNormal];
-        [btn addTarget:self action:@selector(ok:) forControlEvents:UIControlEventTouchUpInside];
-        [Datepicker addTarget:self action:@selector(LabelTitle:) forControlEvents:UIControlEventValueChanged];
-        [myview addSubview:btn];
-        
-        
-        UIButton *btn1=[[UIButton alloc]initWithFrame:CGRectMake(191,228,185,40)];
-        btn1.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
-        [btn1 addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
-        [btn1 setTitle: @"CANCEL" forState: UIControlStateNormal];
-        [myview addSubview:btn1];
-        
-        
-        CGRect rc=[mainscroll bounds];
-        CGPoint pt;
-        rc=[mainscroll convertRect:rc toView:mainscroll];
-        
-        pt=rc.origin;
-        pt.x=0;
-        pt.y=750+50;
-        [mainscroll setContentOffset:pt animated:YES];
-        
-        [self.view addSubview:myview];
-        
-    }
-    
-    
-    else if(screenBounds.size.height == 480 && screenBounds.size.width == 320)
-    {
-        myview = [[UIView alloc] initWithFrame:CGRectMake(0, 200, self.view.bounds.size.width, self.view.bounds.size.height)];
-        [myview setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
-        
-        
-        Datepicker =[[UIDatePicker alloc]initWithFrame:CGRectMake(0,10,self.view.bounds.size.width, self.view.bounds.size.height)];
-        [Datepicker setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
-        [myview addSubview:Datepicker];
-        
-        //[picker setBackgroundColor:[UIColor clearColor]];
-        // [Datepicker setBackgroundColor: [UIColor colorWithRed:(245.0f/255.0f) green:(245.0f/255.0f) blue:(245.0f/255.0f) alpha:1]];
-        
-        Datepicker.datePickerMode=UIDatePickerModeDate;
-        //    picker.hidden=NO;
-        
-        
-        NSDate *minYearDate = [[NSDate date] dateByAddingTimeInterval: -473040000.0];
-        Datepicker.maximumDate=minYearDate;
-        
-        
-        UIButton *btn=[[UIButton alloc]initWithFrame:CGRectMake(-7,225,187,42)];
-        btn.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
-        [btn setTitle: @"OK" forState: UIControlStateNormal];
-        [btn addTarget:self action:@selector(ok:) forControlEvents:UIControlEventTouchUpInside];
-        [Datepicker addTarget:self action:@selector(LabelTitle:) forControlEvents:UIControlEventValueChanged];
-        [myview addSubview:btn];
-        
-        
-        UIButton *btn1=[[UIButton alloc]initWithFrame:CGRectMake(150,225,188,42)];
-        btn1.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
-        [btn1 addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
-        [btn1 setTitle: @"CANCEL" forState: UIControlStateNormal];
-        [myview addSubview:btn1];
-        
-        [self.view addSubview:myview];
-    }
-    else
-    {
-        myview = [[UIView alloc] initWithFrame:CGRectMake(0, 450, self.view.bounds.size.width, self.view.bounds.size.height)];
-        [myview setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
-        
-        
-        Datepicker =[[UIDatePicker alloc]initWithFrame:CGRectMake(0,10,self.view.bounds.size.width, self.view.bounds.size.height)];
-        [Datepicker setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
-        [myview addSubview:Datepicker];
-        
-        //[picker setBackgroundColor:[UIColor clearColor]];
-        //  [Datepicker setBackgroundColor: [UIColor colorWithRed:(245.0f/255.0f) green:(245.0f/255.0f) blue:(245.0f/255.0f) alpha:1]];
-        
-        Datepicker.datePickerMode=UIDatePickerModeDate;
-        //    picker.hidden=NO;
-        
-        
-        NSDate *minYearDate = [[NSDate date] dateByAddingTimeInterval: -473040000.0];
-        Datepicker.maximumDate=minYearDate;
-        
-        UIButton *btn=[[UIButton alloc]initWithFrame:CGRectMake(15,225,187,42)];
-        btn.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
-        [btn setTitle: @"OK" forState: UIControlStateNormal];
-        [btn addTarget:self action:@selector(ok:) forControlEvents:UIControlEventTouchUpInside];
-        [Datepicker addTarget:self action:@selector(LabelTitle:) forControlEvents:UIControlEventValueChanged];
-        [myview addSubview:btn];
-        
-        
-        UIButton *btn1=[[UIButton alloc]initWithFrame:CGRectMake(210,225,188,42)];
-        btn1.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
-        [btn1 addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
-        [btn1 setTitle: @"CANCEL" forState: UIControlStateNormal];
-        [myview addSubview:btn1];
-        
-        
-        CGRect rc=[mainscroll bounds];
-        CGPoint pt;
-        rc=[mainscroll convertRect:rc toView:mainscroll];
-        
-        pt=rc.origin;
-        pt.x=0;
-        pt.y=750+50;
-        [mainscroll setContentOffset:pt animated:YES];
-        
-        
-        [self.view addSubview:myview];
-        
-    }
-    */
+    /*   CGRect screenBounds=[[UIScreen mainScreen] bounds];
+     
+     
+     if (screenBounds.size.height == 568 && screenBounds.size.width == 320) {
+     
+     
+     myview = [[UIView alloc] initWithFrame:CGRectMake(0, 300, self.view.bounds.size.width, self.view.bounds.size.height)];
+     [myview setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
+     
+     
+     Datepicker =[[UIDatePicker alloc]initWithFrame:CGRectMake(0,10,self.view.bounds.size.width, self.view.bounds.size.height)];
+     [Datepicker setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
+     [myview addSubview:Datepicker];
+     
+     
+     Datepicker.datePickerMode=UIDatePickerModeDate;
+     
+     
+     NSDate *minYearDate = [[NSDate date] dateByAddingTimeInterval: -473040000.0];
+     Datepicker.maximumDate=minYearDate;
+     
+     
+     UIButton *btn=[[UIButton alloc]initWithFrame:CGRectMake(-15,227,187,42)];
+     btn.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
+     [btn setTitle: @"OK" forState: UIControlStateNormal];
+     [btn addTarget:self action:@selector(ok:) forControlEvents:UIControlEventTouchUpInside];
+     [Datepicker addTarget:self action:@selector(LabelTitle:) forControlEvents:UIControlEventValueChanged];
+     [myview addSubview:btn];
+     
+     
+     UIButton *btn1=[[UIButton alloc]initWithFrame:CGRectMake(150,227,188,42)];
+     btn1.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
+     [btn1 addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
+     [btn1 setTitle: @"CANCEL" forState: UIControlStateNormal];
+     [myview addSubview:btn1];
+     
+     
+     CGRect rc=[mainscroll bounds];
+     CGPoint pt;
+     rc=[mainscroll convertRect:rc toView:mainscroll];
+     
+     pt=rc.origin;
+     pt.x=0;
+     pt.y=830+50;
+     [mainscroll setContentOffset:pt animated:YES];
+     
+     
+     
+     [self.view addSubview:myview];
+     
+     }
+     else if(screenBounds.size.height == 667 && screenBounds.size.width == 375)
+     {
+     myview = [[UIView alloc] initWithFrame:CGRectMake(0, 400, self.view.bounds.size.width, self.view.bounds.size.height)];
+     [myview setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
+     // [myview setBackgroundColor:[UIColor grayColor]];
+     
+     
+     Datepicker =[[UIDatePicker alloc]initWithFrame:CGRectMake(0,10,self.view.bounds.size.width, self.view.bounds.size.height)];
+     [Datepicker setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
+     [myview addSubview:Datepicker];
+     
+     //[picker setBackgroundColor:[UIColor clearColor]];
+     //  [Datepicker setBackgroundColor: [UIColor colorWithRed:(245.0f/255.0f) green:(245.0f/255.0f) blue:(245.0f/255.0f) alpha:1]];
+     
+     Datepicker.datePickerMode=UIDatePickerModeDate;
+     //    picker.hidden=NO;
+     
+     
+     NSDate *minYearDate = [[NSDate date] dateByAddingTimeInterval: -473040000.0];
+     Datepicker.maximumDate=minYearDate;
+     
+     
+     UIButton *btn=[[UIButton alloc]initWithFrame:CGRectMake(0,228,185,40)];
+     btn.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
+     [btn setTitle: @"OK" forState: UIControlStateNormal];
+     [btn addTarget:self action:@selector(ok:) forControlEvents:UIControlEventTouchUpInside];
+     [Datepicker addTarget:self action:@selector(LabelTitle:) forControlEvents:UIControlEventValueChanged];
+     [myview addSubview:btn];
+     
+     
+     UIButton *btn1=[[UIButton alloc]initWithFrame:CGRectMake(191,228,185,40)];
+     btn1.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
+     [btn1 addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
+     [btn1 setTitle: @"CANCEL" forState: UIControlStateNormal];
+     [myview addSubview:btn1];
+     
+     
+     CGRect rc=[mainscroll bounds];
+     CGPoint pt;
+     rc=[mainscroll convertRect:rc toView:mainscroll];
+     
+     pt=rc.origin;
+     pt.x=0;
+     pt.y=750+50;
+     [mainscroll setContentOffset:pt animated:YES];
+     
+     [self.view addSubview:myview];
+     
+     }
+     
+     
+     else if(screenBounds.size.height == 480 && screenBounds.size.width == 320)
+     {
+     myview = [[UIView alloc] initWithFrame:CGRectMake(0, 200, self.view.bounds.size.width, self.view.bounds.size.height)];
+     [myview setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
+     
+     
+     Datepicker =[[UIDatePicker alloc]initWithFrame:CGRectMake(0,10,self.view.bounds.size.width, self.view.bounds.size.height)];
+     [Datepicker setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
+     [myview addSubview:Datepicker];
+     
+     //[picker setBackgroundColor:[UIColor clearColor]];
+     // [Datepicker setBackgroundColor: [UIColor colorWithRed:(245.0f/255.0f) green:(245.0f/255.0f) blue:(245.0f/255.0f) alpha:1]];
+     
+     Datepicker.datePickerMode=UIDatePickerModeDate;
+     //    picker.hidden=NO;
+     
+     
+     NSDate *minYearDate = [[NSDate date] dateByAddingTimeInterval: -473040000.0];
+     Datepicker.maximumDate=minYearDate;
+     
+     
+     UIButton *btn=[[UIButton alloc]initWithFrame:CGRectMake(-7,225,187,42)];
+     btn.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
+     [btn setTitle: @"OK" forState: UIControlStateNormal];
+     [btn addTarget:self action:@selector(ok:) forControlEvents:UIControlEventTouchUpInside];
+     [Datepicker addTarget:self action:@selector(LabelTitle:) forControlEvents:UIControlEventValueChanged];
+     [myview addSubview:btn];
+     
+     
+     UIButton *btn1=[[UIButton alloc]initWithFrame:CGRectMake(150,225,188,42)];
+     btn1.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
+     [btn1 addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
+     [btn1 setTitle: @"CANCEL" forState: UIControlStateNormal];
+     [myview addSubview:btn1];
+     
+     [self.view addSubview:myview];
+     }
+     else
+     {
+     myview = [[UIView alloc] initWithFrame:CGRectMake(0, 450, self.view.bounds.size.width, self.view.bounds.size.height)];
+     [myview setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
+     
+     
+     Datepicker =[[UIDatePicker alloc]initWithFrame:CGRectMake(0,10,self.view.bounds.size.width, self.view.bounds.size.height)];
+     [Datepicker setBackgroundColor:[UIColor colorWithRed:(240.0f/255.0f) green:(240.0f/255.0f) blue:(240.0f/255.0f) alpha:1]];
+     [myview addSubview:Datepicker];
+     
+     //[picker setBackgroundColor:[UIColor clearColor]];
+     //  [Datepicker setBackgroundColor: [UIColor colorWithRed:(245.0f/255.0f) green:(245.0f/255.0f) blue:(245.0f/255.0f) alpha:1]];
+     
+     Datepicker.datePickerMode=UIDatePickerModeDate;
+     //    picker.hidden=NO;
+     
+     
+     NSDate *minYearDate = [[NSDate date] dateByAddingTimeInterval: -473040000.0];
+     Datepicker.maximumDate=minYearDate;
+     
+     UIButton *btn=[[UIButton alloc]initWithFrame:CGRectMake(15,225,187,42)];
+     btn.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
+     [btn setTitle: @"OK" forState: UIControlStateNormal];
+     [btn addTarget:self action:@selector(ok:) forControlEvents:UIControlEventTouchUpInside];
+     [Datepicker addTarget:self action:@selector(LabelTitle:) forControlEvents:UIControlEventValueChanged];
+     [myview addSubview:btn];
+     
+     
+     UIButton *btn1=[[UIButton alloc]initWithFrame:CGRectMake(210,225,188,42)];
+     btn1.backgroundColor=[UIColor colorWithRed:(51.0f/255.0f) green:(26.0f/255.0f) blue:(47.0f/255.0f) alpha:1];
+     [btn1 addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
+     [btn1 setTitle: @"CANCEL" forState: UIControlStateNormal];
+     [myview addSubview:btn1];
+     
+     
+     CGRect rc=[mainscroll bounds];
+     CGPoint pt;
+     rc=[mainscroll convertRect:rc toView:mainscroll];
+     
+     pt=rc.origin;
+     pt.x=0;
+     pt.y=750+50;
+     [mainscroll setContentOffset:pt animated:YES];
+     
+     
+     [self.view addSubview:myview];
+     
+     }
+     */
 }
 
 -(void)ok:(id)sender
@@ -3573,7 +3643,7 @@
 -(void)textViewDidBeginEditing:(UITextView *)textView
 
 {
-     [myview removeFromSuperview];
+    [myview removeFromSuperview];
     
     textView.autocorrectionType = UITextAutocorrectionTypeNo;
     
@@ -3629,15 +3699,6 @@
     
 }
 
--(void)viewWillDisappear:(BOOL)animated
-{
-    
-    [super viewWillDisappear:animated];
-    [self Slide_menu_off];
-    
-}
-
-
 - (IBAction)stateBtnTap:(id)sender
 {
     countryPicker.tag=2;
@@ -3655,10 +3716,10 @@
     [self textFieldShouldReturn:worktxt];
     [self textFieldShouldReturn:phonenotxt];
     [self textFieldShouldReturn:language4txt];
-     [self textFieldShouldReturn:language3txt];
-     [self textFieldShouldReturn:language2txt];
-     [self textFieldShouldReturn:language1txt];
-
+    [self textFieldShouldReturn:language3txt];
+    [self textFieldShouldReturn:language2txt];
+    [self textFieldShouldReturn:language1txt];
+    
     
     
     
@@ -3674,7 +3735,7 @@
     
     else if (stateArray.count>0)
     {
-       
+        
         
         CGRect screenBounds=[[UIScreen mainScreen] bounds];
         if(screenBounds.size.height == 568  && screenBounds.size.width == 320)
@@ -3702,10 +3763,10 @@
         
         
         pview.hidden=NO;
-
+        
         
         [UIView animateWithDuration:.2 animations:^{
-          
+            
             pview.frame =CGRectMake(0, self.view.frame.size.height-pview.frame.size.height, self.view.frame.size.width, pview.frame.size.height);
             [self.view addSubview:pview];
         }];
@@ -3721,7 +3782,7 @@
         countryPicker.delegate=self;
         
         
-
+        
     }
     
 }

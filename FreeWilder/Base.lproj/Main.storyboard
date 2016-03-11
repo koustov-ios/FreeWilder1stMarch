@@ -5201,7 +5201,7 @@
                                                             <color key="backgroundColor" red="0.92941176469999998" green="0.92941176469999998" blue="0.92941176469999998" alpha="1" colorSpace="calibratedRGB"/>
                                                         </view>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="XgK-WI-xfX">
-                                                            <rect key="frame" x="249" y="3" width="57" height="25"/>
+                                                            <rect key="frame" x="249.00000028547487" y="3" width="57" height="25"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <state key="normal" image="edit">
@@ -5209,7 +5209,7 @@
                                                             </state>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DGA-pr-JUV">
-                                                            <rect key="frame" x="249.00000058401065" y="35" width="57" height="25"/>
+                                                            <rect key="frame" x="249.00000028547487" y="35" width="57" height="25"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                             <state key="normal" image="delete_red">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -5319,15 +5319,15 @@
                                         </prototypes>
                                     </tableView>
                                     <view contentMode="scaleToFill" id="zNl-nt-W2x">
-                                        <rect key="frame" x="0.0" y="568" width="320" height="201"/>
+                                        <rect key="frame" x="0.0" y="568" width="320.00000105992035" height="201"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" id="FPv-WB-moH">
-                                                <rect key="frame" x="0.0" y="0.0" width="320" height="38"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="320.00000105992035" height="38"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4xW-MQ-TLP">
-                                                        <rect key="frame" x="228.99999922204563" y="8" width="83" height="30"/>
+                                                        <rect key="frame" x="229" y="8" width="83.000000281965981" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
                                                         <state key="normal" title="Submit">
@@ -5354,7 +5354,7 @@
                                                 <color key="backgroundColor" red="0.094117647060000004" green="0.70980392160000005" blue="0.48627450979999998" alpha="1" colorSpace="calibratedRGB"/>
                                             </view>
                                             <pickerView contentMode="scaleToFill" id="una-kS-6Ed">
-                                                <rect key="frame" x="0.0" y="49" width="320" height="133"/>
+                                                <rect key="frame" x="0.0" y="49" width="320.00000105992035" height="133"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                             </pickerView>
                                         </subviews>
@@ -6270,7 +6270,7 @@ We Can Send Money To People In Pitcairn Islands With These Payout Methods. Which
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="nEJ-9Y-fM4">
-                                                <rect key="frame" x="-1" y="220" width="437" height="47"/>
+                                                <rect key="frame" x="-1" y="220" width="443" height="47"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="0.92941176469999998" green="0.92941176469999998" blue="0.92941176469999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
@@ -6283,7 +6283,7 @@ We Can Send Money To People In Pitcairn Islands With These Payout Methods. Which
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1I9-MO-NTv">
-                                                <rect key="frame" x="-1" y="268" width="437" height="47"/>
+                                                <rect key="frame" x="-1" y="268" width="443" height="47"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="0.92941176469999998" green="0.92941176469999998" blue="0.92941176469999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
