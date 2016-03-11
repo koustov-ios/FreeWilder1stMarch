@@ -102,32 +102,32 @@
     
     
     CGRect screenBounds=[[UIScreen mainScreen] bounds];
-    
-    if(screenBounds.size.height == 568  && screenBounds.size.width == 320)
-        
-    {
-        _footer_base.frame = CGRectMake(0, 520, 320, 48);
-        
-        mainscroll.frame = CGRectMake(0, 81, 320, 438);
-        
-    }
-    else if (screenBounds.size.height == 667  && screenBounds.size.width == 375)
-    {
-        topbar.frame = CGRectMake(0, 0, 375, 60);
-        mainscroll.frame = CGRectMake(0, 60, 375, 550);
-        btckbtn.frame=CGRectMake(0, 0, 96, 60);
-        hdrlbl.frame=CGRectMake(118, 32, 136, 22);
-    }
-    
-    else if (screenBounds.size.height ==736  && screenBounds.size.width == 414)
-    {
-        _footer_base.frame = CGRectMake(0, 674, 414, 62);
-        topbar.frame = CGRectMake(0, 0, 414, 106);
-        btckbtn.frame=CGRectMake(0, 13, 76, 90);
-        hdrlbl.frame=CGRectMake(135, 35, 136, 46);
-        mainscroll.frame = CGRectMake(0, 106, 414, 568);
-    }
-    
+//    
+//    if(screenBounds.size.height == 568  && screenBounds.size.width == 320)
+//        
+//    {
+//        _footer_base.frame = CGRectMake(0, 520, 320, 48);
+//        
+//       // mainscroll.frame = CGRectMake(0, 60, 320, 438);
+//        
+//    }
+//    else if (screenBounds.size.height == 667  && screenBounds.size.width == 375)
+//    {
+//        topbar.frame = CGRectMake(0, 0, 375, 60);
+//        mainscroll.frame = CGRectMake(0, 60, 375, 550);
+//        btckbtn.frame=CGRectMake(0, 0, 96, 60);
+//        hdrlbl.frame=CGRectMake(118, 32, 136, 22);
+//    }
+//    
+//    else if (screenBounds.size.height ==736  && screenBounds.size.width == 414)
+//    {
+//        _footer_base.frame = CGRectMake(0, 674, 414, 62);
+//        topbar.frame = CGRectMake(0, 0, 414, 106);
+//        btckbtn.frame=CGRectMake(0, 13, 76, 90);
+//        hdrlbl.frame=CGRectMake(135, 35, 136, 46);
+//        mainscroll.frame = CGRectMake(0, 106, 414, 568);
+//    }
+//    
     
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     /// initializing app footer view
