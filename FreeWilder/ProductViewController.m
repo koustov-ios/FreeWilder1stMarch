@@ -122,34 +122,34 @@ typedef void(^addressCompletion)(NSString *);
             [[NSNotificationCenter defaultCenter]removeObserver:self];
             //[self urlfire];
             
-            morbtn_appeared=YES;
-            
-            moreButton=[[UIButton alloc]initWithFrame:CGRectMake(150, self.view.bounds.size.height-50, self.view.bounds.size.width-300, 30)];
-            
-            
-            [moreButton setImage:[UIImage imageNamed:@"new_update"] forState:UIControlStateNormal];
-            
-            [moreButton addTarget:self action:@selector(more) forControlEvents:UIControlEventTouchUpInside];
-            
-            [self.view addSubview:moreButton];
-            
-            [moreButton setHidden:NO];
-
-            
-            moreButton.layer.cornerRadius=6.0f;
-            moreButton.clipsToBounds=YES;
-            
-            
-            [UIView animateWithDuration:0.3f
-                                  delay:0.6f
-                                options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse |UIViewAnimationOptionAllowUserInteraction
-                             animations:^{
-                                 [moreButton setFrame:CGRectMake(150, self.view.bounds.size.height-40, self.view.bounds.size.width-300, 30)];
-                             }
-                             completion:^(BOOL finished) {
- 
-             
-             }];
+//            morbtn_appeared=YES;
+//            
+//            moreButton=[[UIButton alloc]initWithFrame:CGRectMake(150, self.view.bounds.size.height-50, self.view.bounds.size.width-300, 30)];
+//            
+//            
+//            [moreButton setImage:[UIImage imageNamed:@"new_update"] forState:UIControlStateNormal];
+//            
+//            [moreButton addTarget:self action:@selector(more) forControlEvents:UIControlEventTouchUpInside];
+//            
+//            [self.view addSubview:moreButton];
+//            
+//            [moreButton setHidden:NO];
+//
+//            
+//            moreButton.layer.cornerRadius=6.0f;
+//            moreButton.clipsToBounds=YES;
+//            
+//            
+//            [UIView animateWithDuration:0.3f
+//                                  delay:0.6f
+//                                options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse |UIViewAnimationOptionAllowUserInteraction
+//                             animations:^{
+//                                 [moreButton setFrame:CGRectMake(150, self.view.bounds.size.height-40, self.view.bounds.size.width-300, 30)];
+//                             }
+//                             completion:^(BOOL finished) {
+// 
+//             
+//             }];
 
         }
     }

@@ -4055,7 +4055,7 @@
     }
     else
     {
-        
+        [quantityarray removeAllObjects];
         
         [quantityarray addObject:[NSString stringWithFormat:@"%@",string]];
         
