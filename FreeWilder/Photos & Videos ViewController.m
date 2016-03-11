@@ -246,6 +246,8 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     
+    NSLog(@"Pic selected... %@",info);
+    
     uploadImageButton.userInteractionEnabled=NO;
     
     img = [ImageResize imageWithImage:[info valueForKey:UIImagePickerControllerOriginalImage] scaledToSize:CGSizeMake(150, 146)];
@@ -1675,7 +1677,7 @@
              
              // [service removeFromSuperview];
              
-             
+            
              
              
          }];
