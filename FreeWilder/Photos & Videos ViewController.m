@@ -783,6 +783,8 @@
 }
 
 
+#pragma mark--Image Slider dismiss Animation
+
 -(void)closeImageSlider:(UIButton *)sender
 {
     
@@ -801,6 +803,8 @@
 
 
 }
+
+#pragma mark--
 
 -(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {

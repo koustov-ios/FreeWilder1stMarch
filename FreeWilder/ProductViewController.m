@@ -36,6 +36,7 @@
 #import "sideMenu.h"
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import <pop/POP.h>
 
 
 @interface ProductViewController ()<footerdelegate,Slide_menu_delegate,accountsubviewdelegate,Serviceview_delegate,Profile_delegate,UITextFieldDelegate,UIGestureRecognizerDelegate,sideMenu,CLLocationManagerDelegate,MKMapViewDelegate>
@@ -2821,8 +2822,8 @@ else
                     [self coreDataValueUpdateWithProduct:tempDic forIndex:sender.tag];
                     
                     
-                    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Messagae" message:@"Product deleted from wishlist successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                    [alert show];
+//                    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Messagae" message:@"Product deleted from wishlist successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+//                    [alert show];
                     
                     
                 }
@@ -2838,9 +2839,15 @@ else
                     [ArrProductList insertObject:tempDic atIndex:sender.tag];
                     [self coreDataValueUpdateWithProduct:tempDic forIndex:sender.tag];
                     
+                    POPSpringAnimation *sprintAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPViewScaleXY];
                     
-                    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Messagae" message:@"Product added in wishlist successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                    [alert show];
+                    sprintAnimation.velocity = [NSValue valueWithCGPoint:CGPointMake(8, 8)];
+                    sprintAnimation.springBounciness = 20.f;
+                    [sender pop_addAnimation:sprintAnimation forKey:@"sendAnimation"];
+                    
+                    
+//                    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Messagae" message:@"Product added in wishlist successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+//                    [alert show];
                     
                     
                 }

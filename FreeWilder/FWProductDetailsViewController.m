@@ -2668,9 +2668,12 @@
     
     if([[[detailsDic valueForKey:@"service_desc"] valueForKey:@"service_details"] length]>0)
     {
-        NSString *tempStrDesc=[[detailsDic valueForKey:@"service_desc"] valueForKey:@"service_details"];
+        NSString *tempStrDesc=[[detailsDic valueForKey:@"service_desc"] valueForKey:@"service_details"];//@"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis neque nulla, pulvinar a ipsum at, dignissim molestie turpis. Quisque a quam ac augue tincidunt ornare sed eu risus. Nullam ac finibus tellus. Sed id quam odio. Maecenas dolor dolor, hendrerit auctor consectetur eu, tempus eget odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus ac feugiat nibh, et ultricies ex. Aliquam lacinia posuere dapibus. Mauris laoreet at risus eu placerat. Suspendisse rutrum, ante eu ullamcorper auctor, tortor arcu volutpat massa, molestie sagittis ipsum lectus sed urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet libero nec consequat finibus. Nulla placerat arcu ac nisi fringilla dapibus.";//
         
         NSString *tempStrHeading=[appDelegate.currentLangDic valueForKey:@"Details:"];//LocalizedString(@"Details:");//[NSString stringWithFormat:@"Details:"];
+        
+        
+        
         
         UILabel *detailsHeadingLbl=[[UILabel alloc]init];
         
@@ -2678,6 +2681,9 @@
         detailsHeadingLbl.frame=CGRectMake(_profileImage.frame.origin.x, updatedOrigin_y+1.5, tempStrHeading.length*8,self.view.bounds.size.height/19);
         detailsHeadingLbl.text=tempStrHeading;
         [_scroll_view addSubview:detailsHeadingLbl];
+        
+        
+        
         
         
         CGSize  constraint = CGSizeMake(self.view.bounds.size.width-(detailsHeadingLbl.frame.origin.x*2), MAXFLOAT);
@@ -2688,23 +2694,75 @@
         
         UILabel *detailsDescLbl=[[UILabel alloc]initWithFrame:CGRectMake(detailsHeadingLbl.frame.origin.x , detailsHeadingLbl.frame.origin.y+detailsHeadingLbl.bounds.size.height+8, constraint.width, heightComment)];
         
-        detailsDescLbl.text=tempStrDesc;
+        detailsDescLbl.text=tempStrDesc;//@"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis neque nulla, pulvinar a ipsum at, dignissim molestie turpis. Quisque a quam ac augue tincidunt ornare sed eu risus. Nullam ac finibus tellus. Sed id quam odio. Maecenas dolor dolor, hendrerit auctor consectetur eu, tempus eget odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus ac feugiat nibh, et ultricies ex. Aliquam lacinia posuere dapibus. Mauris laoreet at risus eu placerat. Suspendisse rutrum, ante eu ullamcorper auctor, tortor arcu volutpat massa, molestie sagittis ipsum lectus sed urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet libero nec consequat finibus. Nulla placerat arcu ac nisi fringilla dapibus.";//
         
         detailsDescLbl.numberOfLines=0;
         
-        detailsDescLbl.adjustsFontSizeToFitWidth=YES;
+        //detailsDescLbl.adjustsFontSizeToFitWidth=YES;
         detailsDescLbl.clipsToBounds=YES;
         detailsDescLbl.textAlignment=NSTextAlignmentLeft;
         detailsDescLbl.font= [UIFont fontWithName:@"lato" size:15];
         detailsDescLbl.textColor=[UIColor colorWithRed:102.0f/256 green:102.0f/256 blue:102.0f/256 alpha:1];
-        detailsDescLbl.adjustsFontSizeToFitWidth=YES;
+       // detailsDescLbl.adjustsFontSizeToFitWidth=YES;
         // descLbl.backgroundColor=[UIColor redColor];
         
         [_scroll_view addSubview:detailsDescLbl];
         
+        CGSize sizeOfText = [tempStrDesc sizeWithFont:detailsDescLbl.font
+                                    constrainedToSize:detailsDescLbl.frame.size
+                                        lineBreakMode:NSLineBreakByWordWrapping];
+        
+        
+        
+        
+        int numberOfLines = sizeOfText.height / detailsDescLbl.font.pointSize;
+        
+        NSLog(@"Number of lines ------ > %d",numberOfLines);
+        
+         UIButton *showDetailsBtn=[[UIButton alloc]init];
+        
+        if (numberOfLines>10) {
+            
+             detailsDescLbl.frame=CGRectMake(detailsDescLbl.frame.origin.x, detailsDescLbl.frame.origin.y, detailsDescLbl.frame.size.width, sizeOfText.height/3);
+            
+            showDetailsBtn.frame=CGRectMake(reviewShowMoreBtn.frame.origin.x, detailsDescLbl.frame.origin.y+detailsDescLbl.frame.size.height, reviewShowMoreBtn.frame.size.width, reviewShowMoreBtn.frame.size.height);
+            [showDetailsBtn setBackgroundColor:reviewShowMoreBtn.backgroundColor];
+            
+            showDetailsBtn.layer.cornerRadius=reviewShowMoreBtn.layer.cornerRadius;
+            showDetailsBtn.clipsToBounds=YES;
+            [showDetailsBtn setTitle:[NSString stringWithFormat:@"SHOW MORE"] forState:UIControlStateNormal];
+            showDetailsBtn.titleLabel.font=reviewShowMoreBtn.titleLabel.font;
+            
+            [showDetailsBtn addTarget:self action:@selector(showMoreDetails:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [_scroll_view addSubview:showDetailsBtn];
+            
+            
+        }
+        
+        
+        //
+        
+        
+        
+        
+        
         UIImageView *priceLblDividerView1=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dividerline"]];
         
-        priceLblDividerView1.frame=CGRectMake(0, detailsDescLbl.frame.size.height+detailsDescLbl.frame.origin.y+9, self.view.bounds.size.width, 1);
+        
+        if (numberOfLines>10)
+        {
+            priceLblDividerView1.frame=CGRectMake(0, showDetailsBtn.frame.size.height+showDetailsBtn.frame.origin.y+9, self.view.bounds.size.width, 1);
+        
+        }
+        else
+        {
+        
+           priceLblDividerView1.frame=CGRectMake(0, detailsDescLbl.frame.size.height+detailsDescLbl.frame.origin.y+9, self.view.bounds.size.width, 1);
+        
+        }
+        
+        
         [_scroll_view addSubview:priceLblDividerView1];
         
         updatedOrigin_y=priceLblDividerView1.frame.size.height+priceLblDividerView1.frame.origin.y;
@@ -2909,6 +2967,99 @@
     
     
 }
+
+
+-(void)showMoreDetails:(UIButton *)sender
+{
+
+    blackOverlay=[[UIView alloc]initWithFrame:self.view.frame];
+    blackOverlay.backgroundColor=[UIColor blackColor];
+    blackOverlay.backgroundColor=[blackOverlay.backgroundColor colorWithAlphaComponent:0];
+    
+    [self.view addSubview:blackOverlay];
+    
+    
+    UIView *detailsView=[[UIView alloc]initWithFrame:
+    CGRectMake(15, (self.view.bounds.size.height-(self.view.bounds.size.height/1.5))/2, self.view.bounds.size.width-30, self.view.bounds.size.height/1.5)];
+    
+    detailsView.backgroundColor=[UIColor whiteColor];
+    
+    [blackOverlay addSubview:detailsView];
+    
+    
+    UILabel *detailsHeadingLbl=[[UILabel alloc]init];
+    NSString *tempStrHeading=[NSString stringWithFormat:@"Details"];
+    detailsHeadingLbl.font=[UIFont fontWithName:@"lato" size:15];
+    
+    detailsHeadingLbl.frame=CGRectMake((detailsView.frame.size.width-(tempStrHeading.length*8))/2, 7, tempStrHeading.length*8,self.view.bounds.size.height/19);
+    detailsHeadingLbl.textAlignment=NSTextAlignmentCenter;
+    
+    detailsHeadingLbl.text=tempStrHeading;
+    [detailsView addSubview:detailsHeadingLbl];
+    
+    UIImageView *priceLblDividerView1=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dividerline"]];
+    
+    priceLblDividerView1.frame=CGRectMake(0, detailsHeadingLbl.frame.size.height+detailsHeadingLbl.frame.origin.y+5, detailsView.bounds.size.width, 1);
+    
+    [detailsView addSubview:priceLblDividerView1];
+
+    
+    
+    UITextView *detailsTextView=[[UITextView alloc]initWithFrame:CGRectMake(priceLblDividerView1.frame.origin.x, priceLblDividerView1.frame.origin.y+6, priceLblDividerView1.frame.size.width, detailsView.frame.size.height-(priceLblDividerView1.frame.size.height+priceLblDividerView1.frame.origin.y+reviewShowMoreBtn.frame.size.height+15))];
+    
+    [detailsView addSubview:detailsTextView];
+    
+    detailsTextView.textAlignment=NSTextAlignmentJustified;
+    
+    detailsTextView.text=[[detailsDic valueForKey:@"service_desc"] valueForKey:@"service_details"];//@"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis neque nulla, pulvinar a ipsum at, dignissim molestie turpis. Quisque a quam ac augue tincidunt ornare sed eu risus. Nullam ac finibus tellus. Sed id quam odio. Maecenas dolor dolor, hendrerit auctor consectetur eu, tempus eget odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus ac feugiat nibh, et ultricies ex. Aliquam lacinia posuere dapibus. Mauris laoreet at risus eu placerat. Suspendisse rutrum, ante eu ullamcorper auctor, tortor arcu volutpat massa, molestie sagittis ipsum lectus sed urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce imperdiet libero nec consequat finibus. Nulla placerat arcu ac nisi fringilla dapibus.";//
+    
+    detailsTextView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
+    
+    detailsTextView.editable=NO;
+    
+    
+    UIButton *close_Btn=[[UIButton alloc]initWithFrame:CGRectMake((detailsTextView.frame.size.width-reviewShowMoreBtn.frame.size.width)/2, detailsTextView.frame.origin.y+detailsTextView.frame.size.height+2, reviewShowMoreBtn.frame.size.width, reviewShowMoreBtn.frame.size.height)];
+    close_Btn.backgroundColor=reviewShowMoreBtn.backgroundColor;
+    close_Btn.titleLabel.font=reviewShowMoreBtn.titleLabel.font;
+    [close_Btn setTitle:[NSString stringWithFormat:@"SHOW LESS"] forState:UIControlStateNormal];
+    [detailsView addSubview:close_Btn];
+    close_Btn.layer.cornerRadius=reviewShowMoreBtn.layer.cornerRadius;
+    close_Btn.clipsToBounds=YES;
+    [close_Btn addTarget:self action:@selector(closeDetailsView:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        
+        blackOverlay.backgroundColor=[blackOverlay.backgroundColor colorWithAlphaComponent:0.1];
+        blackOverlay.backgroundColor=[blackOverlay.backgroundColor colorWithAlphaComponent:0.2];
+        blackOverlay.backgroundColor=[blackOverlay.backgroundColor colorWithAlphaComponent:0.3];
+        
+    }];
+
+}
+
+
+-(void)closeDetailsView:(UIButton *)sender
+{
+    
+    [UIView animateWithDuration:0.3
+                     animations:^
+     {
+         blackOverlay.alpha = 0.0;
+         blackOverlay.transform = CGAffineTransformMakeScale(10.0, 0.1);
+     }
+                     completion:^(BOOL finished)
+     {
+         [blackOverlay removeFromSuperview];
+       
+     }];
+    
+    
+}
+
 
 -(void)goToMap
 {
@@ -5190,8 +5341,8 @@
                     [tempDic setValue:@"N" forKey:@"wishlist_stat"];
                     [detailsDic setValue:tempDic forKey:@"service_desc"];
                     
-                    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Messagae" message:@"Product deleted from wishlist successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                    [alert show];
+//                    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Messagae" message:@"Product deleted from wishlist successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+//                    [alert show];
                     
                     
                 }
@@ -5210,9 +5361,9 @@
                     tempDic=[[detailsDic valueForKey:@"service_desc"] mutableCopy];
                     [tempDic setValue:@"Y" forKey:@"wishlist_stat"];
                     [detailsDic setValue:tempDic forKey:@"service_desc"];
-                    
-                    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Messagae" message:@"Product added in wishlist successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                    [alert show];
+//                    
+//                    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Messagae" message:@"Product added in wishlist successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+//                    [alert show];
                     
                     
                 }
