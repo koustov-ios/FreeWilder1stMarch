@@ -40,6 +40,8 @@
 #import "BusinessProfileViewController.h"
 #import "sideMenu.h"
 
+#import <pop/POP.h>
+
 
 @interface FWProductDetailsViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,footerdelegate,UIScrollViewDelegate,UITextFieldDelegate,MKAnnotation,UITextViewDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,YTPlayerViewDelegate,UITableViewDataSource,UITableViewDelegate,sideMenu,UIGestureRecognizerDelegate>
 
@@ -2448,6 +2450,15 @@
             [reviewerImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[[[detailsDic valueForKey:@"review_desc"] objectAtIndex:0] valueForKey:@"user_image"]]] placeholderImage:[UIImage imageNamed:@"Profile_image_placeholder"]];
                 
                 reviewShowMoreBtn.hidden=NO;
+                
+                
+                POPSpringAnimation *sprintAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPViewScaleXY];
+                
+                sprintAnimation.velocity = [NSValue valueWithCGPoint:CGPointMake(8, 8)];
+                sprintAnimation.springBounciness = 20.f;
+                [reviewShowMoreBtn pop_addAnimation:sprintAnimation forKey:@"sendAnimation"];
+                
+                
                 [reviewShowMoreBtn setTitle:@"SHOW MORE" forState:UIControlStateNormal];
                 reviewShowMoreBtn.layer.cornerRadius=4.0f;
                 reviewShowMoreBtn.clipsToBounds=YES;
@@ -5188,6 +5199,12 @@
                 {
                     
                     wishBtnImageView.image=[UIImage imageNamed:@"hearticon"];
+                    
+                    POPSpringAnimation *sprintAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPViewScaleXY];
+                    
+                    sprintAnimation.velocity = [NSValue valueWithCGPoint:CGPointMake(8, 8)];
+                    sprintAnimation.springBounciness = 20.f;
+                    [wishBtnImageView pop_addAnimation:sprintAnimation forKey:@"sendAnimation"];
                     
                     NSMutableDictionary *tempDic=[[NSMutableDictionary alloc]init];
                     tempDic=[[detailsDic valueForKey:@"service_desc"] mutableCopy];
