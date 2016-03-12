@@ -1,0 +1,29 @@
+PODS:
+  - pop (1.0.9)
+  - youtube-ios-player-helper (0.1.5)
+
+DEPENDENCIES:
+  - pop (from `https://github.com/facebook/pop.git`)
+  - youtube-ios-player-helper (from `https://github.com/youtube/youtube-ios-player-helper`,
+    commit `head`)
+
+EXTERNAL SOURCES:
+  pop:
+    :git: https://github.com/facebook/pop.git
+  youtube-ios-player-helper:
+    :commit: head
+    :git: https://github.com/youtube/youtube-ios-player-helper
+
+CHECKOUT OPTIONS:
+  pop:
+    :commit: e422ea6fdc1f661dea35affd3d9c280c574da75e
+    :git: https://github.com/facebook/pop.git
+  youtube-ios-player-helper:
+    :commit: head
+    :git: https://github.com/youtube/youtube-ios-player-helper
+
+SPEC CHECKSUMS:
+  pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
+  youtube-ios-player-helper: 921da8927a575debc293a94c678c658f38cde150
+
+COCOAPODS: 0.39.0
