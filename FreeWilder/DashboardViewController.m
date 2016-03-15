@@ -1768,11 +1768,15 @@
 //            
 //            [self PushViewController:obj WithAnimation:kCAMediaTimingFunctionEaseIn];
             
+            NSLog(@"Here kidding man....");
+            
             UIStoryboard *addServiceStoryBoard=[UIStoryboard storyboardWithName:@"FWAddService" bundle:nil];
             
             FWServiceOrProductAddingViewController *obj=[addServiceStoryBoard instantiateViewControllerWithIdentifier:@"FWServiceOrProductAdding"];
             
             [self PushViewController:obj WithAnimation:kCAMediaTimingFunctionEaseIn];
+            
+            
     
         }
     else if (sender.tag==3)

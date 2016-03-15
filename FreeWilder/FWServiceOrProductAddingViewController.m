@@ -39,6 +39,8 @@
 #import "WishlistViewController.h"
 #import "ViewController.h"
 #import "sideMenu.h"
+#import <pop/POP.h>
+#import "CircleLoader.h"
 
 
 @interface FWServiceOrProductAddingViewController ()<UIGestureRecognizerDelegate,Slide_menu_delegate,footerdelegate,Serviceview_delegate,Profile_delegate,accountsubviewdelegate,accountsubviewdelegate,sideMenu,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
@@ -48,6 +50,23 @@
     
     BOOL basicSaved,calendarSaved,pricingSaved,overviewSaved,photosSaved,locationSaved;
     
+    
+    UIView *serviceBaseView,*productBaseView;
+    
+    CGFloat updatedY_product,updatedY_service;
+    
+    UIButton *mainCategoryBtn_product,*maninCategoryBtn_service,*service_bookingTypeBtn;
+    
+    NSArray *categoryListContainerArr;
+    NSDictionary *categoryDetailsContainerDic;
+    
+    int tagForBtn_and_Table;
+    
+    NSString *subcatId;
+    
+    NSMutableArray *catgoryBtnTags;
+    
+    UIButton *currentlyTappedBtn;
     
 #pragma mark - Footer variables
 
@@ -69,6 +88,8 @@ accountsubview *subview;
 NSString *userid;
 FW_JsonClass *globalobj;
     
+
+    
 }
 
 @property(nonatomic,strong)UIStoryboard *story_board;
@@ -79,9 +100,44 @@ FW_JsonClass *globalobj;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    catgoryBtnTags=[NSMutableArray new];
+    
+    
     // Do any additional setup after loading the view.
     
+    tagForBtn_and_Table=0;
+    
     _story_board=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    UIView *paddingView=[UIView new];
+    paddingView.frame=CGRectMake(0, 0, 10, 6);
+
+    UIView *paddingView1=[UIView new];
+    paddingView1.frame=CGRectMake(0, 0, 10, 6);
+
+    UIView *paddingView2=[UIView new];
+    paddingView2.frame=CGRectMake(0, 0, 10, 6);
+
+    UIView *paddingView3=[UIView new];
+    paddingView3.frame=CGRectMake(0, 0, 10, 6);
+
+    
+    basic_nameField.leftViewMode = UITextFieldViewModeAlways;
+    basic_quntityField.leftViewMode = UITextFieldViewModeAlways;
+    basic_keywordField.leftViewMode = UITextFieldViewModeAlways;
+    basic_videoField.leftViewMode = UITextFieldViewModeAlways;
+    
+     basic_nameField.leftView=paddingView;
+     basic_quntityField.leftView=paddingView1;
+     basic_keywordField.leftView=paddingView2;
+     basic_videoField.leftView=paddingView3;
+
+ 
+    basic_scrollView.contentSize=CGSizeMake(self.view.bounds.size.width, basic_bottomView.frame.size.height+basic_bottomView.frame.origin.y);
+  
+    basic_categoryBtn.tag=tagForBtn_and_Table;
+    
     
 #pragma mark - Footer variables initialization
     
@@ -105,31 +161,280 @@ FW_JsonClass *globalobj;
     
     leftMenu.delegate=self;
     
+#pragma mark--
+    
+}
+
+
+
+#pragma mark--Choosing Category Between Service & Product
+
+- (IBAction)basic_categoryTapped:(id)sender
+{
+
+   
+    blackOverLay=[UIView new];
+    blackOverLay.frame=self.view.frame;
+    blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0];
+    [self.view addSubview:blackOverLay];
+    
+    popUpBaseView=[UIView new];
+    popUpBaseView.frame=CGRectMake(basic_categoryBtn.frame.origin.x, (self.view.bounds.size.height-self.view.bounds.size.height/3.2)/2, basic_categoryBtn.frame.size.width, self.view.bounds.size.height/3.2);
+    popUpBaseView.backgroundColor=[UIColor whiteColor];
+    
+    UILabel *categorHeadingLbl=[[UILabel alloc]init];
+    NSString *tempStrHeading=[NSString stringWithFormat:@"Choose Category"];
+    categorHeadingLbl.font=[UIFont fontWithName:@"lato" size:15];
+    
+    categorHeadingLbl.frame=CGRectMake((popUpBaseView.frame.size.width-(tempStrHeading.length*8))/2, 7, tempStrHeading.length*8,self.view.bounds.size.height/19);
+    categorHeadingLbl.textAlignment=NSTextAlignmentCenter;
+    
+    categorHeadingLbl.text=tempStrHeading;
+    [popUpBaseView addSubview:categorHeadingLbl];
+    
+    UIImageView *dividerView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dividerline"]];
+    
+    dividerView.frame=CGRectMake(0, categorHeadingLbl.frame.size.height+categorHeadingLbl.frame.origin.y+5, popUpBaseView.bounds.size.width, 1);
     
     
+    [popUpBaseView addSubview:dividerView];
     
-    ///Side menu ends here
+    
+   //basic_categoryTable=[UITableView new];
+    basic_categoryTable.delegate=self;
+    basic_categoryTable.dataSource=self;
+    basic_categoryTable.tag=0;
+
+    basic_categoryTable.frame=CGRectMake(5, dividerView.frame.size.height+dividerView.frame.origin.y+4, popUpBaseView.frame.size.width-10, popUpBaseView.frame.size.height-(dividerView.frame.size.height+dividerView.frame.origin.y+54));
+    
+    [popUpBaseView addSubview:basic_categoryTable];
+    
+    basic_categoryTable.hidden=YES;
     
     
-    //Footer ends here------>
+    CircleLoader  *circleLoader = [[CircleLoader alloc] initWithFrame:
+                    CGRectMake(0, 0, 30, 30)];
+    //center the circle with respect to the view
+    [circleLoader setCenter:CGPointMake(popUpBaseView.bounds.size.width / 2,
+                                        popUpBaseView.bounds.size.height / 2)];
+    //add the circle to the view
+    [popUpBaseView addSubview:circleLoader];
+    
+    [circleLoader animateCircle];
+    
+  
+    UIButton *closeBtn=[UIButton new];
+    [closeBtn setTitleColor:[UIColor colorWithRed:16.0f/255 green:95.0f/255 blue:250.0f/255 alpha:1] forState:UIControlStateNormal];
+    closeBtn.frame=CGRectMake((popUpBaseView.frame.size.width-150)/2, basic_categoryTable.frame.origin.y+basic_categoryTable.frame.size.height+8, 150, 40);
+    [closeBtn setTitle:[NSString stringWithFormat:@"Cancel"] forState:UIControlStateNormal];
+    closeBtn.backgroundColor=[UIColor clearColor];
+    [popUpBaseView addSubview:closeBtn];
+    [closeBtn addTarget:self action:@selector(closeCatTable) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    [blackOverLay addSubview:popUpBaseView];
+    
+      [basic_categoryTable reloadData];
+    
+    [circleLoader removeFromSuperview];
+    [basic_categoryTable setHidden:NO];
+    
+    
+    [UIView animateWithDuration:0.4 animations:^{
+        
+        
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.1];
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.2];
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.3];
+        
+        
+    }];
 
 }
 
+
+-(void)closeCatTable
+{
+
+    [popUpBaseView removeFromSuperview];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.3];
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.2];
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.0];
+        
+        [blackOverLay removeFromSuperview];
+        
+    }];
+
+}
+
+
+#pragma mark--
+
+
+-(void)productMainCategoryTapped:(UIButton *)sender
+{
+    currentlyTappedBtn=sender;
+    
+    blackOverLay=[UIView new];
+    blackOverLay.frame=self.view.frame;
+    blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0];
+    [self.view addSubview:blackOverLay];
+    
+    popUpBaseView=[UIView new];
+    popUpBaseView.frame=CGRectMake(basic_categoryBtn.frame.origin.x, (self.view.bounds.size.height-self.view.bounds.size.height/1.5)/2, basic_categoryBtn.frame.size.width, self.view.bounds.size.height/1.5);
+    popUpBaseView.backgroundColor=[UIColor whiteColor];
+    
+    UILabel *categorHeadingLbl=[[UILabel alloc]init];
+    NSString *tempStrHeading=[NSString stringWithFormat:@"Choose Category"];
+    categorHeadingLbl.font=[UIFont fontWithName:@"lato" size:15];
+    
+    categorHeadingLbl.frame=CGRectMake((popUpBaseView.frame.size.width-(tempStrHeading.length*8))/2, 7, tempStrHeading.length*8,self.view.bounds.size.height/19);
+    categorHeadingLbl.textAlignment=NSTextAlignmentCenter;
+    
+    categorHeadingLbl.text=tempStrHeading;
+    [popUpBaseView addSubview:categorHeadingLbl];
+    
+    UIImageView *dividerView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dividerline"]];
+    
+    dividerView.frame=CGRectMake(0, categorHeadingLbl.frame.size.height+categorHeadingLbl.frame.origin.y+5, popUpBaseView.bounds.size.width, 1);
+    
+    
+    [popUpBaseView addSubview:dividerView];
+    
+    
+    //basic_categoryTable=[UITableView new];
+    basic_categoryTable.delegate=self;
+    basic_categoryTable.dataSource=self;
+     basic_categoryTable.tag=1;
+    
+    basic_categoryTable.frame=CGRectMake(5, dividerView.frame.size.height+dividerView.frame.origin.y+4, popUpBaseView.frame.size.width-10, popUpBaseView.frame.size.height-(dividerView.frame.size.height+dividerView.frame.origin.y+54));
+    
+    [popUpBaseView addSubview:basic_categoryTable];
+    
+    basic_categoryTable.hidden=YES;
+    
+    
+    CircleLoader  *circleLoader = [[CircleLoader alloc] initWithFrame:
+                                   CGRectMake(0, 0, 30, 30)];
+    //center the circle with respect to the view
+    [circleLoader setCenter:CGPointMake(popUpBaseView.bounds.size.width / 2,
+                                        popUpBaseView.bounds.size.height / 2)];
+    //add the circle to the view
+    [popUpBaseView addSubview:circleLoader];
+    
+    [circleLoader animateCircle];
+    
+    
+    UIButton *closeBtn=[UIButton new];
+    [closeBtn setTitleColor:[UIColor colorWithRed:16.0f/255 green:95.0f/255 blue:250.0f/255 alpha:1] forState:UIControlStateNormal];
+    closeBtn.frame=CGRectMake((popUpBaseView.frame.size.width-150)/2, basic_categoryTable.frame.origin.y+basic_categoryTable.frame.size.height+8, 150, 40);
+    [closeBtn setTitle:[NSString stringWithFormat:@"Cancel"] forState:UIControlStateNormal];
+    closeBtn.backgroundColor=[UIColor clearColor];
+    [popUpBaseView addSubview:closeBtn];
+    [closeBtn addTarget:self action:@selector(closeCatTable) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    [blackOverLay addSubview:popUpBaseView];
+    
+    NSString *url;
+    
+    
+    if(sender.tag<0)
+    {
+      url=[NSString stringWithFormat:@"%@app_sub_category?userid=%@&top_cat=%@",App_Domain_Url,[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],basic_categoryBtn.titleLabel.text];
+    }
+    else
+    {
+    
+        url=[NSString stringWithFormat:@"%@app_sub_category?userid=%@&top_cat=%@&category_id=%ld",App_Domain_Url,[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],basic_categoryBtn.titleLabel.text,(long)sender.tag];
+    
+    }
+    
+    globalobj=[[FW_JsonClass alloc]init];
+    
+    [globalobj GlobalDict:url Globalstr:@"array" Withblock:^(id result, NSError *error) {
+        
+       
+        
+        if ([[result valueForKey:@"response"] isEqualToString:@"success"]) {
+            
+            
+            categoryListContainerArr=[NSArray new];
+            categoryListContainerArr=[[[result valueForKey:@"infoarray"] objectAtIndex:0] valueForKey:@"option_value"];
+            
+             NSLog(@"Result >>> %@ ",categoryListContainerArr);
+            
+            categoryDetailsContainerDic=[NSDictionary new];
+            categoryDetailsContainerDic=(NSDictionary *)result;
+            
+            [basic_categoryTable reloadData];
+            
+            [circleLoader removeFromSuperview];
+            [basic_categoryTable setHidden:NO];
+
+
+            
+        }
+        
+        
+    }];
+    
+    
+    
+    [UIView animateWithDuration:0.4 animations:^{
+        
+        
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.1];
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.2];
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.3];
+        
+        
+    }];
+    
+}
+
+
+
+
 #pragma mark--TableView Delegates
+
 
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 
-    tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
-    return 6;
-
+    if(tableView.tag==0)
+    {
+    
+        //NSLog(@"Basic cat table numberofrows");
+        
+        return 2;
+    
+    }
+    
+    else
+    {
+    
+        return categoryListContainerArr.count;
+    
+    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    return [[UIScreen mainScreen]bounds].size.height/12;
+   if(tableView.tag==0)
+   {
+   
+       // NSLog(@"Basic cat table Height for rows");
+       
+       return basic_categoryTable.bounds.size.height/2;
+   
+   }
+   else return 30;
     
 }
 
@@ -141,99 +446,484 @@ FW_JsonClass *globalobj;
 
 }
 
-
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    tableCell=[tableView dequeueReusableCellWithIdentifier:@"FWServiceOrProductAdding"];
+    //static NSString *cellid=@"cellID";
     
+    UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"ExampleCell"];
     
-    tableCell.baseview.layer.shadowOffset=CGSizeMake(0, 1);
-    tableCell.baseview.layer.shadowRadius=2;
-    tableCell.baseview.layer.shadowColor=[UIColor lightGrayColor].CGColor;
-    tableCell.baseview.layer.shadowOpacity=0.3;
-
-if(indexPath.row==0)
-{
-
-   tableCell.textLbl.text=@"Basic";
+  /*  {
     
-    tableCell.baseview.backgroundColor=[UIColor colorWithRed:(67.0f/255.0f) green:(196.0f/255.0f) blue:(152.0f/255.0f) alpha:1];
+//    if(cell==nil)
+//    {
+//    
+//        cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ExampleCell"];
+//    
+//    }
+    } */
     
-    tableCell.textLbl.textColor=[UIColor colorWithRed:(255.0f/255.0f) green:(255.0f/255.0f) blue:(255.0f/255.0f) alpha:1];
+    if(tableView.tag==0)
+    {
+     
+        if (indexPath.row==0) {
+            cell.textLabel.text=[NSString stringWithFormat:@"Service"];
+        }
+       else if (indexPath.row==1)
+       {
+            cell.textLabel.text=[NSString stringWithFormat:@"Product"];
+        }
+        
+    }
+    else
+    {
     
-    tableCell.rightArrow.image=[UIImage imageNamed:@"Forward-64"];
-
-}
-else if(indexPath.row==1)
-{
+       cell.textLabel.text= [NSString stringWithFormat:@"%@",[categoryListContainerArr[indexPath.row] valueForKey:@"cat_name"]];
+        
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
+        
+      
     
-    tableCell.textLbl.text=@"Calendar";
+    }
     
-    tableCell.baseview.backgroundColor=[UIColor colorWithRed:(250.0f/255.0f) green:(250.0f/255.0f) blue:(250.0f/255.0f) alpha:1];
-    
-    tableCell.textLbl.textColor=[UIColor lightGrayColor];
-    
-    tableCell.rightArrow.image=[UIImage imageNamed:@"frontarrow1"];
-    
-}
-else if(indexPath.row==2)
-{
-    
-    tableCell.textLbl.text=@"Pricing";
-    tableCell.baseview.backgroundColor=[UIColor colorWithRed:(250.0f/255.0f) green:(250.0f/255.0f) blue:(250.0f/255.0f) alpha:1];
-    
-    tableCell.textLbl.textColor=[UIColor lightGrayColor];
-    
-    tableCell.rightArrow.image=[UIImage imageNamed:@"frontarrow1"];
-    
-}
-else if(indexPath.row==3)
-{
-    
-    tableCell.textLbl.text=@"Overview";
-    tableCell.baseview.backgroundColor=[UIColor colorWithRed:(250.0f/255.0f) green:(250.0f/255.0f) blue:(250.0f/255.0f) alpha:1];
-    
-    tableCell.textLbl.textColor=[UIColor lightGrayColor];
-    
-    tableCell.rightArrow.image=[UIImage imageNamed:@"frontarrow1"];
-}
-else if(indexPath.row==4)
-{
-    
-    tableCell.textLbl.text=@"Photos";
-    tableCell.baseview.backgroundColor=[UIColor colorWithRed:(250.0f/255.0f) green:(250.0f/255.0f) blue:(250.0f/255.0f) alpha:1];
-    
-    tableCell.textLbl.textColor=[UIColor lightGrayColor];
-    
-    tableCell.rightArrow.image=[UIImage imageNamed:@"frontarrow1"];
-    
-}
-else if(indexPath.row==5)
-{
-    
-    tableCell.textLbl.text=@"Location";
-    tableCell.baseview.backgroundColor=[UIColor colorWithRed:(250.0f/255.0f) green:(250.0f/255.0f) blue:(250.0f/255.0f) alpha:1];
-    
-    tableCell.textLbl.textColor=[UIColor lightGrayColor];
-    
-    tableCell.rightArrow.image=[UIImage imageNamed:@"frontarrow1"];
-    
-}
-    
-    tableCell.selectionStyle=UITableViewCellSelectionStyleNone;
-    
-    return tableCell;
-    
-}
+    return cell;
 
 
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+   
+
+if(tableView.tag==0)
+{
+     tagForBtn_and_Table=0-(int)(indexPath.row+1);
+
+    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    NSString *cellText = selectedCell.textLabel.text;
+    
+    [basic_categoryBtn setTitle:cellText forState:UIControlStateNormal];
+    
+    [self closeCatTable];
+    
+    if([cellText isEqualToString:@"Product"])
+    {
+        
+        [productBaseView removeFromSuperview];
+        [serviceBaseView removeFromSuperview];
+        
+        updatedY_product=0;
+        
+        productBaseView=[[UIView alloc]initWithFrame:CGRectMake(0, basic_categoryBtn.frame.origin.y+basic_categoryBtn.frame.size.height+8, self.view.bounds.size.width, 0)];
+        
+        productBaseView.backgroundColor=[UIColor darkGrayColor];//basic_scrollView.backgroundColor;
+        
+        [basic_scrollView addSubview:productBaseView];
+        
+        mainCategoryBtn_product=[UIButton new];
+        mainCategoryBtn_product.frame=CGRectMake(basic_categoryBtn.frame.origin.x, 0, basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+        [mainCategoryBtn_product setTitle:@"Main Category" forState:UIControlStateNormal];
+        mainCategoryBtn_product.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        mainCategoryBtn_product.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
+        mainCategoryBtn_product.titleLabel.font=basic_categoryBtn.titleLabel.font;
+        [mainCategoryBtn_product setTitleColor:basic_categoryBtn.titleLabel.textColor forState:UIControlStateNormal];
+        [mainCategoryBtn_product setBackgroundImage:[UIImage imageNamed:@"input_back"] forState:UIControlStateNormal];
+        
+        mainCategoryBtn_product.tag=tagForBtn_and_Table;
+        
+
+      // Commented code
+        
+       /* {
+
+//    if(categoryListContainerArr.count>0)
+//    {
+//        if([[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] isKindOfClass:[NSString class]])
+//        {
+//                           NSLog(@"Does not Contains id--> %@",[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"]);
+//                [catgoryBtnTags addObject:[NSString stringWithFormat:@"%d",tagForBtn_and_Table]];
+//        }
+//            
+//    }
+//
+        } */
+        
+    //--
+        
+        [productBaseView addSubview:mainCategoryBtn_product];
+        
+        [mainCategoryBtn_product addTarget:self action:@selector(productMainCategoryTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
+        updatedY_product+=mainCategoryBtn_product.frame.size.height+8;
+        
+        UIImageView *dropdownArrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, mainCategoryBtn_product.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
+        dropdownArrow.image=[UIImage imageNamed:@"downArrow"];
+        dropdownArrow.contentMode=UIViewContentModeScaleAspectFit;
+        
+        
+        dropdownArrow.tag=tagForBtn_and_Table;
+        
+        [productBaseView addSubview:dropdownArrow];
+        
+        productBaseView.frame=CGRectMake(productBaseView.frame.origin.x, productBaseView.frame.origin.y, productBaseView.frame.size.width, updatedY_product-8);
+        
+        
+        
+        basic_bottomView.frame=CGRectMake(basic_bottomView.frame.origin.x, productBaseView.frame.origin.y+productBaseView.frame.size.height+8, basic_bottomView.frame.size.width, basic_bottomView.frame.size.height);
+        
+        basic_scrollView.contentSize=CGSizeMake(self.view.bounds.size.width, basic_bottomView.frame.size.height+basic_bottomView.frame.origin.y);
+        
+        updatedY_product=productBaseView.frame.size.height;
+        
+    
+    }
+    else if ([cellText isEqualToString:@"Service"])
+    {
+    
+        [serviceBaseView removeFromSuperview];
+        [productBaseView removeFromSuperview];
+        
+        updatedY_service=0;
+        
+        serviceBaseView=[[UIView alloc]initWithFrame:CGRectMake(0, basic_categoryBtn.frame.origin.y+basic_categoryBtn.frame.size.height+8, self.view.bounds.size.width,0)];
+        serviceBaseView.backgroundColor=[UIColor yellowColor];
+        
+        
+        [basic_scrollView addSubview:serviceBaseView];
+        
+        
+        
+        service_bookingTypeBtn=[UIButton new];
+        
+        service_bookingTypeBtn=[UIButton new];
+        service_bookingTypeBtn.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updatedY_service, basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+        [service_bookingTypeBtn setTitle:@"Booking Type" forState:UIControlStateNormal];
+        service_bookingTypeBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        service_bookingTypeBtn.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
+        service_bookingTypeBtn.titleLabel.font=basic_categoryBtn.titleLabel.font;
+        [service_bookingTypeBtn setTitleColor:basic_categoryBtn.titleLabel.textColor forState:UIControlStateNormal];
+        [service_bookingTypeBtn setBackgroundImage:[UIImage imageNamed:@"input_back"] forState:UIControlStateNormal];
+        
+       // service_bookingTypeBtn.tag=tagForBtn_and_Table;
+        
+        [serviceBaseView addSubview:service_bookingTypeBtn];
+        
+        [service_bookingTypeBtn addTarget:self action:@selector(BookingTypeTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
+        updatedY_service+=service_bookingTypeBtn.frame.size.height+8;
+        
+        UIImageView *dropdown_Arrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, service_bookingTypeBtn.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
+        dropdown_Arrow.image=[UIImage imageNamed:@"downArrow"];
+        dropdown_Arrow.contentMode=UIViewContentModeScaleAspectFit;
+       // dropdownArrow.tag=tagForBtn_and_Table;
+        [serviceBaseView addSubview:dropdown_Arrow];
+        
+        
+        
+        
+        
+        maninCategoryBtn_service=[UIButton new];
+        maninCategoryBtn_service.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updatedY_service, basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+        [maninCategoryBtn_service setTitle:@"Main Category" forState:UIControlStateNormal];
+        maninCategoryBtn_service.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        maninCategoryBtn_service.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
+        maninCategoryBtn_service.titleLabel.font=basic_categoryBtn.titleLabel.font;
+        [maninCategoryBtn_service setTitleColor:basic_categoryBtn.titleLabel.textColor forState:UIControlStateNormal];
+        [maninCategoryBtn_service setBackgroundImage:[UIImage imageNamed:@"input_back"] forState:UIControlStateNormal];
+        
+        maninCategoryBtn_service.tag=tagForBtn_and_Table;
+        
+        [serviceBaseView addSubview:maninCategoryBtn_service];
+        
+        [maninCategoryBtn_service addTarget:self action:@selector(productMainCategoryTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
+        updatedY_service+=maninCategoryBtn_service.frame.size.height+8;
+        
+        UIImageView *dropdownArrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, maninCategoryBtn_service.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
+        dropdownArrow.image=[UIImage imageNamed:@"downArrow"];
+        dropdownArrow.contentMode=UIViewContentModeScaleAspectFit;
+        
+        
+        dropdownArrow.tag=tagForBtn_and_Table;
+        
+        [serviceBaseView addSubview:dropdownArrow];
+        
+        serviceBaseView.frame=CGRectMake(serviceBaseView.frame.origin.x, serviceBaseView.frame.origin.y, serviceBaseView.frame.size.width, updatedY_service-8);
+        
+        
+        
+        basic_bottomView.frame=CGRectMake(basic_bottomView.frame.origin.x, serviceBaseView.frame.origin.y+serviceBaseView.frame.size.height+8, basic_bottomView.frame.size.width, basic_bottomView.frame.size.height);
+        
+        basic_scrollView.contentSize=CGSizeMake(self.view.bounds.size.width, basic_bottomView.frame.size.height+basic_bottomView.frame.origin.y);
+        
+        updatedY_service=serviceBaseView.frame.size.height;
+
+        
+        
+        
+        
+        
+    
+    
+    }
+
+}
+else
+{
+    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    NSString *cellText = selectedCell.textLabel.text;
+    
+
+    NSString *tempstr=[NSString stringWithFormat:@"%d",(int)currentlyTappedBtn.tag];
+    
+          if([currentlyTappedBtn.titleLabel.text isEqualToString:cellText] && [catgoryBtnTags lastObject]!=tempstr)
+          {
+          
+               // do nothing with the bottom part
+              
+              [currentlyTappedBtn setTitle:cellText forState:UIControlStateNormal];
+              
+              [self closeCatTable];
+          
+          }
+         else if ((![currentlyTappedBtn.titleLabel.text isEqualToString:cellText])  && [catgoryBtnTags lastObject]!=tempstr)
+         {
+             
+//             NSLog(@"%@ || %@ --------- %@ || %@",currentlyTappedBtn.titleLabel.text,cellText,[catgoryBtnTags lastObject],tempstr);
+//         
+//             NSLog(@"Remove the buttom part here....");
+             
+           //  NSLog(@"Tapped view tag----> %@ ",tempstr);
+             
+             
+             NSArray *subViews=[[NSArray alloc]init];
+             
+             UIView *viewToBeModified;
+             
+             if([basic_categoryBtn.titleLabel.text isEqualToString:@"Product"])
+             {
+                 
+                 subViews=[productBaseView subviews];
+                 
+                 viewToBeModified=productBaseView;
+                 
+             }
+             else if([basic_categoryBtn.titleLabel.text isEqualToString:@"Service"])
+             {
+                 
+                 subViews=[serviceBaseView subviews];
+                 
+                 viewToBeModified=serviceBaseView;
+                 
+             }
+
+             
+             
+             
+             NSInteger myPos=(NSInteger)([catgoryBtnTags indexOfObject:tempstr]+1);
+             
+             
+             
+             for (int i=(int)(myPos+1); i<=catgoryBtnTags.count; i++)
+             {
+                 
+                 for (UIView *obj in subViews)
+   
+                 {
+                     
+                     if([[NSString stringWithFormat:@"%d",(int) obj.tag] isEqualToString:catgoryBtnTags[i-1]])
+                     {
+                         
+                          NSLog(@"Tapped view  ----> %@ || Removing view  ----> %ld ",tempstr,(long)obj.tag);
+                         
+                         [obj removeFromSuperview];
+                         
+                         
+                     }
+                     
+                     
+                 }
+             }
+             
+             
+             if([currentlyTappedBtn isEqual:mainCategoryBtn_product] || [currentlyTappedBtn isEqual:maninCategoryBtn_service])
+             [catgoryBtnTags removeAllObjects];
+             
+             
+             viewToBeModified.frame=CGRectMake(viewToBeModified.frame.origin.x, viewToBeModified.frame.origin.y, viewToBeModified.bounds.size.width, currentlyTappedBtn.frame.size.height+currentlyTappedBtn.frame.origin.y);
+             
+             updatedY_product=viewToBeModified.frame.size.height;
+             
+             basic_bottomView.frame=CGRectMake(basic_bottomView.frame.origin.x, viewToBeModified.frame.origin.y+viewToBeModified.frame.size.height+8, basic_bottomView.frame.size.width, basic_bottomView.frame.size.height);
+             
+             basic_scrollView.contentSize=CGSizeMake(self.view.bounds.size.width, basic_bottomView.frame.size.height+basic_bottomView.frame.origin.y);
+             
+             [currentlyTappedBtn setTitle:cellText forState:UIControlStateNormal];
+             
+             [self closeCatTable];
+             
+           
+             
+             if([basic_categoryBtn.titleLabel.text isEqualToString:@"Product"] && [[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"sub_category_status"] isEqualToString:@"Y"])
+             {
+                 
+                 if([[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] isKindOfClass:[NSString class]])
+                 {
+                      [catgoryBtnTags addObject:[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"]];
+                 }
+
+                 
+                 
+                   subcatId=[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"];
+                 
+                 [self createSubCategoryButtonOnView:productBaseView fromTag:[[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] intValue]];
+                 
+                 
+                 
+             }
+             else  if([basic_categoryBtn.titleLabel.text isEqualToString:@"Service"] && [[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"sub_category_status"] isEqualToString:@"Y"])
+             {
+                 
+                 if([[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] isKindOfClass:[NSString class]])
+                 {
+                     [catgoryBtnTags addObject:[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"]];
+                 }
+
+                 
+                 
+                   subcatId=[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"];
+                 
+                 [self createSubCategoryButtonOnView:serviceBaseView fromTag:[[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] intValue]];
+                 
+             }
+
+             
+             
+         }
+    
+         else
+
+         {
+        
+
+    UIButton *tempBtn=(UIButton *)[basic_scrollView viewWithTag:tagForBtn_and_Table];
+    [tempBtn setTitle:cellText forState:UIControlStateNormal];
+    
+    
+    
+    [self closeCatTable];
+    
+    subcatId=[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"];
+    
+    if([basic_categoryBtn.titleLabel.text isEqualToString:@"Product"] && [[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"sub_category_status"] isEqualToString:@"Y"])
+    {
+    
+      
+        
+        
+        if (![catgoryBtnTags containsObject:[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"]])
+        {
+            if([[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] isKindOfClass:[NSString class]])
+            {
+                [catgoryBtnTags addObject:[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"]];
+            }
+        }
+        
+             subcatId=[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"];
+
+             [self createSubCategoryButtonOnView:productBaseView fromTag:[[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] intValue]];
+        
+        
+    
+    }
+    else  if([basic_categoryBtn.titleLabel.text isEqualToString:@"Service"] && [[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"sub_category_status"] isEqualToString:@"Y"])
+    {
+        
+        if (![catgoryBtnTags containsObject:[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"]])
+        {
+            if([[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] isKindOfClass:[NSString class]])
+            {
+                [catgoryBtnTags addObject:[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"]];
+            }
+        }
+        
+        
+        subcatId=[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"];
+        
+        [self createSubCategoryButtonOnView:serviceBaseView fromTag:[[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] intValue]];
+        
+    }
+    
+ }
+   
+    
+     NSLog(@"i--------> %d",tagForBtn_and_Table);
+    
+
+   
+}
+
+
+}
 
 #pragma mark--
 
+
+-(void)createSubCategoryButtonOnView:(UIView *)baseview fromTag:(int)tag
+{
+    
+    
+    UIButton *subCategoryBtn=[UIButton new];
+    subCategoryBtn.frame=CGRectMake(basic_categoryBtn.frame.origin.x, baseview.frame.size.height+8,basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+    [subCategoryBtn setTitle:@"Other Category" forState:UIControlStateNormal];
+    subCategoryBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    subCategoryBtn.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
+    subCategoryBtn.titleLabel.font=basic_categoryBtn.titleLabel.font;
+    [subCategoryBtn setTitleColor:basic_categoryBtn.titleLabel.textColor forState:UIControlStateNormal];
+    [subCategoryBtn setBackgroundImage:[UIImage imageNamed:@"input_back"] forState:UIControlStateNormal];
+    
+   
+    
+     subCategoryBtn.tag=tag;
+    
+    tagForBtn_and_Table=tag;
+    
+
+    
+    NSLog(@"i--------> %d",tag);
+    
+    [baseview addSubview:subCategoryBtn];
+    
+    [subCategoryBtn addTarget:self action:@selector(productMainCategoryTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    updatedY_product+=subCategoryBtn.frame.size.height+8;
+    
+    UIImageView *dropdownArrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, subCategoryBtn.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
+    dropdownArrow.image=[UIImage imageNamed:@"downArrow"];
+    dropdownArrow.contentMode=UIViewContentModeScaleAspectFit;
+    
+    
+      dropdownArrow.tag=tag;
+    
+    [baseview addSubview:dropdownArrow];
+    
+    baseview.frame=CGRectMake(baseview.frame.origin.x, baseview.frame.origin.y, baseview.frame.size.width, updatedY_product);
+    
+    
+    
+    basic_bottomView.frame=CGRectMake(basic_bottomView.frame.origin.x, baseview.frame.origin.y+baseview.frame.size.height+8, basic_bottomView.frame.size.width, basic_bottomView.frame.size.height);
+    
+    basic_scrollView.contentSize=CGSizeMake(self.view.bounds.size.width, basic_bottomView.frame.size.height+basic_bottomView.frame.origin.y);
+    
+    
+}
+
+
+
+
 #pragma mark - Footer related methods
 
-//------Side menu methods Starts here
 
 -(void)side
 {
@@ -805,4 +1495,10 @@ else if(indexPath.row==5)
 }
 */
 
+
+
+- (IBAction)basic_instant_yestapped:(id)sender {
+}
+- (IBAction)basic_instantNoTapped:(id)sender {
+}
 @end

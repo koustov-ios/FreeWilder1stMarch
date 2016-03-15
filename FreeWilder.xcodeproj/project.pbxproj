@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		6A75CF280C105B849305BBFC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8150F9932FF36D88D39D4867 /* libPods.a */; };
+		E001BA521C97DAAA00C54750 /* CircleLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = E001BA511C97DAAA00C54750 /* CircleLoader.m */; };
+		E001BA561C97E0B000C54750 /* ExampleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E001BA551C97E0B000C54750 /* ExampleCell.m */; };
 		E0A5372B1C857878000553ED /* DetailReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A536DA1C857878000553ED /* DetailReviewViewController.m */; };
 		E0A5372C1C857878000553ED /* ProductPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A536DC1C857878000553ED /* ProductPaymentViewController.m */; };
 		E0A5372D1C857878000553ED /* payoutsecondpageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A536DE1C857878000553ED /* payoutsecondpageViewController.m */; };
@@ -255,6 +257,10 @@
 		7C5BB99B425F347386FC1767 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		8150F9932FF36D88D39D4867 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D036E9F76073B02BB2BA32A4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		E001BA501C97DAAA00C54750 /* CircleLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleLoader.h; sourceTree = "<group>"; };
+		E001BA511C97DAAA00C54750 /* CircleLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleLoader.m; sourceTree = "<group>"; };
+		E001BA541C97E0B000C54750 /* ExampleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleCell.h; sourceTree = "<group>"; };
+		E001BA551C97E0B000C54750 /* ExampleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleCell.m; sourceTree = "<group>"; };
 		E0A536CF1C8577E4000553ED /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Main.strings; sourceTree = "<group>"; };
 		E0A536D71C85784B000553ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		E0A536D91C857878000553ED /* DetailReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReviewViewController.h; sourceTree = "<group>"; };
@@ -676,6 +682,24 @@
 				8150F9932FF36D88D39D4867 /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E001BA4F1C97DA8300C54750 /* Circular Loader */ = {
+			isa = PBXGroup;
+			children = (
+				E001BA501C97DAAA00C54750 /* CircleLoader.h */,
+				E001BA511C97DAAA00C54750 /* CircleLoader.m */,
+			);
+			name = "Circular Loader";
+			sourceTree = "<group>";
+		};
+		E001BA531C97E09800C54750 /* Cell class */ = {
+			isa = PBXGroup;
+			children = (
+				E001BA541C97E0B000C54750 /* ExampleCell.h */,
+				E001BA551C97E0B000C54750 /* ExampleCell.m */,
+			);
+			name = "Cell class";
 			sourceTree = "<group>";
 		};
 		E0A536D81C857863000553ED /* View Controller */ = {
@@ -1198,6 +1222,8 @@
 		E0E491D71C85727600564622 /* FreeWilder */ = {
 			isa = PBXGroup;
 			children = (
+				E001BA531C97E09800C54750 /* Cell class */,
+				E001BA4F1C97DA8300C54750 /* Circular Loader */,
 				E0C66A931C8FF69B00CCA383 /* AFNetworking */,
 				E0A538DD1C857ABB000553ED /* Add  Service */,
 				E0A538961C857AA3000553ED /* Table View Cells */,
@@ -1449,6 +1475,7 @@
 				E0A537391C857878000553ED /* SearchCategoryViewController.m in Sources */,
 				E0A538DC1C857AB2000553ED /* payPalTableViewCell.m in Sources */,
 				E0A537841C85789C000553ED /* UIImageView+WebCache.m in Sources */,
+				E001BA521C97DAAA00C54750 /* CircleLoader.m in Sources */,
 				E0A538C61C857AB2000553ED /* payoutsecondCell.m in Sources */,
 				E0A5377C1C85789C000553ED /* SDWebImageDownloaderOperation.m in Sources */,
 				E0A538261C8579F7000553ED /* PEARZoomView.m in Sources */,
@@ -1516,6 +1543,7 @@
 				E0A538D11C857AB2000553ED /* myfavouriteTableViewCell.m in Sources */,
 				E0A538891C857A69000553ED /* AFHTTPRequestOperation.m in Sources */,
 				E0A537851C85789C000553ED /* UIView+WebCacheOperation.m in Sources */,
+				E001BA561C97E0B000C54750 /* ExampleCell.m in Sources */,
 				E0A538C91C857AB2000553ED /* carddetailsTableViewCell.m in Sources */,
 				E0C9C80C1C9153E300DA903C /* FWServiceOrProductAddTableViewCell.m in Sources */,
 				E0A537C71C857919000553ED /* Side_menu.m in Sources */,
