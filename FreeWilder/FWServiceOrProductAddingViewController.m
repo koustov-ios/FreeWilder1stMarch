@@ -396,7 +396,12 @@ FW_JsonClass *globalobj;
     
 }
 
+-(void)BookingTypeTapped:(UIButton *)sender
+{
 
+  
+
+}
 
 
 #pragma mark--TableView Delegates
@@ -677,7 +682,7 @@ else
 
     NSString *tempstr=[NSString stringWithFormat:@"%d",(int)currentlyTappedBtn.tag];
     
-          if([currentlyTappedBtn.titleLabel.text isEqualToString:cellText] && [catgoryBtnTags lastObject]!=tempstr)
+          if([currentlyTappedBtn.titleLabel.text isEqualToString:cellText] )//&& [catgoryBtnTags lastObject]!=tempstr
           {
           
                // do nothing with the bottom part
@@ -687,14 +692,14 @@ else
               [self closeCatTable];
           
           }
-         else if ((![currentlyTappedBtn.titleLabel.text isEqualToString:cellText])  && [catgoryBtnTags lastObject]!=tempstr)
+         else if ((![currentlyTappedBtn.titleLabel.text isEqualToString:cellText]) && ([catgoryBtnTags lastObject]!=tempstr && catgoryBtnTags.count!=0))
          {
              
 //             NSLog(@"%@ || %@ --------- %@ || %@",currentlyTappedBtn.titleLabel.text,cellText,[catgoryBtnTags lastObject],tempstr);
 //         
 //             NSLog(@"Remove the buttom part here....");
              
-           //  NSLog(@"Tapped view tag----> %@ ",tempstr);
+             NSLog(@"Tapped view tag----> %@ ",tempstr);
              
              
              NSArray *subViews=[[NSArray alloc]init];
@@ -723,24 +728,30 @@ else
              
              NSInteger myPos=(NSInteger)([catgoryBtnTags indexOfObject:tempstr]+1);
              
+             NSLog(@"My pos---> %ld & Array count---> %ld",myPos,catgoryBtnTags.count);
+             
+             NSLog(@"BC Array---> %@",catgoryBtnTags);
              
              
-             for (int i=(int)(myPos+1); i<=catgoryBtnTags.count; i++)
-             {
-                 
                  for (UIView *obj in subViews)
    
                  {
+                     for (int i=(int)(myPos); i<catgoryBtnTags.count; i++)
+                     {
+
                      
-                     if([[NSString stringWithFormat:@"%d",(int) obj.tag] isEqualToString:catgoryBtnTags[i-1]])
+                     if([[NSString stringWithFormat:@"%d",(int) obj.tag] isEqualToString:catgoryBtnTags[i]])
                      {
                          
-                          NSLog(@"Tapped view  ----> %@ || Removing view  ----> %ld ",tempstr,(long)obj.tag);
+                          NSLog(@"Removing view  ----> %@ || %ld ",catgoryBtnTags[i],(long)obj.tag);
                          
-                         [obj removeFromSuperview];
+                          [obj removeFromSuperview];
+                         
+//                          [catgoryBtnTags removeObjectAtIndex:i];
                          
                          
-                     }
+                         
+                    }
                      
                      
                  }
@@ -748,8 +759,22 @@ else
              
              
              if([currentlyTappedBtn isEqual:mainCategoryBtn_product] || [currentlyTappedBtn isEqual:maninCategoryBtn_service])
-             [catgoryBtnTags removeAllObjects];
+             {
+               [catgoryBtnTags removeAllObjects];
+             }
              
+             else
+             {
+             
+                 NSRange r;
+                 r.location = myPos;
+                 r.length = [catgoryBtnTags count]-myPos;
+                 
+                 [catgoryBtnTags removeObjectsInRange:r];
+                 
+                 NSLog(@"BC array after range delete---> %@",catgoryBtnTags);
+             
+             }
              
              viewToBeModified.frame=CGRectMake(viewToBeModified.frame.origin.x, viewToBeModified.frame.origin.y, viewToBeModified.bounds.size.width, currentlyTappedBtn.frame.size.height+currentlyTappedBtn.frame.origin.y);
              
@@ -807,9 +832,10 @@ else
          {
         
 
-    UIButton *tempBtn=(UIButton *)[basic_scrollView viewWithTag:tagForBtn_and_Table];
-    [tempBtn setTitle:cellText forState:UIControlStateNormal];
-    
+             //UIButton *tempBtn=(UIButton *)[basic_scrollView viewWithTag:tagForBtn_and_Table];
+             [currentlyTappedBtn setTitle:cellText forState:UIControlStateNormal];
+             NSLog(@"Now i should be here with title---> %@",cellText);
+
     
     
     [self closeCatTable];
@@ -875,7 +901,20 @@ else
     
     
     UIButton *subCategoryBtn=[UIButton new];
+    
+    if([baseview isEqual:productBaseView])
+    {
     subCategoryBtn.frame=CGRectMake(basic_categoryBtn.frame.origin.x, baseview.frame.size.height+8,basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+    }
+    else if ([baseview isEqual:serviceBaseView])
+    {
+        //NSLog(@"View height---> %f || Origin Y---> %f",);
+    
+        subCategoryBtn.frame=CGRectMake(basic_categoryBtn.frame.origin.x, currentlyTappedBtn.frame.origin.y+currentlyTappedBtn.bounds.size.height+8,basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+    
+    }
+    
+    
     [subCategoryBtn setTitle:@"Other Category" forState:UIControlStateNormal];
     subCategoryBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     subCategoryBtn.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
@@ -891,13 +930,14 @@ else
     
 
     
-    NSLog(@"i--------> %d",tag);
+    //NSLog(@"i--------> %d",tag);
     
     [baseview addSubview:subCategoryBtn];
     
     [subCategoryBtn addTarget:self action:@selector(productMainCategoryTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     updatedY_product+=subCategoryBtn.frame.size.height+8;
+    updatedY_service+=subCategoryBtn.frame.size.height+8;
     
     UIImageView *dropdownArrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, subCategoryBtn.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
     dropdownArrow.image=[UIImage imageNamed:@"downArrow"];
@@ -908,7 +948,19 @@ else
     
     [baseview addSubview:dropdownArrow];
     
-    baseview.frame=CGRectMake(baseview.frame.origin.x, baseview.frame.origin.y, baseview.frame.size.width, updatedY_product);
+    
+    if([baseview isEqual:productBaseView])
+    {
+         baseview.frame=CGRectMake(baseview.frame.origin.x, baseview.frame.origin.y, baseview.frame.size.width, updatedY_product);
+    }
+    else if ([baseview isEqual:serviceBaseView])
+    {
+        
+         baseview.frame=CGRectMake(baseview.frame.origin.x, baseview.frame.origin.y, baseview.frame.size.width, subCategoryBtn.frame.origin.y+subCategoryBtn.frame.size.height);
+    }
+
+    
+   
     
     
     

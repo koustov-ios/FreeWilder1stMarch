@@ -42,13 +42,13 @@
 -(void)animateCircle{
     //create the basic animation and customize it
     POPBasicAnimation *draw = [POPBasicAnimation
-                               animationWithPropertyNamed:kPOPShapeLayerStrokeEnd];
+                               animationWithPropertyNamed:kPOPShapeLayerStrokeEnd];//kPOPShapeLayerStrokeEnd
     draw.fromValue = @(0.0);
     draw.toValue = @(1.0);
     draw.duration = 0.3; //time to draw circle (s)
     draw.timingFunction = [CAMediaTimingFunction functionWithName:
                            kCAMediaTimingFunctionEaseInEaseOut];//kCAMediaTimingFunctionEaseInEaseOut
-   draw.repeatForever = YES;
+  // draw.repeatForever = YES;
     
     [circle pop_addAnimation:draw forKey:@"draw"];
 }
