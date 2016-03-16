@@ -43,6 +43,7 @@
 #import "CircleLoader.h"
 
 
+
 @interface FWServiceOrProductAddingViewController ()<UIGestureRecognizerDelegate,Slide_menu_delegate,footerdelegate,Serviceview_delegate,Profile_delegate,accountsubviewdelegate,accountsubviewdelegate,sideMenu,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
 {
 
@@ -71,6 +72,9 @@
     CGPoint scrollPoint;
     
     UITableView *bookingtypeTable;
+    
+    NSArray *otherViewsArray;
+    NSDictionary *otherViewsDic;
     
 #pragma mark - Footer variables
 
@@ -633,7 +637,7 @@ if(tableView.tag==0)
         
         productBaseView=[[UIView alloc]initWithFrame:CGRectMake(0, basic_categoryBtn.frame.origin.y+basic_categoryBtn.frame.size.height+8, self.view.bounds.size.width, 0)];
         
-        productBaseView.backgroundColor=[UIColor darkGrayColor];//basic_scrollView.backgroundColor;
+        productBaseView.backgroundColor=basic_scrollView.backgroundColor;//[UIColor darkGrayColor];
         
         [basic_scrollView addSubview:productBaseView];
         
@@ -703,7 +707,7 @@ if(tableView.tag==0)
         updatedY_service=0;
         
         serviceBaseView=[[UIView alloc]initWithFrame:CGRectMake(0, basic_categoryBtn.frame.origin.y+basic_categoryBtn.frame.size.height+8, self.view.bounds.size.width,0)];
-        serviceBaseView.backgroundColor=[UIColor yellowColor];
+        serviceBaseView.backgroundColor=basic_scrollView.backgroundColor;//[UIColor yellowColor];
         
         
         [basic_scrollView addSubview:serviceBaseView];
@@ -800,7 +804,7 @@ if(tableView.tag==0)
     
 #pragma mark--
     
-#pragma mark--
+
     
 #pragma mark--This is for creating Sub category buttons by choosing from the same table but at this time the tag changes
     
@@ -960,6 +964,23 @@ else
                  [self createSubCategoryButtonOnView:serviceBaseView fromTag:[[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] intValue]];
                  
              }
+             else if ([basic_categoryBtn.titleLabel.text isEqualToString:@"Service"] && [[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"sub_category_status"] isEqualToString:@"N"])
+             {
+                 
+                 NSLog(@"Now new type of views will be created for service...");
+                 
+                 [self createOtherViewsOnView:serviceBaseView withTag:[[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] intValue]];
+                 
+             }
+             else if([basic_categoryBtn.titleLabel.text isEqualToString:@"Product"] && [[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"sub_category_status"] isEqualToString:@"N"])
+             {
+                 
+                 NSLog(@"Now new type of views will be created for product...");
+                 
+                  [self createOtherViewsOnView:productBaseView withTag:[[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] intValue]];
+                 
+             }
+
 
              
              
@@ -1023,6 +1044,23 @@ else
         [self createSubCategoryButtonOnView:serviceBaseView fromTag:[[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] intValue]];
         
     }
+             
+     else if ([basic_categoryBtn.titleLabel.text isEqualToString:@"Service"] && [[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"sub_category_status"] isEqualToString:@"N"])
+     {
+     
+         NSLog(@"Now new type of views will be created for service...");
+         
+          [self createOtherViewsOnView:serviceBaseView withTag:[[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] intValue]];
+     
+     }
+    else if([basic_categoryBtn.titleLabel.text isEqualToString:@"Product"] && [[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"sub_category_status"] isEqualToString:@"N"])
+    {
+    
+       NSLog(@"Now new type of views will be created for product...");
+        
+         [self createOtherViewsOnView:productBaseView withTag:[[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] intValue]];
+    
+    }
     
  }
     
@@ -1067,6 +1105,99 @@ else
     
      return YES;
 }
+
+
+#pragma mark--Creating other type of views
+
+-(void)createOtherViewsOnView:(UIView *)baseview withTag:(int)tag
+{
+
+  NSString  *url=[NSString stringWithFormat:@"%@app_sub_category?userid=%@&top_cat=%@&category_id=%d",App_Domain_Url,[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],basic_categoryBtn.titleLabel.text,tag];
+    
+    globalobj=[[FW_JsonClass alloc]init];
+    
+    [globalobj GlobalDict:url Globalstr:@"array" Withblock:^(id result, NSError *error) {
+        
+        NSLog(@"Other type of views dictionary.... %@",result);
+        otherViewsArray=[result valueForKey:@"infoarray"];
+        otherViewsDic=(NSDictionary *)result;
+        
+    if(otherViewsArray.count>0)
+    {
+        
+        UIView *otherViewContainer=[UIView new];
+        
+        otherViewContainer.frame=CGRectMake(0, currentlyTappedBtn.frame.origin.y+currentlyTappedBtn.frame.size.height+8, self.view.bounds.size.width,0);
+        [baseview addSubview:otherViewContainer];
+        otherViewContainer.backgroundColor=[UIColor yellowColor];
+        otherViewContainer.tag=tag;
+        
+        float updated_y=0;
+        
+        for (int i=0; i<otherViewsArray.count; i++)
+        {
+            
+            NSDictionary *tempDic=otherViewsArray[i];
+            
+            NSString *typeCheck=[tempDic valueForKey:@"option_type"];
+            
+            if([typeCheck isEqualToString:@"textarea"])
+            {
+            
+                UILabel *headingLabl=[UILabel new];
+                headingLabl.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updated_y, 200, 20);
+                headingLabl.textColor=[UIColor darkGrayColor];
+                headingLabl.text=[NSString stringWithFormat:@"%@",[tempDic valueForKey:@"option_name"]];
+                headingLabl.font=[UIFont fontWithName:@"Lato" size:16];
+                
+                [otherViewContainer addSubview:headingLabl];
+       
+                
+                UITextView *textArea=[UITextView new];
+                textArea.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                textArea.frame=CGRectMake(basic_categoryBtn.frame.origin.x, headingLabl.frame.origin.y+headingLabl.frame.size.height+4, basic_categoryBtn.bounds.size.width, 100);
+                textArea.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"input_back"]];
+                textArea.delegate=self;
+                textArea.autocorrectionType=UITextAutocorrectionTypeNo;
+                textArea.keyboardAppearance=UIKeyboardAppearanceDark;
+                
+                
+                updated_y=textArea.bounds.size.height+textArea.frame.origin.y+4;
+                
+                otherViewContainer.frame=CGRectMake(otherViewContainer.frame.origin.x, otherViewContainer.frame.origin.y, otherViewContainer.bounds.size.width,updated_y);
+                
+                [otherViewContainer addSubview:textArea];
+            
+            }
+            else  if([typeCheck isEqualToString:@"textarea"])
+            {
+                
+                
+                
+            }
+            
+        }
+        
+        
+        baseview.frame=CGRectMake(baseview.frame.origin.x, baseview.frame.origin.y, baseview.frame.size.width, baseview.frame.size.height+otherViewContainer.frame.size.height+8);
+        
+        [catgoryBtnTags addObject:[NSString stringWithFormat:@"%d",tag]];
+        
+        basic_bottomView.frame=CGRectMake(basic_bottomView.frame.origin.x, baseview.frame.origin.y+baseview.frame.size.height+8, basic_bottomView.frame.size.width, basic_bottomView.frame.size.height);
+        
+        basic_scrollView.contentSize=CGSizeMake(self.view.bounds.size.width, basic_bottomView.frame.size.height+basic_bottomView.frame.origin.y);
+        
+        
+    }
+        
+        
+        }];
+        
+}
+
+#pragma mark--
+
+
 
 
 #pragma mark--Sub category button creating function
