@@ -68,6 +68,10 @@
     
     UIButton *currentlyTappedBtn;
     
+    CGPoint scrollPoint;
+    
+    UITableView *bookingtypeTable;
+    
 #pragma mark - Footer variables
 
 IBOutlet UIView *footer_base;
@@ -103,7 +107,7 @@ FW_JsonClass *globalobj;
     
     catgoryBtnTags=[NSMutableArray new];
     
-    
+    scrollPoint=basic_scrollView.contentOffset;
     // Do any additional setup after loading the view.
     
     tagForBtn_and_Table=0;
@@ -396,12 +400,93 @@ FW_JsonClass *globalobj;
     
 }
 
+#pragma mark--Booking type choosing function
+
 -(void)BookingTypeTapped:(UIButton *)sender
 {
+        
+        
+        blackOverLay=[UIView new];
+        blackOverLay.frame=self.view.frame;
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0];
+        [self.view addSubview:blackOverLay];
+        
+        popUpBaseView=[UIView new];
+        popUpBaseView.frame=CGRectMake(basic_categoryBtn.frame.origin.x, (self.view.bounds.size.height-self.view.bounds.size.height/3.2)/2, basic_categoryBtn.frame.size.width, self.view.bounds.size.height/3.2);
+        popUpBaseView.backgroundColor=[UIColor whiteColor];
+        
+        UILabel *categorHeadingLbl=[[UILabel alloc]init];
+        NSString *tempStrHeading=[NSString stringWithFormat:@"Choose Category"];
+        categorHeadingLbl.font=[UIFont fontWithName:@"lato" size:15];
+        
+        categorHeadingLbl.frame=CGRectMake((popUpBaseView.frame.size.width-(tempStrHeading.length*8))/2, 7, tempStrHeading.length*8,self.view.bounds.size.height/19);
+        categorHeadingLbl.textAlignment=NSTextAlignmentCenter;
+        
+        categorHeadingLbl.text=tempStrHeading;
+        [popUpBaseView addSubview:categorHeadingLbl];
+        
+        UIImageView *dividerView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dividerline"]];
+        
+        dividerView.frame=CGRectMake(0, categorHeadingLbl.frame.size.height+categorHeadingLbl.frame.origin.y+5, popUpBaseView.bounds.size.width, 1);
+        
+        
+        [popUpBaseView addSubview:dividerView];
+        
+        
+        //bookingtypeTable=[UITableView new];
+        basic_categoryTable.delegate=self;
+        basic_categoryTable.dataSource=self;
+        basic_categoryTable.tag=-420;
+        
+        basic_categoryTable.frame=CGRectMake(5, dividerView.frame.size.height+dividerView.frame.origin.y+4, popUpBaseView.frame.size.width-10, popUpBaseView.frame.size.height-(dividerView.frame.size.height+dividerView.frame.origin.y+54));
+        
+        [popUpBaseView addSubview:basic_categoryTable];
+        
+        basic_categoryTable.hidden=YES;
+        
+        
+        CircleLoader  *circleLoader = [[CircleLoader alloc] initWithFrame:
+                                       CGRectMake(0, 0, 30, 30)];
+        //center the circle with respect to the view
+        [circleLoader setCenter:CGPointMake(popUpBaseView.bounds.size.width / 2,
+                                            popUpBaseView.bounds.size.height / 2)];
+        //add the circle to the view
+        [popUpBaseView addSubview:circleLoader];
+        
+        [circleLoader animateCircle];
+        
+        
+        UIButton *closeBtn=[UIButton new];
+        [closeBtn setTitleColor:[UIColor colorWithRed:16.0f/255 green:95.0f/255 blue:250.0f/255 alpha:1] forState:UIControlStateNormal];
+        closeBtn.frame=CGRectMake((popUpBaseView.frame.size.width-150)/2, basic_categoryTable.frame.origin.y+basic_categoryTable.frame.size.height+8, 150, 40);
+        [closeBtn setTitle:[NSString stringWithFormat:@"Cancel"] forState:UIControlStateNormal];
+        closeBtn.backgroundColor=[UIColor clearColor];
+        [popUpBaseView addSubview:closeBtn];
+        [closeBtn addTarget:self action:@selector(closeCatTable) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        [blackOverLay addSubview:popUpBaseView];
+        
+        [basic_categoryTable reloadData];
+        
+        [circleLoader removeFromSuperview];
+        [basic_categoryTable setHidden:NO];
+        
+        
+        [UIView animateWithDuration:0.4 animations:^{
+            
+            
+            blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.1];
+            blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.2];
+            blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.3];
+            
+            
+        }];
+        
+    }
 
-  
 
-}
+#pragma mark--
 
 
 #pragma mark--TableView Delegates
@@ -416,6 +501,12 @@ FW_JsonClass *globalobj;
     
         //NSLog(@"Basic cat table numberofrows");
         
+        return 2;
+    
+    }
+    else if (tableView.tag==-420)
+    {
+    
         return 2;
     
     }
@@ -438,6 +529,12 @@ FW_JsonClass *globalobj;
        
        return basic_categoryTable.bounds.size.height/2;
    
+   }
+   else if (tableView.tag==-420)
+   {
+       
+       return basic_categoryTable.bounds.size.height/2;
+       
    }
    else return 30;
     
@@ -480,6 +577,19 @@ FW_JsonClass *globalobj;
         }
         
     }
+    else if (tableView.tag==-420)
+    {
+        
+        if (indexPath.row==0) {
+            cell.textLabel.text=[NSString stringWithFormat:@"Per Day"];
+        }
+        else if (indexPath.row==1)
+        {
+            cell.textLabel.text=[NSString stringWithFormat:@"Slot"];
+        }
+        
+    }
+    
     else
     {
     
@@ -500,7 +610,8 @@ FW_JsonClass *globalobj;
 {
     
    
-
+#pragma mark--This part is mainly for when we choose between Product & Service from the basic table with tag 0 and it creates the main cat field for them.
+    
 if(tableView.tag==0)
 {
      tagForBtn_and_Table=0-(int)(indexPath.row+1);
@@ -674,6 +785,25 @@ if(tableView.tag==0)
     }
 
 }
+   
+#pragma mark-- This is for service type selection
+    
+   else if (tableView.tag==-420)
+    {
+    
+        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+        NSString *cellText = selectedCell.textLabel.text;
+        [service_bookingTypeBtn setTitle:cellText forState:UIControlStateNormal];
+        [self closeCatTable];
+    
+    }
+    
+#pragma mark--
+    
+#pragma mark--
+    
+#pragma mark--This is for creating Sub category buttons by choosing from the same table but at this time the tag changes
+    
 else
 {
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
@@ -681,6 +811,8 @@ else
     
 
     NSString *tempstr=[NSString stringWithFormat:@"%d",(int)currentlyTappedBtn.tag];
+    
+#pragma mark-- When the button u tapped and the cell u selected are of same title,then no changes will happen to the bottom part--
     
           if([currentlyTappedBtn.titleLabel.text isEqualToString:cellText] )//&& [catgoryBtnTags lastObject]!=tempstr
           {
@@ -692,6 +824,12 @@ else
               [self closeCatTable];
           
           }
+    
+#pragma mark--
+    
+ 
+#pragma mark-- This is when the button u tapped is not the first button & the title of the button is not the same as the title of the cell u selected...then remove the bottom part sub category buttons...and create new sub cat buttons or not based on the sub cat status
+    
          else if ((![currentlyTappedBtn.titleLabel.text isEqualToString:cellText]) && ([catgoryBtnTags lastObject]!=tempstr && catgoryBtnTags.count!=0))
          {
              
@@ -827,6 +965,11 @@ else
              
          }
     
+#pragma mark--
+    
+    
+#pragma mark-- This is the fresh part when fresh sub category buttons are being created based on the sub category status of previously tapped button title;i.e,the choosen sub category or main category
+    
          else
 
          {
@@ -882,18 +1025,51 @@ else
     }
     
  }
-   
     
-     NSLog(@"i--------> %d",tagForBtn_and_Table);
-    
-
-   
-}
-
-
-}
-
 #pragma mark--
+   
+    
+    // NSLog(@"i--------> %d",tagForBtn_and_Table);
+    
+
+   
+}
+    
+#pragma mark--
+
+
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+
+    UIView *superView=textField.superview;
+    
+    scrollPoint=basic_scrollView.contentOffset;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+  
+      if(textField!=basic_nameField)
+         basic_scrollView.contentOffset=CGPointMake(0, superView.frame.origin.y+textField.frame.origin.y-(textField.frame.size.height*4));
+
+    }];
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+   
+    [UIView animateWithDuration:0.3 animations:^{
+        
+         basic_scrollView.contentOffset=scrollPoint;
+        
+    }];
+    
+     return YES;
+}
+
+
+#pragma mark--Sub category button creating function
 
 
 -(void)createSubCategoryButtonOnView:(UIView *)baseview fromTag:(int)tag
@@ -971,7 +1147,7 @@ else
     
 }
 
-
+#pragma mark--
 
 
 #pragma mark - Footer related methods
