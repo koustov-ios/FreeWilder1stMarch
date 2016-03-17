@@ -10,6 +10,7 @@
             <string>Lato-Regular</string>
             <string>Lato-Regular</string>
             <string>Lato-Regular</string>
+            <string>Lato-Regular</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -91,7 +92,7 @@
                                         <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="WBt-3M-e4o">
-                                        <rect key="frame" x="0.0" y="104" width="320" height="415"/>
+                                        <rect key="frame" x="0.0" y="102" width="320" height="418"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" background="input_back" id="GKz-9O-Ldn">
@@ -120,7 +121,7 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </imageView>
                                             <view contentMode="scaleToFill" id="8z5-ur-agc">
-                                                <rect key="frame" x="0.0" y="122" width="320" height="292"/>
+                                                <rect key="frame" x="0.0" y="122" width="320" height="317"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Quantity" textAlignment="natural" minimumFontSize="17" background="input_back" id="gfU-UJ-nHN">
@@ -168,7 +169,7 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <state key="normal" backgroundImage="check_off_category"/>
                                                         <connections>
-                                                            <action selector="basic_instant_yestapped:" destination="8NF-sf-A8G" eventType="touchUpInside" id="whJ-IA-afv"/>
+                                                            <action selector="basic_instant_yesTapped:" destination="8NF-sf-A8G" eventType="touchUpInside" id="8NL-gq-7Dy"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="W5d-cH-ZdV">
@@ -176,7 +177,7 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <state key="normal" backgroundImage="check_off_category"/>
                                                         <connections>
-                                                            <action selector="basic_instantNoTapped:" destination="8NF-sf-A8G" eventType="touchUpInside" id="q32-HZ-xBA"/>
+                                                            <action selector="basic_instant_noTapped:" destination="8NF-sf-A8G" eventType="touchUpInside" id="pXQ-nF-nOG"/>
                                                         </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SMd-HN-Vro">
@@ -195,6 +196,18 @@
                                                             <outlet property="delegate" destination="8NF-sf-A8G" id="p4a-xU-aL7"/>
                                                         </connections>
                                                     </textField>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Occ-7f-duE">
+                                                        <rect key="frame" x="96" y="273" width="128" height="30"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <color key="backgroundColor" red="0.26274509800000001" green="0.76862745099999996" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="15"/>
+                                                        <state key="normal" title="SAVE">
+                                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="save:" destination="8NF-sf-A8G" eventType="touchUpInside" id="ao9-ke-9Lj"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
                                             </view>

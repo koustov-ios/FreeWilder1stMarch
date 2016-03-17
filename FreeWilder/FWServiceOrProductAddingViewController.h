@@ -50,8 +50,9 @@
 
 
 - (IBAction)basic_categoryTapped:(id)sender;
-- (IBAction)basic_instant_yestapped:(id)sender;
-- (IBAction)basic_instantNoTapped:(id)sender;
+- (IBAction)basic_instant_yesTapped:(id)sender;
+- (IBAction)basic_instant_noTapped:(id)sender;
+- (IBAction)save:(UIButton *)sender;
 
 
 
