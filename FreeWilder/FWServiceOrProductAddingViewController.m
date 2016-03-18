@@ -90,13 +90,13 @@
     
     NSMutableArray *radioBtnValues,*checkBoxValues,*subCatValues,*mainCategoryList;
     
-    NSMutableDictionary *subCatDictionary,*selectListDic,*radioListDic;
+    NSMutableDictionary *subCatDictionary,*selectListDic,*radioListDic,*textContainerDic;
     
     NSString *instantBooked;
     
     NSString *mainCategoryId;
     
-    NSMutableArray *selectListvalues,*radioListValues;
+    NSMutableArray *selectListvalues,*radioListValues,*motheridarr_selectlist,*motheridarr_radiolist,*textContainerArr,*motheridarr_textRelated;
     
 #pragma mark--
     
@@ -149,6 +149,13 @@ FW_JsonClass *globalobj;
     
     selectListvalues=[[NSMutableArray alloc]init];
     radioListValues=[[NSMutableArray alloc]init];
+    
+    motheridarr_selectlist=[[NSMutableArray alloc]init];
+    motheridarr_radiolist=[[NSMutableArray alloc]init];
+    
+    textContainerArr=[[NSMutableArray alloc]init];
+    textContainerDic=[[NSMutableDictionary alloc]init];
+    motheridarr_textRelated=[[NSMutableArray alloc]init];
     
     // Do any additional setup after loading the view.
     
@@ -801,7 +808,23 @@ if(tableView.tag==0)
                containsObject:[NSString stringWithFormat:@"%@/%@",[selectListArray[indexPath.row] valueForKey:@"id"],[selectListArray[indexPath.row] valueForKey:@"option_id"]]])
             {
             
-                [selectListvalues addObject:[NSString stringWithFormat:@"%@/%@",[selectListArray[indexPath.row] valueForKey:@"id"],[selectListArray[indexPath.row] valueForKey:@"option_id"]]];
+                if(![motheridarr_selectlist containsObject:[selectListArray[indexPath.row] valueForKey:@"option_id"]])
+                {
+                  [motheridarr_selectlist addObject:[selectListArray[indexPath.row] valueForKey:@"option_id"]];
+                    
+                    [selectListvalues addObject:[NSString stringWithFormat:@"%@/%@",[selectListArray[indexPath.row] valueForKey:@"id"],[selectListArray[indexPath.row] valueForKey:@"option_id"]]];
+                }
+                else
+                {
+                
+                   NSInteger anIndex=[motheridarr_selectlist indexOfObject:[selectListArray[indexPath.row] valueForKey:@"option_id"]];
+                    
+                    [selectListvalues replaceObjectAtIndex:anIndex withObject:[NSString stringWithFormat:@"%@/%@",[selectListArray[indexPath.row] valueForKey:@"id"],[selectListArray[indexPath.row] valueForKey:@"option_id"]]];
+                
+                
+                }
+               
+                
             
             }
             
@@ -814,13 +837,38 @@ if(tableView.tag==0)
         
             UIView *superView=tappedButton_special.superview;
             
+//            if
+//            
+//            
+            
             if(![radioBtnValues
-                 containsObject:[NSString stringWithFormat:@"%@/%@",[selectListArray[indexPath.row] valueForKey:@"id"],[selectListArray[indexPath.row] valueForKey:@"option_id"]]])
+                 containsObject:[NSString stringWithFormat:@"%@/%@",[radioBtnListArray[indexPath.row] valueForKey:@"id"],[radioBtnListArray[indexPath.row] valueForKey:@"option_id"]]])
             {
                 
-                [radioBtnValues addObject:[NSString stringWithFormat:@"%@/%@",[radioBtnListArray[indexPath.row] valueForKey:@"id"],[radioBtnListArray[indexPath.row] valueForKey:@"option_id"]]];
+                if(![motheridarr_radiolist containsObject:[radioBtnListArray[indexPath.row] valueForKey:@"option_id"]])
+                {
+                    [motheridarr_radiolist addObject:[radioBtnListArray[indexPath.row] valueForKey:@"option_id"]];
+                    
+                    [radioBtnValues addObject:[NSString stringWithFormat:@"%@/%@",[radioBtnListArray[indexPath.row] valueForKey:@"id"],[radioBtnListArray[indexPath.row] valueForKey:@"option_id"]]];
+                }
+                else
+                {
+                    
+                    NSInteger anIndex=[motheridarr_radiolist indexOfObject:[radioBtnListArray[indexPath.row] valueForKey:@"option_id"]];
+                    
+                    [radioBtnValues replaceObjectAtIndex:anIndex withObject:[NSString stringWithFormat:@"%@/%@",[radioBtnListArray[indexPath.row] valueForKey:@"id"],[radioBtnListArray[indexPath.row] valueForKey:@"option_id"]]];
+                    
+                    
+                }
+                
+                
                 
             }
+//            {
+//                
+//                [radioBtnValues addObject:[NSString stringWithFormat:@"%@/%@",[radioBtnListArray[indexPath.row] valueForKey:@"id"],[radioBtnListArray[indexPath.row] valueForKey:@"option_id"]]];
+//                
+//            }
             
             NSString *key = [NSString stringWithFormat:@"%ld",(long)superView.tag];
             [radioListDic setValue:radioBtnValues forKey:key];
@@ -1112,20 +1160,27 @@ else
                          
                           NSLog(@"Removing view  ----> %@ || %ld ",catgoryBtnTags[i],(long)obj.tag);
                          
-                          [obj removeFromSuperview];
-                         
-                         
                          NSString *subcatDicKey=[NSString stringWithFormat:@"%d",(int) obj.tag];
                          [subCatDictionary removeObjectForKey:subcatDicKey];
+                         
+                       //After deleting the sub-cat key value pairs replace the currently choosen pre existing key value pair...
+                         
+                         NSString *subcatDicKey_forReplacementOfValue=[NSString stringWithFormat:@"%ld",currentlyTappedBtn.tag];
+                         [subCatDictionary setValue:[[categoryListContainerArr objectAtIndex:indexPath.row] valueForKey:@"id"] forKey:subcatDicKey_forReplacementOfValue];
+                       //----
                          
                          [radioListDic removeObjectForKey:subcatDicKey];
                          [selectListDic removeObjectForKey:subcatDicKey];
                          [selectListvalues removeAllObjects];
                          [radioListValues removeAllObjects];
+                         [motheridarr_radiolist removeAllObjects];
+                         [motheridarr_selectlist removeAllObjects];
+                         [motheridarr_textRelated removeAllObjects];
+                         [textContainerDic removeObjectForKey:subcatDicKey];
                          
 //                          [catgoryBtnTags removeObjectAtIndex:i];
                          
-                         
+                             [obj removeFromSuperview];
                          
                     }
                      
@@ -1353,6 +1408,31 @@ else
     return YES;
 }
 
+-(BOOL)textViewShouldEndEditing:(UITextView *)textView
+{
+    
+    
+    
+    if(![motheridarr_textRelated containsObject:[NSString stringWithFormat:@"%ld",textView.tag]])
+    {
+        
+        [motheridarr_textRelated addObject:[NSString stringWithFormat:@"%ld",textView.tag]];
+        [textContainerArr addObject:[NSString stringWithFormat:@"%@@/%@",[NSString stringWithFormat:@"%ld",textView.tag],textView.text]];
+    }
+    else
+    {
+        
+        
+        [textContainerArr replaceObjectAtIndex:[motheridarr_textRelated indexOfObject:[NSString stringWithFormat:@"%ld",textView.tag]] withObject:[NSString stringWithFormat:@"%@@/%@",[NSString stringWithFormat:@"%ld",textView.tag],textView.text]];
+        
+        
+    }
+    
+    [textContainerDic setValue:textContainerArr forKey:[NSString stringWithFormat:@"%ld",textView.superview.tag]];
+    
+    return YES;
+}
+
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
 
@@ -1384,6 +1464,7 @@ else
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
+    
    
     [UIView animateWithDuration:0.3 animations:^{
         
@@ -1392,6 +1473,37 @@ else
     }];
     
      return YES;
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+
+
+    if(!(textField==basic_quntityField || textField==basic_nameField || textField==basic_videoField))
+    {
+        
+        if(![motheridarr_textRelated containsObject:[NSString stringWithFormat:@"%ld",textField.tag]])
+        {
+            
+            [motheridarr_textRelated addObject:[NSString stringWithFormat:@"%ld",textField.tag]];
+            [textContainerArr addObject:[NSString stringWithFormat:@"%@@/%@",[NSString stringWithFormat:@"%ld",textField.tag],textField.text]];
+        }
+        else
+        {
+            
+            
+            [textContainerArr replaceObjectAtIndex:[motheridarr_textRelated indexOfObject:[NSString stringWithFormat:@"%ld",textField.tag]] withObject:[NSString stringWithFormat:@"%@@/%@",[NSString stringWithFormat:@"%ld",textField.tag],textField.text]];
+            
+            
+        }
+        
+        [textContainerDic setValue:textContainerArr forKey:[NSString stringWithFormat:@"%ld",textField.superview.tag]];
+        
+    }
+
+    
+    return YES;
+
 }
 
 
@@ -1457,6 +1569,35 @@ else
                 [otherViewContainer addSubview:textArea];
             
             }
+           else if([typeCheck isEqualToString:@"text"])
+            {
+        
+                UITextField *textField=[UITextField new];
+                textField.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                textField.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updated_y, basic_categoryBtn.bounds.size.width, basic_quntityField.bounds.size.height);
+                textField.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"input_back"]];
+                textField.font=basic_quntityField.font;
+                textField.placeholder=[NSString stringWithFormat:@"%@",[tempDic valueForKey:@"option_name"]];
+                textField.delegate=self;
+                
+                UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 6)];
+                textField.leftView = paddingView;
+                textField.leftViewMode = UITextFieldViewModeAlways;
+                
+                
+                textField.autocorrectionType=UITextAutocorrectionTypeNo;
+                textField.keyboardAppearance=UIKeyboardAppearanceDark;
+                
+                
+                updated_y=textField.bounds.size.height+textField.frame.origin.y+8;
+                
+                otherViewContainer.frame=CGRectMake(otherViewContainer.frame.origin.x, otherViewContainer.frame.origin.y, otherViewContainer.bounds.size.width,updated_y);
+                
+                [otherViewContainer addSubview:textField];
+                
+            }
+            
+            
             else  if([typeCheck isEqualToString:@"select"])
             {
                 
@@ -2288,6 +2429,7 @@ else
 }
 
 
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -2368,6 +2510,7 @@ else
         NSLog(@"Select---> %@",[selectListDic valueForKey:key]);
     }
     
+    NSLog(@"text container----> %@",textContainerDic);
     
 
 }
