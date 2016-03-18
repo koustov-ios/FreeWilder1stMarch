@@ -13,6 +13,8 @@
 
 {
     
+    __weak IBOutlet UIButton *saveBtn;
+    
     __weak IBOutlet UIImageView *dropdownImageView;
     
     __weak IBOutlet UIView *basic_bottomView;

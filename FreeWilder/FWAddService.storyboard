@@ -197,7 +197,7 @@
                                                         </connections>
                                                     </textField>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Occ-7f-duE">
-                                                        <rect key="frame" x="96" y="273" width="128" height="30"/>
+                                                        <rect key="frame" x="77" y="269" width="167" height="44"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <color key="backgroundColor" red="0.26274509800000001" green="0.76862745099999996" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="15"/>
@@ -255,6 +255,7 @@
                         <outlet property="basic_videoField" destination="Yhb-RH-4l8" id="Wav-82-CQH"/>
                         <outlet property="dropdownImageView" destination="Yxa-Eq-ohL" id="oin-cJ-42Q"/>
                         <outlet property="footer_base" destination="ol9-s9-PMm" id="pBv-iF-peb"/>
+                        <outlet property="saveBtn" destination="Occ-7f-duE" id="NqE-tA-d84"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OVg-GP-3lC" userLabel="First Responder" sceneMemberID="firstResponder"/>

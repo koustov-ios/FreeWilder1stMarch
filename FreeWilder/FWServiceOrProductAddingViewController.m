@@ -79,7 +79,7 @@
     NSArray *otherViewsArray;
     NSDictionary *otherViewsDic;
     
-    NSArray *radioBtnListArray,*selectListArray;
+    NSArray *radioBtnListArray,*selectListArray,*checkListArray;
     
     specialButton *tappedButton_special;
     
@@ -90,7 +90,7 @@
     
     NSMutableArray *radioBtnValues,*checkBoxValues,*subCatValues,*mainCategoryList;
     
-    NSMutableDictionary *subCatDictionary,*selectListDic,*radioListDic,*textContainerDic;
+    NSMutableDictionary *subCatDictionary,*selectListDic,*radioListDic,*textContainerDic,*checkboxDic;
     
     NSString *instantBooked;
     
@@ -133,6 +133,9 @@ FW_JsonClass *globalobj;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    saveBtn.layer.cornerRadius=6.0f;
+    saveBtn.clipsToBounds=YES;
+    
     subCatDictionary=[[NSMutableDictionary alloc]init];
     
     catgoryBtnTags=[NSMutableArray new];
@@ -140,6 +143,10 @@ FW_JsonClass *globalobj;
     scrollPoint=basic_scrollView.contentOffset;
     
     whichspecialButtonTapped=@"";
+    
+    checkBoxValues=[[NSMutableArray alloc]init];
+    checkListArray=[[NSArray alloc]init];
+    checkboxDic=[[NSMutableDictionary alloc]init];
     
     selectListArray=[[NSArray alloc]init];
     radioBtnListArray=[[NSArray alloc]init];
@@ -598,6 +605,12 @@ FW_JsonClass *globalobj;
             return count;
             
         }
+        else if ([whichspecialButtonTapped isEqualToString:@"check"])
+        {
+            NSUInteger count;
+            count = checkListArray.count;
+            return count;
+        }
         else
         {
             NSLog(@"Here....1");
@@ -632,7 +645,7 @@ FW_JsonClass *globalobj;
    
        // NSLog(@"Basic cat table Height for rows");
        
-       if ([whichspecialButtonTapped isEqualToString:@"select"] || [whichspecialButtonTapped isEqualToString:@"radio"])
+       if ([whichspecialButtonTapped isEqualToString:@"select"] || [whichspecialButtonTapped isEqualToString:@"radio"] || [whichspecialButtonTapped isEqualToString:@"check"])
        {
        
            return  30;
@@ -711,7 +724,7 @@ FW_JsonClass *globalobj;
     if(tableView.tag==0)
     {
      
-        if ([whichspecialButtonTapped isEqualToString:@"select"] || [whichspecialButtonTapped isEqualToString:@"radio"])
+        if ([whichspecialButtonTapped isEqualToString:@"select"] || [whichspecialButtonTapped isEqualToString:@"radio"] || [whichspecialButtonTapped isEqualToString:@"check"])
         {
             
             //specialTable *tableObj=(specialTable *)tableView;
@@ -725,6 +738,12 @@ FW_JsonClass *globalobj;
             {
                 
                 cell.textLabel.text=[NSString stringWithFormat:@"%@",[radioBtnListArray[indexPath.row] valueForKey:@"name"]];
+                
+            }
+            else if([whichspecialButtonTapped isEqualToString:@"check"])
+            {
+                
+                cell.textLabel.text=[NSString stringWithFormat:@"%@",[checkListArray[indexPath.row] valueForKey:@"name"]];
                 
             }
             
@@ -789,7 +808,7 @@ if(tableView.tag==0)
 
     #pragma mark-- For the select list & radio button tableview
     
-    if ([whichspecialButtonTapped isEqualToString:@"select"] || [whichspecialButtonTapped isEqualToString:@"radio"])
+    if ([whichspecialButtonTapped isEqualToString:@"select"] || [whichspecialButtonTapped isEqualToString:@"radio"] || [whichspecialButtonTapped isEqualToString:@"check"])
     {
     
         UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
@@ -798,7 +817,36 @@ if(tableView.tag==0)
         [tappedButton_special setTitle:cellText forState:UIControlStateNormal];
        
         
-        if([whichspecialButtonTapped isEqualToString:@"select"])
+        if([whichspecialButtonTapped isEqualToString:@"check"])
+        {
+        
+             UIView *superView=tappedButton_special.superview;
+            
+            if(![checkBoxValues
+                 containsObject:[NSString stringWithFormat:@"%@/%@",[checkListArray[indexPath.row] valueForKey:@"id"],[checkListArray[indexPath.row] valueForKey:@"option_id"]]])
+            {
+            
+               
+            
+                [checkBoxValues addObject:[NSString stringWithFormat:@"%@/%@",[checkListArray[indexPath.row] valueForKey:@"id"],[checkListArray[indexPath.row] valueForKey:@"option_id"]]];
+            
+                 NSLog(@"Check BOX ---> %@",checkBoxValues);
+            }
+            else
+            {
+            
+                [checkBoxValues removeObject:[NSString stringWithFormat:@"%@/%@",[checkListArray[indexPath.row] valueForKey:@"id"],[checkListArray[indexPath.row] valueForKey:@"option_id"]]];
+            
+                 NSLog(@"Check BOX ---> %@",checkBoxValues);
+            
+            }
+            
+            NSString *key = [NSString stringWithFormat:@"%ld",(long)superView.tag];
+            [checkboxDic setValue:selectListvalues forKey:key];
+        
+        }
+        
+       else if([whichspecialButtonTapped isEqualToString:@"select"])
         {
         
             NSLog(@"Here select....");
@@ -1178,6 +1226,10 @@ else
                          [motheridarr_textRelated removeAllObjects];
                          [textContainerDic removeObjectForKey:subcatDicKey];
                          
+                         [checkBoxValues removeAllObjects];
+                         checkListArray=[[NSArray alloc]init];
+                         [checkboxDic removeObjectForKey:subcatDicKey];
+                         
 //                          [catgoryBtnTags removeObjectAtIndex:i];
                          
                              [obj removeFromSuperview];
@@ -1413,18 +1465,21 @@ else
     
     
     
-    if(![motheridarr_textRelated containsObject:[NSString stringWithFormat:@"%ld",textView.tag]])
+    if(![motheridarr_textRelated containsObject:[NSString stringWithFormat:@"%ld",textView.tag]] && textView.tag!=0)
     {
+       // NSLog(@".............");
         
         [motheridarr_textRelated addObject:[NSString stringWithFormat:@"%ld",textView.tag]];
         [textContainerArr addObject:[NSString stringWithFormat:@"%@@/%@",[NSString stringWithFormat:@"%ld",textView.tag],textView.text]];
     }
     else
     {
+        if(textView.tag!=0)
+        {
         
-        
-        [textContainerArr replaceObjectAtIndex:[motheridarr_textRelated indexOfObject:[NSString stringWithFormat:@"%ld",textView.tag]] withObject:[NSString stringWithFormat:@"%@@/%@",[NSString stringWithFormat:@"%ld",textView.tag],textView.text]];
-        
+          [textContainerArr replaceObjectAtIndex:[motheridarr_textRelated indexOfObject:[NSString stringWithFormat:@"%ld",textView.tag]] withObject:[NSString stringWithFormat:@"%@@/%@",[NSString stringWithFormat:@"%ld",textView.tag],textView.text]];
+            
+        }
         
     }
     
@@ -1437,6 +1492,10 @@ else
 {
 
     UIView *superView=textField.superview;
+    
+    UIView *superView1=textField.superview.superview;
+   
+   
     
     scrollPoint=basic_scrollView.contentOffset;
     
@@ -1453,6 +1512,13 @@ else
           }
         else
         {
+            if(textField.tag>0)
+            {
+            
+                 basic_scrollView.contentOffset=CGPointMake(0, superView1.frame.origin.y+superView.frame.origin.y+textField.frame.origin.y-(textField.frame.size.height));
+            
+            }
+            else
          basic_scrollView.contentOffset=CGPointMake(0, superView.frame.origin.y+textField.frame.origin.y-(textField.frame.size.height*4));
         }
           
@@ -1482,22 +1548,26 @@ else
     if(!(textField==basic_quntityField || textField==basic_nameField || textField==basic_videoField))
     {
         
-        if(![motheridarr_textRelated containsObject:[NSString stringWithFormat:@"%ld",textField.tag]])
+        if(![motheridarr_textRelated containsObject:[NSString stringWithFormat:@"%ld",textField.tag]] && textField.tag!=0)
         {
-            
+            NSLog(@".............");
             [motheridarr_textRelated addObject:[NSString stringWithFormat:@"%ld",textField.tag]];
             [textContainerArr addObject:[NSString stringWithFormat:@"%@@/%@",[NSString stringWithFormat:@"%ld",textField.tag],textField.text]];
+            [textContainerDic setValue:textContainerArr forKey:[NSString stringWithFormat:@"%ld",textField.superview.tag]];
         }
         else
         {
+            if(textField.tag!=0)
+            {
             
-            
-            [textContainerArr replaceObjectAtIndex:[motheridarr_textRelated indexOfObject:[NSString stringWithFormat:@"%ld",textField.tag]] withObject:[NSString stringWithFormat:@"%@@/%@",[NSString stringWithFormat:@"%ld",textField.tag],textField.text]];
-            
+              [textContainerArr replaceObjectAtIndex:[motheridarr_textRelated indexOfObject:[NSString stringWithFormat:@"%ld",textField.tag]] withObject:[NSString stringWithFormat:@"%@@/%@",[NSString stringWithFormat:@"%ld",textField.tag],textField.text]];
+                
+                [textContainerDic setValue:textContainerArr forKey:[NSString stringWithFormat:@"%ld",textField.superview.tag]];
+            }
             
         }
         
-        [textContainerDic setValue:textContainerArr forKey:[NSString stringWithFormat:@"%ld",textField.superview.tag]];
+        
         
     }
 
@@ -1598,7 +1668,7 @@ else
             }
             
             
-            else  if([typeCheck isEqualToString:@"select"])
+            else  if([typeCheck isEqualToString:@"select"] || [typeCheck isEqualToString:@"radio"])
             {
                 
                 specialButton *selectOrRadioBtnOpeningBtn=selectOrRadioBtnOpeningBtn=[[specialButton alloc]init];
@@ -1652,6 +1722,47 @@ else
                 
             }
             
+            else  if([typeCheck isEqualToString:@"checkbox"])
+            {
+                
+                specialButton *checkboxOpeningBtn=checkboxOpeningBtn=[[specialButton alloc]init];
+                
+                checkboxOpeningBtn.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updated_y, basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+                
+                [checkboxOpeningBtn setTitle:[NSString stringWithFormat:@"%@",[tempDic valueForKey:@"option_name"]] forState:UIControlStateNormal];
+                
+                checkboxOpeningBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                checkboxOpeningBtn.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
+                checkboxOpeningBtn.titleLabel.font=basic_categoryBtn.titleLabel.font;
+                [checkboxOpeningBtn setTitleColor:basic_categoryBtn.titleLabel.textColor forState:UIControlStateNormal];
+                [checkboxOpeningBtn setBackgroundImage:[UIImage imageNamed:@"input_back"] forState:UIControlStateNormal];
+                
+                [checkboxOpeningBtn addTarget:self action:@selector(openCheckBoxList:) forControlEvents:UIControlEventTouchUpInside];
+                
+                checkboxOpeningBtn.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                
+               
+                    checkboxOpeningBtn.stringId=[NSString stringWithFormat:@"check"];
+                    checkboxOpeningBtn.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                
+                
+                [otherViewContainer addSubview:checkboxOpeningBtn];
+                
+                UIImageView *dropdownArrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, checkboxOpeningBtn.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
+                dropdownArrow.image=[UIImage imageNamed:@"downArrow"];
+                dropdownArrow.contentMode=UIViewContentModeScaleAspectFit;
+                
+                
+                dropdownArrow.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                
+                [otherViewContainer addSubview:dropdownArrow];
+                
+                updated_y=checkboxOpeningBtn.bounds.size.height+checkboxOpeningBtn.frame.origin.y+8;
+                
+                otherViewContainer.frame=CGRectMake(otherViewContainer.frame.origin.x, otherViewContainer.frame.origin.y, otherViewContainer.bounds.size.width,updated_y);
+                
+            }
+            
         }
         
         
@@ -1669,6 +1780,121 @@ else
         
         }];
         
+}
+
+#pragma mark--
+
+
+#pragma mark--Check box list opening function
+
+-(void)openCheckBoxList:(specialButton *)sender
+{
+    
+    tappedButton_special=sender;
+    whichspecialButtonTapped=sender.stringId;
+    
+    //    NSLog(@"String ID---> %@",sender.stringId);
+    //    NSLog(@"Select list Array count---> %ld",selectListArray.count);
+    //    NSLog(@"Radio list Array count---> %ld",radioBtnListArray.count);
+    
+    
+    blackOverLay=[UIView new];
+    blackOverLay.frame=self.view.frame;
+    blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0];
+    [self.view addSubview:blackOverLay];
+    
+    popUpBaseView=[UIView new];
+    popUpBaseView.frame=CGRectMake(basic_categoryBtn.frame.origin.x, (self.view.bounds.size.height-self.view.bounds.size.height/3.2)/2, basic_categoryBtn.frame.size.width, self.view.bounds.size.height/3.2);
+    popUpBaseView.backgroundColor=[UIColor whiteColor];
+    
+    UILabel *categorHeadingLbl=[[UILabel alloc]init];
+    NSString *tempStrHeading=[NSString stringWithFormat:@"%@",[whichspecialButtonTapped capitalizedString]];
+    categorHeadingLbl.font=[UIFont fontWithName:@"lato" size:15];
+    
+    categorHeadingLbl.frame=CGRectMake((popUpBaseView.frame.size.width-(tempStrHeading.length*8))/2, 7, tempStrHeading.length*8,self.view.bounds.size.height/19);
+    categorHeadingLbl.textAlignment=NSTextAlignmentCenter;
+    
+    categorHeadingLbl.text=tempStrHeading;
+    [popUpBaseView addSubview:categorHeadingLbl];
+    
+    UIImageView *dividerView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dividerline"]];
+    
+    dividerView.frame=CGRectMake(0, categorHeadingLbl.frame.size.height+categorHeadingLbl.frame.origin.y+5, popUpBaseView.bounds.size.width, 1);
+    
+    
+    [popUpBaseView addSubview:dividerView];
+    
+    
+    
+    for (int i=0; i<otherViewsArray.count; i++)
+    {
+        
+        NSDictionary *tempDic=otherViewsArray[i];
+        if([[tempDic valueForKey:@"option_id"] isEqualToString:[NSString stringWithFormat:@"%ld",sender.tag]])
+        {
+            if ([whichspecialButtonTapped isEqualToString:@"check"])
+            {
+                
+                checkListArray=[tempDic valueForKey:@"option_value"];
+                
+            }
+        }
+        
+    }
+    
+    
+    //    UITableView *table_view=[[UITableView alloc]init];
+    
+    
+    basic_categoryTable.delegate=self;
+    basic_categoryTable.dataSource=self;
+    basic_categoryTable.tag=0;
+    
+    basic_categoryTable.frame=CGRectMake(5, dividerView.frame.size.height+dividerView.frame.origin.y+4, popUpBaseView.frame.size.width-10, popUpBaseView.frame.size.height-(dividerView.frame.size.height+dividerView.frame.origin.y+54));
+    
+    [popUpBaseView addSubview:basic_categoryTable];
+    
+    // table_view.hidden=YES;
+    
+    
+    CircleLoader  *circleLoader = [[CircleLoader alloc] initWithFrame:
+                                   CGRectMake(0, 0, 30, 30)];
+    //center the circle with respect to the view
+    [circleLoader setCenter:CGPointMake(popUpBaseView.bounds.size.width / 2,
+                                        popUpBaseView.bounds.size.height / 2)];
+    //add the circle to the view
+    [popUpBaseView addSubview:circleLoader];
+    
+    [circleLoader animateCircle];
+    
+    
+    UIButton *closeBtn=[UIButton new];
+    [closeBtn setTitleColor:[UIColor colorWithRed:16.0f/255 green:95.0f/255 blue:250.0f/255 alpha:1] forState:UIControlStateNormal];
+    closeBtn.frame=CGRectMake((popUpBaseView.frame.size.width-150)/2, basic_categoryTable.frame.origin.y+basic_categoryTable.frame.size.height+8, 150, 40);
+    [closeBtn setTitle:[NSString stringWithFormat:@"Cancel"] forState:UIControlStateNormal];
+    closeBtn.backgroundColor=[UIColor clearColor];
+    [popUpBaseView addSubview:closeBtn];
+    [closeBtn addTarget:self action:@selector(closeCatTable) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    [blackOverLay addSubview:popUpBaseView];
+    
+    [basic_categoryTable reloadData];
+    
+    [circleLoader removeFromSuperview];
+    [basic_categoryTable setHidden:NO];
+    
+    
+    [UIView animateWithDuration:0.4 animations:^{
+        
+        
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.1];
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.2];
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.3];
+        
+        
+    }];
+    
 }
 
 #pragma mark--
@@ -2469,6 +2695,12 @@ else
 
 -(IBAction)save:(UIButton *)sender
 {
+    
+    POPSpringAnimation *sprintAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPViewScaleXY];
+    sprintAnimation.velocity = [NSValue valueWithCGPoint:CGPointMake(8, 8)];
+    sprintAnimation.springBounciness = 20.f;
+    [sender pop_addAnimation:sprintAnimation forKey:@"sendAnimation"];
+    
     UIButton *whichMainCAtBtnIsThere;
     NSString *mainCatStr;
     
@@ -2511,6 +2743,8 @@ else
     }
     
     NSLog(@"text container----> %@",textContainerDic);
+    NSLog(@"Check BOX---> %@",checkboxDic);
+    NSLog(@"Sub cat details---> %@",subCatDictionary);
     
 
 }
