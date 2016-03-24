@@ -38,6 +38,7 @@
 #import "WishlistViewController.h"
 #import "ViewController.h"
 #import "sideMenu.h"
+#import "FWServiceOrProductAddingViewController.h"
 
 
 @interface UserService ()<UIPickerViewDelegate,UIPickerViewDataSource,UIGestureRecognizerDelegate,Slide_menu_delegate,footerdelegate,Serviceview_delegate,Profile_delegate,accountsubviewdelegate,accountsubviewdelegate,sideMenu,UITextFieldDelegate,UIAlertViewDelegate>
@@ -295,6 +296,14 @@ userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
 -(void)editService:(UIButton *)sender
 {
     
+    int tag=(int)sender.tag;
+    
+    
+    UIStoryboard *addServiceStoryBoard=[UIStoryboard storyboardWithName:@"FWAddService" bundle:nil];
+    
+    FWServiceOrProductAddingViewController *vcObj=[addServiceStoryBoard instantiateViewControllerWithIdentifier:@"FWServiceOrProductAdding"];
+    vcObj.fromEditPage=YES;
+    [self PushViewController:vcObj WithAnimation:kCAMediaTimingFunctionEaseIn];
     
     
 }

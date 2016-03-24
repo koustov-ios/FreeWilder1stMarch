@@ -51,6 +51,7 @@
 {
 
     
+    
     NSString *iskeyWordTableOpen;
     
     FWServiceOrProductAddTableViewCell *tableCell;
@@ -305,7 +306,7 @@ FW_JsonClass *globalobj;
     UIButton *closeBtn=[UIButton new];
     [closeBtn setTitleColor:[UIColor colorWithRed:16.0f/255 green:95.0f/255 blue:250.0f/255 alpha:1] forState:UIControlStateNormal];
     closeBtn.frame=CGRectMake((popUpBaseView.frame.size.width-150)/2, basic_categoryTable.frame.origin.y+basic_categoryTable.frame.size.height+8, 150, 40);
-    [closeBtn setTitle:[NSString stringWithFormat:@"Cancel"] forState:UIControlStateNormal];
+    [closeBtn setTitle:[NSString stringWithFormat:@"OK"] forState:UIControlStateNormal];
     closeBtn.backgroundColor=[UIColor clearColor];
     [popUpBaseView addSubview:closeBtn];
     [closeBtn addTarget:self action:@selector(closeCatTable) forControlEvents:UIControlEventTouchUpInside];
@@ -424,7 +425,7 @@ FW_JsonClass *globalobj;
     UIButton *closeBtn=[UIButton new];
     [closeBtn setTitleColor:[UIColor colorWithRed:16.0f/255 green:95.0f/255 blue:250.0f/255 alpha:1] forState:UIControlStateNormal];
     closeBtn.frame=CGRectMake((popUpBaseView.frame.size.width-150)/2, basic_categoryTable.frame.origin.y+basic_categoryTable.frame.size.height+8, 150, 40);
-    [closeBtn setTitle:[NSString stringWithFormat:@"Cancel"] forState:UIControlStateNormal];
+    [closeBtn setTitle:[NSString stringWithFormat:@"OK"] forState:UIControlStateNormal];
     closeBtn.backgroundColor=[UIColor clearColor];
     [popUpBaseView addSubview:closeBtn];
     [closeBtn addTarget:self action:@selector(closeCatTable) forControlEvents:UIControlEventTouchUpInside];
@@ -567,7 +568,7 @@ FW_JsonClass *globalobj;
         UIButton *closeBtn=[UIButton new];
         [closeBtn setTitleColor:[UIColor colorWithRed:16.0f/255 green:95.0f/255 blue:250.0f/255 alpha:1] forState:UIControlStateNormal];
         closeBtn.frame=CGRectMake((popUpBaseView.frame.size.width-150)/2, basic_categoryTable.frame.origin.y+basic_categoryTable.frame.size.height+8, 150, 40);
-        [closeBtn setTitle:[NSString stringWithFormat:@"Cancel"] forState:UIControlStateNormal];
+        [closeBtn setTitle:[NSString stringWithFormat:@"OK"] forState:UIControlStateNormal];
         closeBtn.backgroundColor=[UIColor clearColor];
         [popUpBaseView addSubview:closeBtn];
         [closeBtn addTarget:self action:@selector(closeCatTable) forControlEvents:UIControlEventTouchUpInside];
@@ -837,14 +838,9 @@ FW_JsonClass *globalobj;
          cell.selectionStyle=UITableViewCellSelectionStyleNone;
      }
     
-//    if([tappedButton_special.stringId isEqualToString:@"select"] || [tappedButton_special.stringId isEqualToString:@"radio"])
-//    {
-//        return otherCell;
-//    }
-//    else
-//    {
+
       return cell;
-//    }
+
 
 }
 
@@ -2297,7 +2293,7 @@ else
     UIButton *closeBtn=[UIButton new];
     [closeBtn setTitleColor:[UIColor colorWithRed:16.0f/255 green:95.0f/255 blue:250.0f/255 alpha:1] forState:UIControlStateNormal];
     closeBtn.frame=CGRectMake((popUpBaseView.frame.size.width-150)/2, basic_categoryTable.frame.origin.y+basic_categoryTable.frame.size.height+8, 150, 40);
-    [closeBtn setTitle:[NSString stringWithFormat:@"Cancel"] forState:UIControlStateNormal];
+    [closeBtn setTitle:[NSString stringWithFormat:@"OK"] forState:UIControlStateNormal];
     closeBtn.backgroundColor=[UIColor clearColor];
     [popUpBaseView addSubview:closeBtn];
     [closeBtn addTarget:self action:@selector(closeCatTable) forControlEvents:UIControlEventTouchUpInside];
@@ -3002,42 +2998,45 @@ else
 
 }
 
+#pragma mark-- Save Basic Details
+
+
 -(IBAction)save:(UIButton *)sender
 {
-  
-     NSLog(@"text container----> %@",textContainerDic);
+    
+    NSLog(@"text container----> %@",textContainerDic);
     
     if(![[NSString stringByTrimmingLeadingWhitespace:basic_nameField.text] length]>0)
     {
-    
+        
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:@"Please enter a valid name." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
-    
+        
     }
     else
     {
-    
+        
         if([basic_categoryBtn.titleLabel.text isEqualToString:@"Choose Category"])
         {
-        
+            
             UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:@"Please Select the Basic category." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
-        
+            
         }
         else
         {
-        
-        
+            
+            
             if([basic_categoryBtn.titleLabel.text isEqualToString:@"Product"])
             {
-            
-               if([mainCategoryBtn_product.titleLabel.text isEqualToString:@"Main Category"])
-               {
-               
-                   UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:@"Please Select the Main category." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                   [alert show];
-               
-               }
+                
+                if([mainCategoryBtn_product.titleLabel.text isEqualToString:@"Main Category"])
+                {
+                    
+                    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:@"Please Select the Main category." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alert show];
+                    
+                }
                 else
                 {
                     
@@ -3065,21 +3064,21 @@ else
                         }
                         else
                         {
-                        
-                        if([instantBooked length]>0)
-                        {
-                        
-                            [self saveBasicDetails];
-                        
-                        }
-                        else
-                        {
-                        
-                            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:@"Please select instant booking type." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                            [alert show];
-                        
-                        }
-                        
+                            
+                            if([instantBooked length]>0)
+                            {
+                                
+                                [self saveBasicDetails];
+                                
+                            }
+                            else
+                            {
+                                
+                                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:@"Please select instant booking type." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                [alert show];
+                                
+                            }
+                            
                         }
                         
                         
@@ -3087,11 +3086,11 @@ else
                     
                     
                 }
-            
+                
             }
             else if([basic_categoryBtn.titleLabel.text isEqualToString:@"Service"])
             {
-            
+                
                 if([maninCategoryBtn_service.titleLabel.text isEqualToString:@"Main Category"])
                 {
                     
@@ -3140,7 +3139,7 @@ else
                                 [alert show];
                                 
                             }
- 
+                            
                             
                         }
                         
@@ -3153,26 +3152,13 @@ else
             }
             
         }
-    
+        
     }
     
     
 }
 
-- (IBAction)keywordBtnTapped:(id)sender
-{
-    if(keywordArr.count==0)
-    {
-      [self gettingAllKeyword];
-    }
-    else if (keywordArr.count>0)
-    {
-    
-        [self openKeywordtable];
-    
-    }
-    
-}
+
 
 -(void)saveBasicDetails
 {
@@ -3359,12 +3345,34 @@ else
     
         postData=[NSString stringWithFormat:@"userid=%@&srv_name=%@&cat_type=%@&book_type=&main_cat=%@&sub_cat=%@&quantity=%@&keyword=%@&video=%@&instant_book=%@&amen_arr=%@&option_value_chk=%@&option_value_radio=%@&option_value_select=%@&option_value_other=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],basic_nameField.text,basic_categoryBtn.titleLabel.text,mainCategoryId,subcategory,basic_quntityField.text,[keywordID componentsJoinedByString:@","],basic_videoField.text,instantBooked,[aminitiesID componentsJoinedByString:@","],checkBoxStr,radioStr,selectStr,textFieldsValue];
 
+        NSLog(@"post data product---%@",postData);
     
     }
     else if(serviceBaseView.bounds.size.height>0)
     {
+        NSLog(@"-----> %@ ",service_bookingTypeBtn.titleLabel.text);
         
-          postData =[NSString stringWithFormat:@"userid=%@&srv_name=%@&cat_type=%@&book_type=%@&main_cat=%@&sub_cat=%@&quantity=%@&keyword=%@&video=%@&instant_book=%@&amen_arr=%@&option_value_chk=%@&option_value_radio=%@&option_value_select=%@&option_value_other=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],basic_nameField.text,basic_categoryBtn.titleLabel.text,service_bookingTypeBtn.titleLabel.text,mainCategoryId,subcategory,basic_quntityField.text,[keywordID componentsJoinedByString:@","],basic_videoField.text,instantBooked,[aminitiesID componentsJoinedByString:@","],checkBoxStr,radioStr,selectStr,textFieldsValue];
+        NSString *bookingType=@"";
+        
+        if(![service_bookingTypeBtn.titleLabel.text isEqualToString:@"Booking Type"])
+        {
+        
+            if ([service_bookingTypeBtn.titleLabel.text isEqualToString:@"Per Day"])
+            {
+                bookingType=@"per_day";
+            }
+            else if([service_bookingTypeBtn.titleLabel.text isEqualToString:@"Slot"])
+            {
+                bookingType=@"slot";
+
+            }
+            
+        }
+        
+        
+          postData =[NSString stringWithFormat:@"userid=%@&srv_name=%@&cat_type=%@&book_type=%@&main_cat=%@&sub_cat=%@&quantity=%@&keyword=%@&video=%@&instant_book=%@&amen_arr=%@&option_value_chk=%@&option_value_radio=%@&option_value_select=%@&option_value_other=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],basic_nameField.text,[basic_categoryBtn.titleLabel.text lowercaseString],bookingType,mainCategoryId,subcategory,basic_quntityField.text,[keywordID componentsJoinedByString:@","],basic_videoField.text,instantBooked,[aminitiesID componentsJoinedByString:@","],checkBoxStr,radioStr,selectStr,textFieldsValue];
+        
+        NSLog(@"post data service---%@",postData);
         
     }
 
@@ -3374,25 +3382,49 @@ else
     
     [request setHTTPMethod:@"POST"];
     
-    NSLog(@"post data ---%@",postData);
+    
    
     [request setValue:@"application/x-www-form-urlencoded; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
     [request setHTTPBody:[postData dataUsingEncoding:NSUTF8StringEncoding]];
     
-    
     [globalobj GlobalDict_post:request Globalstr:@"array" Withblock:^(id result, NSError *error) {
         
           NSLog(@"Save result----> %@",result);
         
+        if([[result valueForKey:@"response"] isEqualToString:@"success"])
+        {
+        
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        
+        }
+        
     }];
     
     
+}
 
+#pragma mark--
+
+#pragma mark-Getting Keyword List
+
+
+- (IBAction)keywordBtnTapped:(id)sender
+{
+    if(keywordArr.count==0)
+    {
+        [self gettingAllKeyword];
+    }
+    else if (keywordArr.count>0)
+    {
+        
+        [self openKeywordtable];
+        
+    }
     
 }
 
-#pragma mark-Keyword Selction methods
 
 -(void)gettingAllKeyword
 {
@@ -3446,6 +3478,10 @@ else
     }];
     
 }
+
+#pragma mark--
+
+#pragma mark--Opening Keyword Listing
 
 -(void)openKeywordtable
 {

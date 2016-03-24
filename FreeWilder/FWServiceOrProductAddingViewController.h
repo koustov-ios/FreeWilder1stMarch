@@ -50,6 +50,7 @@
     
 }
 
+@property(nonatomic)BOOL fromEditPage;
 
 - (IBAction)basic_categoryTapped:(id)sender;
 - (IBAction)basic_instant_yesTapped:(id)sender;
