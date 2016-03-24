@@ -14,7 +14,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
-    self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+   // self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.textLabel.font = [UIFont fontWithName:@"Avenir-Light" size:16];
 

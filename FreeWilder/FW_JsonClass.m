@@ -23,10 +23,7 @@
 -(void)GlobalDict_post:(NSMutableURLRequest *)parameter Globalstr:(NSString *)parametercheck Withblock:(Urlresponceblock)responce
 {
     
-    
-    
     connection = [[NSURLConnection alloc] initWithRequest:parameter delegate:self];
-    
     
     check  = parametercheck;
     connection=nil;
@@ -288,6 +285,7 @@
         NSMutableData *body = [NSMutableData data];
         
         [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        
         
         NSLog(@" flie nema: %@",[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"front_doc\"; filename=\".png\"\r\n"] );
         
