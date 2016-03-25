@@ -11,7 +11,7 @@
 #import "userServiceCell.h"
 #import "UIImageView+WebCache.h"
 
-@interface UserService : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface UserService : UIViewController<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
 {
     FW_JsonClass *obj;
     

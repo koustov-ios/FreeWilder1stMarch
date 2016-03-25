@@ -20,5 +20,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *viewBookingBtn;
 @property (weak, nonatomic) IBOutlet UIButton *deleteBtn;
 @property (weak, nonatomic) IBOutlet UIImageView *deleteicon;
+@property (weak, nonatomic) IBOutlet UIButton *moreBtn;
 
 @end

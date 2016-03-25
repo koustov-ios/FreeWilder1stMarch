@@ -51,6 +51,7 @@
 }
 
 @property(nonatomic)BOOL fromEditPage;
+@property(nonatomic,strong)NSString *productId;
 
 - (IBAction)basic_categoryTapped:(id)sender;
 - (IBAction)basic_instant_yesTapped:(id)sender;

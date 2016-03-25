@@ -46,6 +46,8 @@
 
 {
 
+    IBOutlet UIImageView *loaederImageView;
+    IBOutlet UIView *loaderBackView;
 
 #pragma mark - Footer variables
     
@@ -124,8 +126,41 @@ userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
 
     [super viewWillAppear:animated];
     self.automaticallyAdjustsScrollViewInsets=NO ;
+  
+#pragma mark--Loader view initialization
+    
+    loaderBackView.hidden=NO;
+    loaederImageView.hidden=NO;
+    loaederImageView.layer.shadowOffset=CGSizeMake(0, 1);
+    loaederImageView.layer.shadowRadius=3.5;
+    loaederImageView.layer.shadowColor=[UIColor blackColor].CGColor;
+    loaederImageView.layer.shadowOpacity=0.4;
+    loaederImageView.clipsToBounds=NO;
+    [self runSpinAnimationOnView:loaederImageView duration:10 rotations:1 repeat:200];
+    
+#pragma mark--
 
 }
+
+//loaderBackView.hidden=YES;
+//[loader stopAnimating];
+
+#pragma mark--Loader spin method
+
+- (void) runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat;
+{
+    
+    CABasicAnimation* rotationAnimation;
+    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.y"];
+    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 /* full rotation*/ * rotations * duration ];
+    rotationAnimation.duration = duration;
+    rotationAnimation.cumulative = YES;
+    rotationAnimation.repeatCount = repeat;
+    
+    [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+}
+
+#pragma mark--
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -144,22 +179,26 @@ userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
     
     cell.Catgory_Detail.text = [NSString stringWithFormat:@"%@",[[mainArray objectAtIndex:indexPath.row]valueForKey:@"category_details"]];
     
-    if([[[mainArray objectAtIndex:indexPath.row] valueForKey:@"view_booking"] isEqualToString:@"yes"])
-    {
+    cell.viewBookingBtn.hidden=YES;
     
-        cell.viewBookingBtn.hidden=NO;
+//    if([[[mainArray objectAtIndex:indexPath.row] valueForKey:@"view_booking"] isEqualToString:@"yes"])
+//    {
+//    
+//        cell.viewBookingBtn.hidden=NO;
+//    
+//    }
+//    else
+//    {
+//    
+//       cell.viewBookingBtn.hidden=YES;
+//    
+//    }
     
-    }
-    else
-    {
-    
-       cell.viewBookingBtn.hidden=YES;
-    
-    }
     
     if([[[mainArray objectAtIndex:indexPath.row] valueForKey:@"step_to_list"]length]>3)
     {
         cell.stepsLbl.hidden=NO;
+        cell.moreBtn.hidden=YES;
         
         
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[[mainArray objectAtIndex:indexPath.row] valueForKey:@"step_to_list"] attributes:nil];
@@ -179,7 +218,10 @@ userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
     else
     {
     
+        cell.moreBtn.hidden=NO;
         cell.stepsLbl.hidden=YES;
+        cell.moreBtn.tag=indexPath.row;
+        [cell.moreBtn addTarget:self action:@selector(morebtnTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     }
     
@@ -209,8 +251,9 @@ userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
     cell.cpyBtn.tag=indexPath.row;
     cell.editBtn.tag=indexPath.row;
     cell.viewBookingBtn.tag=indexPath.row;
+
     
-    [cell.deleteBtn addTarget:self action:@selector(deleteService:) forControlEvents:UIControlEventTouchUpInside];
+     [cell.deleteBtn addTarget:self action:@selector(deleteService:) forControlEvents:UIControlEventTouchUpInside];
      [cell.editBtn addTarget:self action:@selector(editService:) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -220,8 +263,76 @@ userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     
     return cell;
+    
 }
 
+
+#pragma mark--MoreBtn tapped
+
+-(void)morebtnTapped:(UIButton *)sender
+{
+
+    NSMutableArray *buttonArray=[NSMutableArray new];
+    UIActionSheet *moreOptionActionSheet=[[UIActionSheet alloc]init];
+    moreOptionActionSheet.tag=sender.tag;
+    moreOptionActionSheet.delegate=self;
+    moreOptionActionSheet.actionSheetStyle=UIActionSheetStyleBlackTranslucent;
+    if([[[mainArray objectAtIndex:sender.tag] valueForKey:@"is_copied_status"] isEqualToString:@"0"])
+    {
+        [buttonArray addObject:@"Edit"];
+        [buttonArray addObject:@"Copy"];
+        
+    }
+    
+    else if ([[[mainArray objectAtIndex:sender.tag] valueForKey:@"is_copied_status"] isEqualToString:@"1"])
+    {
+        
+        
+        [buttonArray addObject:@"Edit"];
+        [buttonArray addObject:@"Publish"];
+
+        
+    }
+    
+ for (NSString *title in buttonArray)
+ {
+    [moreOptionActionSheet addButtonWithTitle:title];
+     
+ }
+
+moreOptionActionSheet.cancelButtonIndex = [moreOptionActionSheet addButtonWithTitle:@"Cancel"];
+
+[moreOptionActionSheet showInView:self.view];
+
+}
+
+#pragma mark--
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+
+    //NSLog(@"cancel button index-> %ld",buttonIndex);
+    
+    if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Publish"])
+    {
+    
+        [self publishServiceWithTag:actionSheet.tag];
+    
+    }
+    else   if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Copy"])
+    {
+        
+        [self copyServiceWithTag:actionSheet.tag];
+        
+    }
+    else   if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Edit"])
+    {
+        
+        [self editServiceWithTag:actionSheet.tag];
+        
+    }
+
+}
 
 #pragma mark-My Service Edit Delete Copy Actions
 
@@ -239,6 +350,82 @@ userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
     
  
 }
+-(void)editServiceWithTag:(NSInteger)tag
+{
+    
+    
+    
+    UIStoryboard *addServiceStoryBoard=[UIStoryboard storyboardWithName:@"FWAddService" bundle:nil];
+    
+    FWServiceOrProductAddingViewController *vcObj=[addServiceStoryBoard instantiateViewControllerWithIdentifier:@"FWServiceOrProductAdding"];
+    vcObj.fromEditPage=YES;
+    vcObj.productId=[[mainArray objectAtIndex:tag] valueForKey:@"service_id"];
+    [self PushViewController:vcObj WithAnimation:kCAMediaTimingFunctionEaseIn];
+    
+    
+}
+
+-(void)publishServiceWithTag:(NSInteger)tag
+{
+    
+    
+    userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
+    
+    
+    loaderBackView.hidden=NO;
+    
+    NSString *url = [NSString stringWithFormat:@"%@app_user_service/app_publish_service?userid=%@&service_id=%@",App_Domain_Url,userid,[[mainArray objectAtIndex:tag] valueForKey:@"service_id"]];
+    
+    NSLog(@"url===%@",url);
+    
+    [obj GlobalDict:url Globalstr:@"array" Withblock:^(id result, NSError *error)
+     
+     {
+         if ([[result valueForKey:@"response"]isEqualToString:@"success"])
+         {
+             UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Message" message:@"Published successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+             [alert show];
+             
+             [self url];
+             
+         }
+         
+         
+     }];
+    
+    
+}
+
+
+
+-(void)copyServiceWithTag:(NSInteger)tag
+{
+    
+    userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
+    
+    loaderBackView.hidden=NO;
+    
+    NSString *url = [NSString stringWithFormat:@"%@app_user_service/app_copy_service?userid=%@&service_id=%@",App_Domain_Url,userid,[[mainArray objectAtIndex:tag] valueForKey:@"service_id"]];
+    
+    NSLog(@"url===%@",url);
+    
+    [obj GlobalDict:url Globalstr:@"array" Withblock:^(id result, NSError *error)
+     
+     {
+         if ([[result valueForKey:@"response"]isEqualToString:@"success"])
+         {
+             UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Message" message:@"Copied successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+             [alert show];
+             [self url];
+             
+         }
+         
+         
+     }];
+    
+    
+}
+#pragma mark--
 
 
 
@@ -263,6 +450,7 @@ userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
                {
                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Message" message:@"Service Cancelled successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                    [alert show];
+                   
                    
                    
                    [mainArray removeObjectAtIndex:deleteIndex];
@@ -293,81 +481,6 @@ userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
 
 }
 
--(void)editService:(UIButton *)sender
-{
-    
-    int tag=(int)sender.tag;
-    
-    
-    UIStoryboard *addServiceStoryBoard=[UIStoryboard storyboardWithName:@"FWAddService" bundle:nil];
-    
-    FWServiceOrProductAddingViewController *vcObj=[addServiceStoryBoard instantiateViewControllerWithIdentifier:@"FWServiceOrProductAdding"];
-    vcObj.fromEditPage=YES;
-    [self PushViewController:vcObj WithAnimation:kCAMediaTimingFunctionEaseIn];
-    
-    
-}
-
--(void)publishService:(UIButton *)sender
-{
-    
-    
-    userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
-    
-    
-    
-    NSString *url = [NSString stringWithFormat:@"%@app_user_service/app_publish_service?userid=%@&service_id=%@",App_Domain_Url,userid,[[mainArray objectAtIndex:sender.tag] valueForKey:@"service_id"]];
-    
-    NSLog(@"url===%@",url);
-    
-    [obj GlobalDict:url Globalstr:@"array" Withblock:^(id result, NSError *error)
-     
-     {
-         if ([[result valueForKey:@"response"]isEqualToString:@"success"])
-         {
-             UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Message" message:@"Published successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-             [alert show];
-             
-             [self url];
-             
-         }
-         
-         
-     }];
-
-    
-}
-
-
-
--(void)copyService:(UIButton *)sender
-{
-    
-    userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
-    
-    
-    
-    NSString *url = [NSString stringWithFormat:@"%@app_user_service/app_copy_service?userid=%@&service_id=%@",App_Domain_Url,userid,[[mainArray objectAtIndex:sender.tag] valueForKey:@"service_id"]];
-    
-    NSLog(@"url===%@",url);
-    
-    [obj GlobalDict:url Globalstr:@"array" Withblock:^(id result, NSError *error)
-     
-     {
-         if ([[result valueForKey:@"response"]isEqualToString:@"success"])
-         {
-            UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Message" message:@"Copied successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-             [alert show];
-             
-             [self url];
-            
-         }
-         
-         
-     }];
-
-    
-}
 
 #pragma mark-
 
@@ -403,8 +516,13 @@ userid=[[NSUserDefaults standardUserDefaults] valueForKey:@"UserId"];
             
             NSLog(@"Main array----> \n %@",mainArray);
             
-            
-            [userServicetable reloadData];
+            if(mainArray.count>0)
+            {
+                
+              [userServicetable reloadData];
+              loaderBackView.hidden=YES;
+            }
+        
         }
         
         

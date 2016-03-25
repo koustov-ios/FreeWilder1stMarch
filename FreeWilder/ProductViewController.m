@@ -1315,34 +1315,34 @@ else
 
 
 
--(void)checkLoader
-{
-    
-    if([self.view.subviews containsObject:loader_shadow_View])
-    {
-        
-        [loader_shadow_View removeFromSuperview];
-        [self.view setUserInteractionEnabled:YES];
-    }
-    else
-    {
-        loader_shadow_View = [[UIView alloc] initWithFrame:self.view.frame];
-        //   loader_shadow_View = [[UIView alloc] initWithFrame:ProductListingTable.frame];
-        [loader_shadow_View setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.56f]];
-        [loader_shadow_View setUserInteractionEnabled:NO];
-        [[loader_shadow_View layer] setZPosition:2];
-        [self.view setUserInteractionEnabled:NO];
-        UIActivityIndicatorView *loader =[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        
-        [loader setCenter:CGPointMake(self.view.frame.size.width/2, self.view.frame.size.height/2)];
-        
-        [loader startAnimating];
-        
-        
-        [loader_shadow_View addSubview:loader];
-        [self.view addSubview:loader_shadow_View];
-    }
-}
+//-(void)checkLoader
+//{
+//    
+//    if([self.view.subviews containsObject:loader_shadow_View])
+//    {
+//        
+//        [loader_shadow_View removeFromSuperview];
+//        [self.view setUserInteractionEnabled:YES];
+//    }
+//    else
+//    {
+//        loader_shadow_View = [[UIView alloc] initWithFrame:self.view.frame];
+//        //   loader_shadow_View = [[UIView alloc] initWithFrame:ProductListingTable.frame];
+//        [loader_shadow_View setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.56f]];
+//        [loader_shadow_View setUserInteractionEnabled:NO];
+//        [[loader_shadow_View layer] setZPosition:2];
+//        [self.view setUserInteractionEnabled:NO];
+//        UIActivityIndicatorView *loader =[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+//        
+//        [loader setCenter:CGPointMake(self.view.frame.size.width/2, self.view.frame.size.height/2)];
+//        
+//        [loader startAnimating];
+//        
+//        
+//        [loader_shadow_View addSubview:loader];
+//        [self.view addSubview:loader_shadow_View];
+//    }
+//}
 
 
 //-(void)Slide_menu_off
