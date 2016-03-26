@@ -141,6 +141,8 @@ FW_JsonClass *globalobj;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    globalobj=[FW_JsonClass new];
+    
     iskeyWordTableOpen=@"no";
     
     saveBtn.layer.cornerRadius=6.0f;
@@ -180,6 +182,10 @@ FW_JsonClass *globalobj;
     textContainerArr=[[NSMutableArray alloc]init];
     textContainerDic=[[NSMutableDictionary alloc]init];
     motheridarr_textRelated=[[NSMutableArray alloc]init];
+    
+    radioBtnValues=[NSMutableArray new];
+    selectListvalues=[NSMutableArray new];
+    
     
     // Do any additional setup after loading the view.
     
@@ -243,6 +249,819 @@ FW_JsonClass *globalobj;
     
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+
+    [super viewWillAppear:animated];
+    
+    if(_fromEditPage==YES)
+    {
+    
+        NSLog(@"Edit service for %@",_productId);
+        
+        [self getTheDetailsOfProductForEditWithId:_productId];
+    
+    }
+
+}
+
+#pragma mark-- < Creating views for edit purpose >
+
+-(void)getTheDetailsOfProductForEditWithId:(NSString *)product_id
+{
+
+    NSString *urlStr=[NSString stringWithFormat:@"%@app_user_service/edit_service_details?userid=%@&service_id=%@",App_Domain_Url,[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],product_id];
+    
+    [globalobj GlobalDict:urlStr Globalstr:@"array" Withblock:^(id result, NSError *error) {
+        
+        
+        NSLog(@"Product details...\n %@",result);
+        
+ //----- K E Y W O R D data fetching------//
+        
+        if([[result valueForKey:@"keyword_list"] count]>0)
+        {
+            NSArray *keyword_Arr_temp=[NSArray new];
+            keyword_Arr_temp=[result valueForKey:@"keyword_list"];
+        
+        for (int i=0; i<keyword_Arr_temp.count; i++)
+        {
+            
+            NSString *key_idTemp = [NSString stringWithFormat:@"%@",[keyword_Arr_temp[i]valueForKey:@"id"]];
+            NSString *key_nameTemp = [NSString stringWithFormat:@"%@",[keyword_Arr_temp[i]valueForKey:@"keyword_name"]];
+            
+             keyWordFragDic=[NSMutableDictionary new];
+            
+            [keyWordFragDic setValue:key_idTemp forKey:@"id"];
+            
+            [keyWordFragDic setValue:key_nameTemp forKey:@"name"];
+            
+            if([[NSString stringWithFormat:@"%@",[keyword_Arr_temp[i] valueForKey:@"select_keyword_status"]] isEqualToString:@"1"])
+            {
+            
+                [keyWordFragDic setValue:@"yes" forKey:@"selected"];
+            
+            }
+            else
+            {
+              [keyWordFragDic setValue:@"no" forKey:@"selected"];
+            
+            }
+            [keywordArr addObject:keyWordFragDic];
+            
+        }
+            
+        }
+        
+//----- K E Y W O R D data fetching ENDS ------//
+        
+        if([[NSString stringWithFormat:@"%@",[result valueForKey:@"instant_book_status"] ] isEqualToString:@"1"])
+        instantBooked=@"yes";
+        else
+        instantBooked=@"no";
+        
+         basic_nameField.text=[NSString stringWithFormat:@"%@",[result valueForKey:@"service_name"]];
+        [basic_categoryBtn setTitle:[NSString stringWithFormat:@"%@",[result valueForKey:@"service_type"]] forState:UIControlStateNormal];
+        basic_categoryBtn.enabled=NO;
+        if([[NSString stringWithFormat:@"%@",[result valueForKey:@"service_video"]] length]>0)
+        {
+          basic_videoField.text=[NSString stringWithFormat:@"%@",[result valueForKey:@"service_video"]];
+        }
+        basic_quntityField.text=[NSString stringWithFormat:@"%@",[result valueForKey:@"service_quantity"]];
+        
+        if([[NSString stringWithFormat:@"%@",[result valueForKey:@"instant_book_status"] ] isEqualToString:@"1"])
+        {
+         [basic_instant_yes setBackgroundImage:[UIImage imageNamed:@"check_on_category"] forState:UIControlStateNormal];
+        }
+        else
+        {
+            [basic_instant_no setBackgroundImage:[UIImage imageNamed:@"check_on_category"] forState:UIControlStateNormal];
+        }
+        
+        
+         NSString *idForCreatingSubCat;
+        
+        if([basic_categoryBtn.titleLabel.text isEqualToString:@"Product"])
+        {
+            
+            tagForBtn_and_Table=-1;
+            
+            [productBaseView removeFromSuperview];
+            [serviceBaseView removeFromSuperview];
+            [subCatDictionary removeAllObjects];
+            
+            updatedY_product=0;
+            
+            productBaseView=[[UIView alloc]initWithFrame:CGRectMake(0, basic_categoryBtn.frame.origin.y+basic_categoryBtn.frame.size.height+8, self.view.bounds.size.width, 0)];
+            
+            productBaseView.backgroundColor=basic_scrollView.backgroundColor;//[UIColor darkGrayColor];
+            
+            [basic_scrollView addSubview:productBaseView];
+            
+            mainCategoryBtn_product=[UIButton new];
+            mainCategoryBtn_product.frame=CGRectMake(basic_categoryBtn.frame.origin.x, 0, basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+            [mainCategoryBtn_product setTitle:@"Main Category" forState:UIControlStateNormal];
+            mainCategoryBtn_product.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            mainCategoryBtn_product.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
+            mainCategoryBtn_product.titleLabel.font=basic_categoryBtn.titleLabel.font;
+            [mainCategoryBtn_product setTitleColor:basic_categoryBtn.titleLabel.textColor forState:UIControlStateNormal];
+            [mainCategoryBtn_product setBackgroundImage:[UIImage imageNamed:@"input_back"] forState:UIControlStateNormal];
+            
+            mainCategoryBtn_product.tag=tagForBtn_and_Table;
+            
+            
+            [productBaseView addSubview:mainCategoryBtn_product];
+            
+            [mainCategoryBtn_product addTarget:self action:@selector(productMainCategoryTapped:) forControlEvents:UIControlEventTouchUpInside];
+            
+            updatedY_product+=mainCategoryBtn_product.frame.size.height+8;
+            
+            
+            
+            for (int i=0; i<[[result valueForKey:@"service_main_category_list"] count]; i++) {
+                
+                if([[NSString stringWithFormat:@"%@",[[[result valueForKey:@"service_main_category_list"] objectAtIndex:i] valueForKey:@"check_status"]] isEqualToString:@"1"])
+                {
+                    
+                    idForCreatingSubCat=[[[result valueForKey:@"service_main_category_list"] objectAtIndex:i] valueForKey:@"cat_id"];
+                    
+                    [mainCategoryBtn_product setTitle:[[[result valueForKey:@"service_main_category_list"] objectAtIndex:i] valueForKey:@"category_name"] forState:UIControlStateNormal];
+                    
+                }
+                
+                
+            }
+            
+            
+            
+            UIImageView *dropdownArrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, mainCategoryBtn_product.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
+            dropdownArrow.image=[UIImage imageNamed:@"downArrow"];
+            dropdownArrow.contentMode=UIViewContentModeScaleAspectFit;
+            
+            
+            dropdownArrow.tag=tagForBtn_and_Table;
+            
+            [productBaseView addSubview:dropdownArrow];
+            
+            productBaseView.frame=CGRectMake(productBaseView.frame.origin.x, productBaseView.frame.origin.y, productBaseView.frame.size.width, updatedY_product-8);
+            
+            
+            
+            basic_bottomView.frame=CGRectMake(basic_bottomView.frame.origin.x, productBaseView.frame.origin.y+productBaseView.frame.size.height+8, basic_bottomView.frame.size.width, basic_bottomView.frame.size.height);
+            
+            basic_scrollView.contentSize=CGSizeMake(self.view.bounds.size.width, basic_bottomView.frame.size.height+basic_bottomView.frame.origin.y);
+            
+            updatedY_product=productBaseView.frame.size.height+8;
+            
+            
+            
+        }
+        if ([basic_categoryBtn.titleLabel.text isEqualToString:@"Service"])
+        {
+            
+            tagForBtn_and_Table=-2;
+            
+            [serviceBaseView removeFromSuperview];
+            [productBaseView removeFromSuperview];
+            
+            [subCatDictionary removeAllObjects];
+            
+            updatedY_service=0;
+            
+            serviceBaseView=[[UIView alloc]initWithFrame:CGRectMake(0, basic_categoryBtn.frame.origin.y+basic_categoryBtn.frame.size.height+8, self.view.bounds.size.width,0)];
+            serviceBaseView.backgroundColor=basic_scrollView.backgroundColor;//[UIColor yellowColor];
+            
+            
+            [basic_scrollView addSubview:serviceBaseView];
+            
+            
+            
+            service_bookingTypeBtn=[UIButton new];
+            
+            service_bookingTypeBtn=[UIButton new];
+            service_bookingTypeBtn.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updatedY_service, basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+            [service_bookingTypeBtn setTitle:[NSString stringWithFormat:@"%@",[result valueForKey:@"service_booking_type"]] forState:UIControlStateNormal];
+            service_bookingTypeBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            service_bookingTypeBtn.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
+            service_bookingTypeBtn.titleLabel.font=basic_categoryBtn.titleLabel.font;
+            [service_bookingTypeBtn setTitleColor:basic_categoryBtn.titleLabel.textColor forState:UIControlStateNormal];
+            [service_bookingTypeBtn setBackgroundImage:[UIImage imageNamed:@"input_back"] forState:UIControlStateNormal];
+            
+            // service_bookingTypeBtn.tag=tagForBtn_and_Table;
+            
+            [serviceBaseView addSubview:service_bookingTypeBtn];
+            
+            [service_bookingTypeBtn addTarget:self action:@selector(BookingTypeTapped:) forControlEvents:UIControlEventTouchUpInside];
+            
+            updatedY_service+=service_bookingTypeBtn.frame.size.height+8;
+            
+            UIImageView *dropdown_Arrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, service_bookingTypeBtn.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
+            dropdown_Arrow.image=[UIImage imageNamed:@"downArrow"];
+            dropdown_Arrow.contentMode=UIViewContentModeScaleAspectFit;
+            // dropdownArrow.tag=tagForBtn_and_Table;
+            [serviceBaseView addSubview:dropdown_Arrow];
+            
+            
+            
+            
+            
+            maninCategoryBtn_service=[UIButton new];
+            maninCategoryBtn_service.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updatedY_service, basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+            [maninCategoryBtn_service setTitle:@"Main Category" forState:UIControlStateNormal];
+            maninCategoryBtn_service.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            maninCategoryBtn_service.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
+            maninCategoryBtn_service.titleLabel.font=basic_categoryBtn.titleLabel.font;
+            [maninCategoryBtn_service setTitleColor:basic_categoryBtn.titleLabel.textColor forState:UIControlStateNormal];
+            [maninCategoryBtn_service setBackgroundImage:[UIImage imageNamed:@"input_back"] forState:UIControlStateNormal];
+            
+            maninCategoryBtn_service.tag=tagForBtn_and_Table;
+            
+            [serviceBaseView addSubview:maninCategoryBtn_service];
+            
+            [maninCategoryBtn_service addTarget:self action:@selector(productMainCategoryTapped:) forControlEvents:UIControlEventTouchUpInside];
+            
+            updatedY_service+=maninCategoryBtn_service.frame.size.height+8;
+            
+            mainCategoryList=[result valueForKey:@"service_main_category_list"];
+            
+            for (int i=0; i<[[result valueForKey:@"service_main_category_list"] count]; i++) {
+                
+                if([[NSString stringWithFormat:@"%@",[[[result valueForKey:@"service_main_category_list"] objectAtIndex:i] valueForKey:@"check_status"]] isEqualToString:@"1"])
+                {
+                    
+                    idForCreatingSubCat=[[[result valueForKey:@"service_main_category_list"] objectAtIndex:i] valueForKey:@"cat_id"];
+                    
+                    [maninCategoryBtn_service setTitle:[[[result valueForKey:@"service_main_category_list"] objectAtIndex:i] valueForKey:@"category_name"] forState:UIControlStateNormal];
+                    
+                }
+                
+                
+            }
+            
+            
+            UIImageView *dropdownArrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, maninCategoryBtn_service.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
+            dropdownArrow.image=[UIImage imageNamed:@"downArrow"];
+            dropdownArrow.contentMode=UIViewContentModeScaleAspectFit;
+            
+            
+            dropdownArrow.tag=tagForBtn_and_Table;
+            
+            [serviceBaseView addSubview:dropdownArrow];
+            
+            serviceBaseView.frame=CGRectMake(serviceBaseView.frame.origin.x, serviceBaseView.frame.origin.y, serviceBaseView.frame.size.width, updatedY_service-8);
+            
+            
+            
+            basic_bottomView.frame=CGRectMake(basic_bottomView.frame.origin.x, serviceBaseView.frame.origin.y+serviceBaseView.frame.size.height+8, basic_bottomView.frame.size.width, basic_bottomView.frame.size.height);
+            
+            basic_scrollView.contentSize=CGSizeMake(self.view.bounds.size.width, basic_bottomView.frame.size.height+basic_bottomView.frame.origin.y);
+            
+            updatedY_service=serviceBaseView.frame.size.height+8;
+            
+            
+        }
+        
+ // ------ CREATING SUB CATEGORY VIEWS if ANY ------ //
+        
+       
+        
+        
+        if([[NSString stringWithFormat:@"%@",[result valueForKey:@"sub_category_status"]] isEqualToString:@"1"])
+        {
+        
+            NSMutableArray *subcat_arr_temp=[NSMutableArray new];
+            
+
+            // ------ Creating Array For Sub Category ------- //
+            
+            for (int i=0; i<[[result valueForKey:@"sub_category_list"] count]; i++)
+            {
+                
+                for (int j=0; j<[[[[[result valueForKey:@"sub_category_list"] objectAtIndex:i] valueForKey:@"option_value"] objectAtIndex:0] count]; j++)
+                {
+                    
+                      if([[NSString stringWithFormat:@"%@",[[[[[[result valueForKey:@"sub_category_list"] objectAtIndex:i] valueForKey:@"option_value"] objectAtIndex:0] objectAtIndex:j] valueForKey:@"check_status"]] isEqualToString:@"1"])
+                      {
+                      
+                          [subcat_arr_temp addObject:[[[[[result valueForKey:@"sub_category_list"] objectAtIndex:i] valueForKey:@"option_value"] objectAtIndex:0] objectAtIndex:j]];
+                      
+                      }
+                    
+                    
+                }
+                
+                
+            }
+            
+            NSLog(@"Sub cat array---> %@",subcat_arr_temp);
+            
+            // ------ Array For Sub Category Created ------- //
+            
+            
+  // ** Creating sub category buttons ** //
+            
+            for(int i=0; i<subcat_arr_temp.count; i++)
+            {
+                
+                [subCatDictionary setValue:[[subcat_arr_temp objectAtIndex:i] valueForKey:@"id"] forKey:idForCreatingSubCat];
+                
+                
+                
+                 NSLog(@"Now sub cat dic contains---> %@",subCatDictionary);
+                
+                if(productBaseView.bounds.size.height>0)
+                {
+                    // [self createSubCategoryButtonOnView:serviceBaseView fromTag:[idForCreatingSubCat intValue]];
+                    
+                    NSLog(@"PRODUCT SUB_CAT BTN(s)");
+                    
+                    UIButton *subCategoryBtn=[UIButton new];
+                    
+                    subCategoryBtn.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updatedY_product,basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+                    [subCategoryBtn setTitle:[NSString stringWithFormat:@"%@",[subcat_arr_temp[i] valueForKey:@"cat_name"]] forState:UIControlStateNormal];
+                    
+                    subCategoryBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                    subCategoryBtn.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
+                    subCategoryBtn.titleLabel.font=basic_categoryBtn.titleLabel.font;
+                    [subCategoryBtn setTitleColor:basic_categoryBtn.titleLabel.textColor forState:UIControlStateNormal];
+                    [subCategoryBtn setBackgroundImage:[UIImage imageNamed:@"input_back"] forState:UIControlStateNormal];
+                    
+                    
+                    
+                    subCategoryBtn.tag=[idForCreatingSubCat intValue];
+                    
+                    tagForBtn_and_Table=[idForCreatingSubCat intValue];
+                    
+                    [productBaseView addSubview:subCategoryBtn];
+                    
+                    NSLog(@"btn Y--------> %f",subCategoryBtn.frame.origin.y);
+                    
+                    [subCategoryBtn addTarget:self action:@selector(productMainCategoryTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    
+                    updatedY_product+=subCategoryBtn.frame.size.height+8;
+                    
+                    
+                    UIImageView *dropdownArrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, subCategoryBtn.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
+                    dropdownArrow.image=[UIImage imageNamed:@"downArrow"];
+                    dropdownArrow.contentMode=UIViewContentModeScaleAspectFit;
+                    
+                    
+                    dropdownArrow.tag=[idForCreatingSubCat intValue];
+                    
+                    [productBaseView addSubview:dropdownArrow];
+                    productBaseView.frame=CGRectMake(productBaseView.frame.origin.x, productBaseView.frame.origin.y, productBaseView.frame.size.width, subCategoryBtn.frame.origin.y+subCategoryBtn.frame.size.height);
+                    
+                    basic_bottomView.frame=CGRectMake(basic_bottomView.frame.origin.x, productBaseView.frame.origin.y+productBaseView.frame.size.height+8, basic_bottomView.frame.size.width, basic_bottomView.frame.size.height);
+                    
+                    basic_scrollView.contentSize=CGSizeMake(self.view.bounds.size.width, basic_bottomView.frame.size.height+basic_bottomView.frame.origin.y);
+                    
+                    idForCreatingSubCat=[[subcat_arr_temp objectAtIndex:i] valueForKey:@"id"];
+                    
+                    
+                }
+                else  if(serviceBaseView.bounds.size.height>0)
+                {
+                   // [self createSubCategoryButtonOnView:serviceBaseView fromTag:[idForCreatingSubCat intValue]];
+                    
+                    NSLog(@"SERVICE SUB_CAT BTN(s)");
+                    
+                    UIButton *subCategoryBtn=[UIButton new];
+                    
+                    subCategoryBtn.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updatedY_service,basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+                    [subCategoryBtn setTitle:[NSString stringWithFormat:@"%@",[subcat_arr_temp[i] valueForKey:@"cat_name"]] forState:UIControlStateNormal];
+                    
+                    subCategoryBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                    subCategoryBtn.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
+                    subCategoryBtn.titleLabel.font=basic_categoryBtn.titleLabel.font;
+                    [subCategoryBtn setTitleColor:basic_categoryBtn.titleLabel.textColor forState:UIControlStateNormal];
+                    [subCategoryBtn setBackgroundImage:[UIImage imageNamed:@"input_back"] forState:UIControlStateNormal];
+                    
+                    
+                    
+                    subCategoryBtn.tag=[idForCreatingSubCat intValue];
+                    
+                    tagForBtn_and_Table=[idForCreatingSubCat intValue];
+                    
+                    [serviceBaseView addSubview:subCategoryBtn];
+                    
+                    NSLog(@"btn Y--------> %f",subCategoryBtn.frame.origin.y);
+                    
+                    [subCategoryBtn addTarget:self action:@selector(productMainCategoryTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    
+                    updatedY_service+=subCategoryBtn.frame.size.height+8;
+                    
+                    
+                    UIImageView *dropdownArrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, subCategoryBtn.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
+                    dropdownArrow.image=[UIImage imageNamed:@"downArrow"];
+                    dropdownArrow.contentMode=UIViewContentModeScaleAspectFit;
+                    
+                    
+                    dropdownArrow.tag=[idForCreatingSubCat intValue];
+                    
+                    [serviceBaseView addSubview:dropdownArrow];
+                    serviceBaseView.frame=CGRectMake(serviceBaseView.frame.origin.x, serviceBaseView.frame.origin.y, serviceBaseView.frame.size.width, subCategoryBtn.frame.origin.y+subCategoryBtn.frame.size.height);
+                    
+                    basic_bottomView.frame=CGRectMake(basic_bottomView.frame.origin.x, serviceBaseView.frame.origin.y+serviceBaseView.frame.size.height+8, basic_bottomView.frame.size.width, basic_bottomView.frame.size.height);
+                    
+                    basic_scrollView.contentSize=CGSizeMake(self.view.bounds.size.width, basic_bottomView.frame.size.height+basic_bottomView.frame.origin.y);
+                    
+                    idForCreatingSubCat=[[subcat_arr_temp objectAtIndex:i] valueForKey:@"id"];
+                
+                
+                }
+            
+            }
+
+            
+ // ** Sub category buttons ends ** //
+        
+        }
+        
+ // <<------ Other type of views ------>> \\
+        
+        
+        if ([[result valueForKey:@"other_option"] count]>0) {
+            
+            NSLog(@"Other type of views...");
+            
+            UIView *base_view=[UIView new];
+            
+            if(productBaseView.bounds.size.height>0)
+            {
+            
+                base_view=productBaseView;
+            
+            }
+            if(serviceBaseView.bounds.size.height>0)
+            {
+                
+                base_view=serviceBaseView;
+                
+            }
+            
+            
+            otherViewsArray=[result valueForKey:@"other_option"];
+            
+            
+            
+            UIView *otherViewContainer=[UIView new];
+            
+            otherViewContainer.frame=CGRectMake(0, base_view.frame.size.height+8, self.view.bounds.size.width,0);
+            [base_view addSubview:otherViewContainer];
+            otherViewContainer.backgroundColor=[UIColor yellowColor];
+            otherViewContainer.tag=[idForCreatingSubCat intValue];
+
+            
+            float updated_y=0;
+            
+            for (int i=0; i<otherViewsArray.count; i++)
+            {
+                
+                NSDictionary *tempDic=otherViewsArray[i];
+                
+                NSString *typeCheck=[tempDic valueForKey:@"option_type"];
+                
+                if([typeCheck isEqualToString:@"textarea"])
+                {
+                    
+                    UILabel *headingLabl=[UILabel new];
+                    headingLabl.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updated_y, 200, 20);
+                    headingLabl.textColor=[UIColor darkGrayColor];
+                    headingLabl.text=[NSString stringWithFormat:@"%@ :",[tempDic valueForKey:@"option_name"]];
+                    headingLabl.font=[UIFont fontWithName:@"Lato" size:16];
+                    
+                    [otherViewContainer addSubview:headingLabl];
+                    
+                    
+                    UITextView *textArea=[UITextView new];
+                    textArea.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                    textArea.frame=CGRectMake(basic_categoryBtn.frame.origin.x, headingLabl.frame.origin.y+headingLabl.frame.size.height+4, basic_categoryBtn.bounds.size.width, 100);
+                    textArea.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"input_back"]];
+                    textArea.delegate=self;
+                    textArea.text=[NSString stringWithFormat:@"%@",[tempDic valueForKey:@"option_value"]];
+                    textArea.autocorrectionType=UITextAutocorrectionTypeNo;
+                    textArea.keyboardAppearance=UIKeyboardAppearanceDark;
+                    
+                    
+                    updated_y=textArea.bounds.size.height+textArea.frame.origin.y+4;
+                    
+                    otherViewContainer.frame=CGRectMake(otherViewContainer.frame.origin.x, otherViewContainer.frame.origin.y, otherViewContainer.bounds.size.width,updated_y);
+                    
+                    [otherViewContainer addSubview:textArea];
+                    
+                    [motheridarr_textRelated addObject:[NSString stringWithFormat:@"%ld",textArea.tag]];
+                   
+                    [textContainerArr addObject:[NSString stringWithFormat:@"%@@/%@",[NSString stringWithFormat:@"%ld",textArea.tag],textArea.text]];
+                   
+                    [textContainerDic setValue:textContainerArr forKey:[NSString stringWithFormat:@"%ld",textArea.superview.tag]];
+                    
+                }
+                else if([typeCheck isEqualToString:@"text"])
+                {
+                    
+                    UITextField *textField=[UITextField new];
+                    textField.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                    textField.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updated_y, basic_categoryBtn.bounds.size.width, basic_quntityField.bounds.size.height);
+                    textField.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"input_back"]];
+                    textField.font=basic_quntityField.font;
+                    textField.placeholder=[NSString stringWithFormat:@"%@",[tempDic valueForKey:@"option_name"]];
+                    textField.text=[NSString stringWithFormat:@"%@",[tempDic valueForKey:@"option_value"]];
+                    textField.delegate=self;
+                    
+                    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 6)];
+                    textField.leftView = paddingView;
+                    textField.leftViewMode = UITextFieldViewModeAlways;
+                    
+                    
+                    textField.autocorrectionType=UITextAutocorrectionTypeNo;
+                    textField.keyboardAppearance=UIKeyboardAppearanceDark;
+                    
+                    
+                    updated_y=textField.bounds.size.height+textField.frame.origin.y+8;
+                    
+                    otherViewContainer.frame=CGRectMake(otherViewContainer.frame.origin.x, otherViewContainer.frame.origin.y, otherViewContainer.bounds.size.width,updated_y);
+                    
+                    [otherViewContainer addSubview:textField];
+                    
+                    [motheridarr_textRelated addObject:[NSString stringWithFormat:@"%ld",textField.tag]];
+                    [textContainerArr addObject:[NSString stringWithFormat:@"%@@/%@",[NSString stringWithFormat:@"%ld",textField.tag],textField.text]];
+                    [textContainerDic setValue:textContainerArr forKey:[NSString stringWithFormat:@"%ld",textField.superview.tag]];
+                    
+                }
+                
+                
+                else  if([typeCheck isEqualToString:@"select"] || [typeCheck isEqualToString:@"radio"])
+                {
+                    
+                    specialButton *selectOrRadioBtnOpeningBtn=selectOrRadioBtnOpeningBtn=[[specialButton alloc]init];
+                    selectOrRadioBtnOpeningBtn.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updated_y, basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+                    [selectOrRadioBtnOpeningBtn setTitle:[NSString stringWithFormat:@"%@",[tempDic valueForKey:@"option_name"]] forState:UIControlStateNormal];
+                    selectOrRadioBtnOpeningBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                    selectOrRadioBtnOpeningBtn.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
+                    selectOrRadioBtnOpeningBtn.titleLabel.font=basic_categoryBtn.titleLabel.font;
+                    [selectOrRadioBtnOpeningBtn setTitleColor:basic_categoryBtn.titleLabel.textColor forState:UIControlStateNormal];
+                    [selectOrRadioBtnOpeningBtn setBackgroundImage:[UIImage imageNamed:@"input_back"] forState:UIControlStateNormal];
+                    
+                    [selectOrRadioBtnOpeningBtn addTarget:self action:@selector(openRadioBtnListOrSelectlist:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    selectOrRadioBtnOpeningBtn.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                    
+                    if([typeCheck isEqualToString:@"select"])
+                    {
+                        selectOrRadioBtnOpeningBtn.stringId=[NSString stringWithFormat:@"select"];
+                        selectOrRadioBtnOpeningBtn.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                        
+                         NSLog(@"Here select---> ");
+
+                       selectListArray=[tempDic valueForKey:@"option_value"];
+                      
+                         NSLog(@"select BOX---> %@ ",selectListArray);
+                        
+                        for(int j=0; j<selectListArray.count; j++)
+                        {
+                        
+                            if([[NSString stringWithFormat:@"%@",[selectListArray[j] valueForKey:@"option_check"]] isEqualToString:@"1"])
+                            {
+                                
+
+                                    [motheridarr_selectlist addObject:[selectListArray[j] valueForKey:@"option_id"]];
+                                    
+                                    [selectListvalues addObject:[NSString stringWithFormat:@"%@/%@",[selectListArray[j] valueForKey:@"id"],[selectListArray[j] valueForKey:@"option_id"]]];
+                                
+                                NSLog(@"Found match... %@ ",selectListvalues);
+                            }
+                        
+                        }
+                        NSString *key = [NSString stringWithFormat:@"%d",[idForCreatingSubCat intValue]];
+                        selectListDic=[NSMutableDictionary new];
+                        [selectListDic setValue:selectListvalues forKey:key];
+                        
+                        NSLog(@"select ***  dic---> %@ ",selectListDic);
+                        
+                        
+                    }
+                    else  if([typeCheck isEqualToString:@"radio"])
+                    {
+                        
+                        NSLog(@"Here radio---> ");
+                        
+                        selectOrRadioBtnOpeningBtn.stringId=[NSString stringWithFormat:@"radio"];
+                        
+                        selectOrRadioBtnOpeningBtn.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                        
+                        
+                       radioBtnListArray=[tempDic valueForKey:@"option_value"];
+                        
+                        
+                        NSLog(@"radio BOX---> %@ ",radioBtnListArray);
+                        
+                        for(int j=0; j<radioBtnListArray.count; j++)
+                        {
+                            
+                            if([[NSString stringWithFormat:@"%@",[radioBtnListArray[j] valueForKey:@"option_check"]] isEqualToString:@"1"])
+                            {
+
+                                    [motheridarr_radiolist addObject:[radioBtnListArray[j] valueForKey:@"option_id"]];
+                                    
+                                    [radioBtnValues addObject:[NSString stringWithFormat:@"%@/%@",[radioBtnListArray[j] valueForKey:@"id"],[radioBtnListArray[j] valueForKey:@"option_id"]]];
+                                
+                                NSLog(@"Found match... %@ ",radioBtnValues);
+
+
+                            }
+                            
+                        }
+                        NSString *key = [NSString stringWithFormat:@"%d",[idForCreatingSubCat intValue]];
+                        radioListDic=[NSMutableDictionary new];
+                        [radioListDic setValue:radioBtnValues forKey:key];
+                        
+                         NSLog(@"radio dic---> %@ ",radioListDic);
+                        
+                        
+                    }
+                    
+                    
+                    [otherViewContainer addSubview:selectOrRadioBtnOpeningBtn];
+                    
+                    UIImageView *dropdownArrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, selectOrRadioBtnOpeningBtn.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
+                    dropdownArrow.image=[UIImage imageNamed:@"downArrow"];
+                    dropdownArrow.contentMode=UIViewContentModeScaleAspectFit;
+                    
+                    
+                    dropdownArrow.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                    
+                    [otherViewContainer addSubview:dropdownArrow];
+                    
+                    updated_y=selectOrRadioBtnOpeningBtn.bounds.size.height+selectOrRadioBtnOpeningBtn.frame.origin.y+8;
+                    
+                    otherViewContainer.frame=CGRectMake(otherViewContainer.frame.origin.x, otherViewContainer.frame.origin.y, otherViewContainer.bounds.size.width,updated_y);
+                    
+                }
+                
+                else  if([typeCheck isEqualToString:@"checkbox"])
+                {
+                    
+                    specialButton *checkboxOpeningBtn=checkboxOpeningBtn=[[specialButton alloc]init];
+                    
+                    checkboxOpeningBtn.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updated_y, basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+                    
+                    [checkboxOpeningBtn setTitle:[NSString stringWithFormat:@"%@",[tempDic valueForKey:@"option_name"]] forState:UIControlStateNormal];
+                    
+                    checkboxOpeningBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                    checkboxOpeningBtn.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
+                    checkboxOpeningBtn.titleLabel.font=basic_categoryBtn.titleLabel.font;
+                    [checkboxOpeningBtn setTitleColor:basic_categoryBtn.titleLabel.textColor forState:UIControlStateNormal];
+                    [checkboxOpeningBtn setBackgroundImage:[UIImage imageNamed:@"input_back"] forState:UIControlStateNormal];
+                    
+                    [checkboxOpeningBtn addTarget:self action:@selector(openCheckBoxList:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    checkboxOpeningBtn.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                    
+                    
+                    checkboxOpeningBtn.stringId=[NSString stringWithFormat:@"check"];
+                    checkboxOpeningBtn.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                    
+                    
+                    [otherViewContainer addSubview:checkboxOpeningBtn];
+                    
+                    UIImageView *dropdownArrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, checkboxOpeningBtn.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
+                    dropdownArrow.image=[UIImage imageNamed:@"downArrow"];
+                    dropdownArrow.contentMode=UIViewContentModeScaleAspectFit;
+                    
+                    
+                    dropdownArrow.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                    
+                    [otherViewContainer addSubview:dropdownArrow];
+                    
+                    updated_y=checkboxOpeningBtn.bounds.size.height+checkboxOpeningBtn.frame.origin.y+8;
+                    
+                    otherViewContainer.frame=CGRectMake(otherViewContainer.frame.origin.x, otherViewContainer.frame.origin.y, otherViewContainer.bounds.size.width,updated_y);
+                    
+                    // Inserting pre selected checkbox values in array n dic
+                    
+                    checkListArray=[tempDic valueForKey:@"option_value"];
+                    
+                    for(int j=0; j<checkListArray.count; j++)
+                    {
+                    
+                        if([[NSString stringWithFormat:@"%@",[checkListArray[j] valueForKey:@"option_check"]] isEqualToString:@"1"])
+                        {
+                            
+                            
+                            [checkBoxValues addObject:[NSString stringWithFormat:@"%@/%@",[checkListArray[j] valueForKey:@"id"],[checkListArray[j] valueForKey:@"option_id"]]];
+                            
+                            NSLog(@"Check BOX ---> %@",checkBoxValues);
+                        }
+
+                        
+                    }
+                    
+                     NSString *key = [NSString stringWithFormat:@"%d",[idForCreatingSubCat intValue]];
+                     [checkboxDic setValue:checkBoxValues forKey:key];
+                    
+                    NSLog(@"Check box dic---> %@",checkboxDic);
+                    
+                }
+                
+                
+            }
+            
+            // Creating aminities....
+            
+            
+            if([[result valueForKey:@"aminities_status"] isEqualToString:@"Y"])
+            {
+                
+                for(NSDictionary *dic in [result valueForKey:@"aminities"])
+                {
+                    
+                     aminitiesFragDic=[NSMutableDictionary new];
+                     [aminitiesFragDic setValue:[dic valueForKey:@"aminities_id"] forKey:@"id"];
+                     [aminitiesFragDic setValue:[dic valueForKey:@"aminities_name"] forKey:@"name"];
+                    
+                    if([[NSString stringWithFormat:@"%@",[dic valueForKey:@"select_status"] ] isEqualToString:@"1"])
+                    {
+                    
+                         [aminitiesFragDic setValue:@"yes" forKey:@"checked"];
+                    
+                    }
+                    else
+                    {
+                    
+                        [aminitiesFragDic setValue:@"no" forKey:@"checked"];
+                    
+                    }
+                    
+                    [aminitiesArr addObject:aminitiesFragDic];
+                    
+                }
+                
+                
+                
+                specialButton *aminitiesOpeningBtn=[[specialButton alloc]init];
+                
+                aminitiesOpeningBtn.frame=CGRectMake(basic_categoryBtn.frame.origin.x, updated_y, basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+                
+                [aminitiesOpeningBtn setTitle:[NSString stringWithFormat:@"Aminities"] forState:UIControlStateNormal];
+                
+                aminitiesOpeningBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                aminitiesOpeningBtn.titleEdgeInsets=UIEdgeInsetsMake(0, 9, 0, 0);
+                aminitiesOpeningBtn.titleLabel.font=basic_categoryBtn.titleLabel.font;
+                [aminitiesOpeningBtn setTitleColor:basic_categoryBtn.titleLabel.textColor forState:UIControlStateNormal];
+                [aminitiesOpeningBtn setBackgroundImage:[UIImage imageNamed:@"input_back"] forState:UIControlStateNormal];
+                
+                [aminitiesOpeningBtn addTarget:self action:@selector(openAminitiesList:) forControlEvents:UIControlEventTouchUpInside];
+                
+                aminitiesOpeningBtn.stringId=[NSString stringWithFormat:@"aminities"];
+                
+                
+                [otherViewContainer addSubview:aminitiesOpeningBtn];
+                
+                UIImageView *dropdownArrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, aminitiesOpeningBtn.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
+                dropdownArrow.image=[UIImage imageNamed:@"downArrow"];
+                dropdownArrow.contentMode=UIViewContentModeScaleAspectFit;
+                
+                
+                // dropdownArrow.tag=[[tempDic valueForKey:@"option_id"] intValue];
+                
+                [otherViewContainer addSubview:dropdownArrow];
+                
+                updated_y=aminitiesOpeningBtn.bounds.size.height+aminitiesOpeningBtn.frame.origin.y+8;
+                
+                otherViewContainer.frame=CGRectMake(otherViewContainer.frame.origin.x, otherViewContainer.frame.origin.y, otherViewContainer.bounds.size.width,updated_y);
+                
+                
+            }
+            
+            
+            // End Aminities here
+            
+            
+            
+            
+            
+            
+            base_view.frame=CGRectMake(base_view.frame.origin.x, base_view.frame.origin.y, base_view.frame.size.width, base_view.frame.size.height+otherViewContainer.frame.size.height);
+            
+            base_view.backgroundColor=[UIColor greenColor];
+            
+            [catgoryBtnTags addObject:[NSString stringWithFormat:@"%d",[idForCreatingSubCat intValue]]];
+            
+            basic_bottomView.frame=CGRectMake(basic_bottomView.frame.origin.x, base_view.frame.origin.y+base_view.frame.size.height+8, basic_bottomView.frame.size.width, basic_bottomView.frame.size.height);
+            
+            basic_scrollView.contentSize=CGSizeMake(self.view.bounds.size.width, basic_bottomView.frame.size.height+basic_bottomView.frame.origin.y);
+            
+        }
+
+        
+    }];
+    
+
+}
+
+#pragma mark--
 
 
 #pragma mark--Choosing Category Between Service & Product
@@ -739,12 +1558,12 @@ FW_JsonClass *globalobj;
                 
                 if([[[keywordArr objectAtIndex:indexPath.row] valueForKey:@"selected"] isEqualToString:@"no"])
                 {
-                    NSLog(@"here..no...");
+                   // NSLog(@"here..no...");
                  cell.accessoryType=UITableViewCellAccessoryNone;
                 }
                 else if ([[[keywordArr objectAtIndex:indexPath.row] valueForKey:@"selected"] isEqualToString:@"yes"])
                 {
-                    NSLog(@"here..yes...");
+                    //NSLog(@"here..yes...");
                         cell.accessoryType=UITableViewCellAccessoryCheckmark;
                 }
                 
@@ -758,12 +1577,12 @@ FW_JsonClass *globalobj;
                 
                 if([[[aminitiesArr objectAtIndex:indexPath.row] valueForKey:@"checked"] isEqualToString:@"no"])
                 {
-                    NSLog(@"here..no...");
+                   // NSLog(@"here..no...");
                     cell.accessoryType=UITableViewCellAccessoryNone;
                 }
                 else if ([[[aminitiesArr objectAtIndex:indexPath.row] valueForKey:@"checked"] isEqualToString:@"yes"])
                 {
-                    NSLog(@"here..yes...");
+                    //NSLog(@"here..yes...");
                     cell.accessoryType=UITableViewCellAccessoryCheckmark;
                 }
                 cell.textLabel.text=[NSString stringWithFormat:@"%@",[aminitiesArr[indexPath.row] valueForKey:@"name"]];
@@ -2332,7 +3151,7 @@ else
     
     if([baseview isEqual:productBaseView])
     {
-    subCategoryBtn.frame=CGRectMake(basic_categoryBtn.frame.origin.x, baseview.frame.size.height+8,basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
+      subCategoryBtn.frame=CGRectMake(basic_categoryBtn.frame.origin.x, baseview.frame.size.height+8,basic_categoryBtn.frame.size.width, basic_categoryBtn.frame.size.height);
     }
     else if ([baseview isEqual:serviceBaseView])
     {
@@ -2364,8 +3183,20 @@ else
     
     [subCategoryBtn addTarget:self action:@selector(productMainCategoryTapped:) forControlEvents:UIControlEventTouchUpInside];
     
-    updatedY_product+=subCategoryBtn.frame.size.height+8;
-    updatedY_service+=subCategoryBtn.frame.size.height+8;
+    if([baseview isEqual:productBaseView])
+    {
+    
+        updatedY_product+=subCategoryBtn.frame.size.height+8;
+    
+    }
+    if ([baseview isEqual:serviceBaseView])
+    {
+    
+        updatedY_service+=subCategoryBtn.frame.size.height+8;
+    
+    }
+    
+    
     
     UIImageView *dropdownArrow=[[UIImageView alloc]initWithFrame:CGRectMake(dropdownImageView.frame.origin.x, subCategoryBtn.frame.origin.y+8, dropdownImageView.frame.size.width, dropdownImageView.frame.size.height)];
     dropdownArrow.image=[UIImage imageNamed:@"downArrow"];
@@ -3163,38 +3994,61 @@ else
 -(void)saveBasicDetails
 {
 
-    UIButton *whichMainCAtBtnIsThere;
-    NSString *mainCatStr;
+    NSString *mainCatStr=@"";
     
     if(productBaseView.bounds.size.height>0)
     {
-        whichMainCAtBtnIsThere=mainCategoryBtn_product;
-        mainCatStr=whichMainCAtBtnIsThere.titleLabel.text;
+        mainCatStr=mainCategoryBtn_product.titleLabel.text;
     }
     if(serviceBaseView.bounds.size.height>0)
     {
-        whichMainCAtBtnIsThere=maninCategoryBtn_service;
-        mainCatStr=whichMainCAtBtnIsThere.titleLabel.text;
+        mainCatStr=maninCategoryBtn_service.titleLabel.text;
+        
+        NSLog(@"1.... %@",maninCategoryBtn_service.titleLabel.text);
     }
     
+     NSLog(@"2.... %@",maninCategoryBtn_service.titleLabel.text);
+    
     for (int i=0; i<mainCategoryList.count; i++) {
-        
-        if([[[mainCategoryList objectAtIndex:i] valueForKey:@"cat_name"] isEqualToString:mainCatStr])
+     
+        if(_fromEditPage==YES)
         {
             
-            mainCategoryId=[[mainCategoryList objectAtIndex:i] valueForKey:@"id"];
-            NSLog(@"%@ ----- %@",[[mainCategoryList objectAtIndex:i] valueForKey:@"cat_name"],mainCategoryId);
+            if([[[mainCategoryList objectAtIndex:i] valueForKey:@"category_name"] isEqualToString:mainCatStr])
+            {
+                
+                mainCategoryId=[[mainCategoryList objectAtIndex:i] valueForKey:@"cat_id"];
+                
+                NSLog(@"%@ ----- %@",[[mainCategoryList objectAtIndex:i] valueForKey:@"category_name"],mainCategoryId);
+                
+            }
             
         }
+        else
+        {
+        
+            if([[[mainCategoryList objectAtIndex:i] valueForKey:@"cat_name"] isEqualToString:mainCatStr])
+            {
+                
+                mainCategoryId=[[mainCategoryList objectAtIndex:i] valueForKey:@"id"];
+                NSLog(@"%@ ----- %@",[[mainCategoryList objectAtIndex:i] valueForKey:@"cat_name"],mainCategoryId);
+                
+            }
+        
+        }
+       
         
         
     }
 
   
-//    NSLog(@"text container----> %@",textContainerDic);
-//    NSLog(@"Check BOX---> %@",checkboxDic);
-//    NSLog(@"Sub cat details---> %@",subCatDictionary);
-//    NSLog(@"select list details---> %@",selectListDic);
+    NSLog(@"text container----> %@",textContainerDic);
+    NSLog(@"Check BOX---> %@",checkboxDic);
+    NSLog(@"Sub cat details---> %@",subCatDictionary);
+    NSLog(@"select list details---> %@",selectListDic);
+    NSLog(@"Radio list----> %@",radioListDic);
+    
+    
     
     NSArray *textParameterContainer=[NSArray new];
     NSString *textFieldsValue=@"";
@@ -3233,7 +4087,7 @@ else
             else
             {
             
-            subcategory = [subcategory stringByAppendingString:[NSString stringWithFormat:@"%@",[subCatDictionary valueForKey:key]]];
+             subcategory = [subcategory stringByAppendingString:[NSString stringWithFormat:@"%@",[subCatDictionary valueForKey:key]]];
             
             }
         }
@@ -3250,6 +4104,7 @@ else
            // NSLog(@"Select---> %@",[checkboxDic valueForKey:key]);
             
             checkBoxStr = [NSString stringWithFormat:@"%@",[[checkboxDic valueForKey:key] componentsJoinedByString:@","]];
+            
 //            if(checkBoxStr.length>0)
 //            {
 //                
@@ -3262,6 +4117,8 @@ else
 //                checkBoxStr = [checkBoxStr stringByAppendingString:[NSString stringWithFormat:@"%@",[checkboxDic valueForKey:key]]];
 //                
 //            }
+            
+            
         }
         
     }
@@ -3273,7 +4130,7 @@ else
         NSArray* keys_select = [radioListDic allKeys];
         
         for(NSString* key in keys_select) {
-            NSLog(@"Select---> %@",[radioListDic valueForKey:key]);
+           // NSLog(@"Select---> %@",[radioListDic valueForKey:key]);
             
                radioStr = [NSString stringWithFormat:@"%@",[[radioListDic valueForKey:key] componentsJoinedByString:@","]];
           
@@ -3315,7 +4172,7 @@ else
        
        }
         
-        NSLog(@"Aminities---> %@",[aminitiesID componentsJoinedByString:@","]);
+       // NSLog(@"Aminities---> %@",[aminitiesID componentsJoinedByString:@","]);
     
     }
     if(keywordArr.count>0)
@@ -3333,24 +4190,48 @@ else
             
         }
         
-         NSLog(@"Keyword---> %@",[keywordID componentsJoinedByString:@","]);
+        // NSLog(@"Keyword---> %@",[keywordID componentsJoinedByString:@","]);
         
     }
 
-    NSString *urlString=[NSString stringWithFormat:@"%@app_service_insert",App_Domain_Url];
+    NSString *urlString;
+    
+    if(_fromEditPage==YES)
+    {
+       urlString=[NSString stringWithFormat:@"%@app_user_service/app_edit_basic_service",App_Domain_Url];
+    }
+    else
+    {
+    
+        urlString=[NSString stringWithFormat:@"%@app_service_insert",App_Domain_Url];
+
+    
+    }
     NSString *postData;
     
     if(productBaseView.bounds.size.height>0)
     {
     
-        postData=[NSString stringWithFormat:@"userid=%@&srv_name=%@&cat_type=%@&book_type=&main_cat=%@&sub_cat=%@&quantity=%@&keyword=%@&video=%@&instant_book=%@&amen_arr=%@&option_value_chk=%@&option_value_radio=%@&option_value_select=%@&option_value_other=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],basic_nameField.text,basic_categoryBtn.titleLabel.text,mainCategoryId,subcategory,basic_quntityField.text,[keywordID componentsJoinedByString:@","],basic_videoField.text,instantBooked,[aminitiesID componentsJoinedByString:@","],checkBoxStr,radioStr,selectStr,textFieldsValue];
+        
+        if(_fromEditPage==YES)
+        {
+            
+            postData =[NSString stringWithFormat:@"userid=%@&srv_name=%@&main_cat=%@&sub_cat=%@&quantity=%@&keyword=%@&video=%@&instant_book=%@&amen_arr=%@&option_value_chk=%@&option_value_radio=%@&option_value_select=%@&option_value_other=%@&service_id=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],basic_nameField.text,mainCategoryId,subcategory,basic_quntityField.text,[keywordID componentsJoinedByString:@","],basic_videoField.text,instantBooked,[aminitiesID componentsJoinedByString:@","],checkBoxStr,radioStr,selectStr,textFieldsValue,_productId];
+            
+        }
+        
+        else
+        {
+          postData=[NSString stringWithFormat:@"userid=%@&srv_name=%@&cat_type=%@&book_type=&main_cat=%@&sub_cat=%@&quantity=%@&keyword=%@&video=%@&instant_book=%@&amen_arr=%@&option_value_chk=%@&option_value_radio=%@&option_value_select=%@&option_value_other=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],basic_nameField.text,basic_categoryBtn.titleLabel.text,mainCategoryId,subcategory,basic_quntityField.text,[keywordID componentsJoinedByString:@","],basic_videoField.text,instantBooked,[aminitiesID componentsJoinedByString:@","],checkBoxStr,radioStr,selectStr,textFieldsValue];
+            
+        }
 
-        NSLog(@"post data product---%@",postData);
+        //NSLog(@"post data product---%@",postData);
     
     }
     else if(serviceBaseView.bounds.size.height>0)
     {
-        NSLog(@"-----> %@ ",service_bookingTypeBtn.titleLabel.text);
+       // NSLog(@"-----> %@ ",service_bookingTypeBtn.titleLabel.text);
         
         NSString *bookingType=@"";
         
@@ -3370,13 +4251,22 @@ else
         }
         
         
+        if(_fromEditPage==YES)
+        {
+        
+           postData =[NSString stringWithFormat:@"userid=%@&srv_name=%@&main_cat=%@&sub_cat=%@&quantity=%@&keyword=%@&video=%@&instant_book=%@&amen_arr=%@&option_value_chk=%@&option_value_radio=%@&option_value_select=%@&option_value_other=%@&service_id=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],basic_nameField.text,mainCategoryId,subcategory,basic_quntityField.text,[keywordID componentsJoinedByString:@","],basic_videoField.text,instantBooked,[aminitiesID componentsJoinedByString:@","],checkBoxStr,radioStr,selectStr,textFieldsValue,_productId];
+        
+        }
+        else
+        {
           postData =[NSString stringWithFormat:@"userid=%@&srv_name=%@&cat_type=%@&book_type=%@&main_cat=%@&sub_cat=%@&quantity=%@&keyword=%@&video=%@&instant_book=%@&amen_arr=%@&option_value_chk=%@&option_value_radio=%@&option_value_select=%@&option_value_other=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],basic_nameField.text,[basic_categoryBtn.titleLabel.text lowercaseString],bookingType,mainCategoryId,subcategory,basic_quntityField.text,[keywordID componentsJoinedByString:@","],basic_videoField.text,instantBooked,[aminitiesID componentsJoinedByString:@","],checkBoxStr,radioStr,selectStr,textFieldsValue];
+        }
         
         NSLog(@"post data service---%@",postData);
         
     }
 
-  NSLog(@"URL---> %@",urlString);
+  //NSLog(@"URL---> %@",urlString);
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     
@@ -3395,7 +4285,7 @@ else
         if([[result valueForKey:@"response"] isEqualToString:@"success"])
         {
         
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:[result valueForKey:@"message"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
         
         }
@@ -3570,5 +4460,11 @@ else
 
 #pragma mark--
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+
+    _fromEditPage=NO;
+
+}
 
 @end
