@@ -164,6 +164,7 @@
 -(void)alwsCnfrmdtapped:(UIButton *)sender
 {
 
+    alwsOrSpecific=@"always";
    // sender.enabled=NO;
     perDayCalenderView.specificCnfrmdBtn.enabled=YES;
     perDayCalenderView.alwsCnfrmdIcon.hidden=NO;
@@ -171,12 +172,13 @@
     
     saveBtn.hidden=NO;
     manageHolidaysBtn.hidden=NO;
-    //[saveBtn addTarget:self action:@selector(saveCalendarDetails) forControlEvents:UIControlEventTouchUpInside];
+    [saveBtn addTarget:self action:@selector(saveForServicePerDayType) forControlEvents:UIControlEventTouchUpInside];
 
 }
 -(void)specificBtntapped:(UIButton *)sender
 {
 
+    alwsOrSpecific=@"specific";
    // sender.enabled=NO;
     perDayCalenderView.alwsCnfrmdBtn.enabled=YES;
     perDayCalenderView.alwsCnfrmdIcon.hidden=YES;
@@ -561,6 +563,15 @@
             end_Date=prettyVersion;
         
              endDate=date_picker.date;
+            
+            if([alwsOrSpecific isEqualToString:@"specific"])
+            {
+            
+                saveBtn.hidden=NO;
+                manageHolidaysBtn.hidden=NO;
+                [saveBtn addTarget:self action:@selector(saveForServicePerDayType) forControlEvents:UIControlEventTouchUpInside];
+            
+            }
             
           if([_productType isEqualToString:@"product"] || [_productType isEqualToString:@"slot"])
           {
@@ -2205,7 +2216,7 @@
 }
 
 
-#pragma mark--Saving calender details for service slot type
+#pragma mark--Saving calender details for service slot type / Product type
 
 -(void)saveCalendarDetails
 {
@@ -2300,6 +2311,60 @@
     
 }
 
+#pragma mark--
+
+#pragma mark-- Saving calendar data for Service of per day type
+
+-(void)saveForServicePerDayType
+{
+    NSArray *blankArray=[NSArray new];
+
+    if([alwsOrSpecific isEqualToString:@"always"])
+    {
+    
+       [self saveCalenderDataWithArray:blankArray];
+    
+    }
+    else if([alwsOrSpecific isEqualToString:@"specific"])
+    {
+    
+        if(start_Date.length==0)
+        {
+        
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:@"Please select the Start date." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        
+        }
+        else
+        {
+        
+           if(end_Date.length==0)
+           {
+           
+               UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:@"Please select the End date." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+               [alert show];
+           
+           }
+           else
+           {
+            
+              [self saveCalenderDataWithArray:blankArray];
+            
+            }
+        
+        }
+    
+    
+    }
+
+
+}
+
+
+#pragma mark--
+
+
+#pragma mark-- URL for calendar data saving 
 
 -(void)saveCalenderDataWithArray:(NSArray *)dayDetailsData
 {
@@ -2329,17 +2394,41 @@
             
         }
         
+        postData =[NSString stringWithFormat:@"userid=%@&service_id=%@&type=%@&slot_type=%@&start_date=%@&end_date=%@&slot_time=&name_timezone=%@&day_det=%@&holi_start_date=&holi_end_date=&holi_reason=",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],_productid,productType,slotType,startDateBtn.titleLabel.text,endDateBtn.titleLabel.text,timeZoneBtn.titleLabel.text,[dayDetailsData componentsJoinedByString:@","]];
+        
+        partOfUrl=[NSString stringWithFormat:@"userid=%@&service_id=%@&type=%@&slot_type=%@&start_date=%@&end_date=%@&slot_time=&name_timezone=%@&day_det=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],_productid,productType,slotType,startDateBtn.titleLabel.text,endDateBtn.titleLabel.text,timeZoneBtn.titleLabel.text,[dayDetailsData componentsJoinedByString:@","]];
+        
     }
     if([_productType isEqualToString:@"perday"])
     {
         // Check between always available & specific available
         
+        if([alwsOrSpecific isEqualToString:@"always"])
+        {
+        
+            slotType=@"1";
+            productType=@"service";
+            
+            postData =[NSString stringWithFormat:@"userid=%@&service_id=%@&type=%@&slot_type=%@&start_date=&end_date=&slot_time=&name_timezone=&day_det=&holi_start_date=&holi_end_date=&holi_reason=",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],_productid,productType,slotType];
+            
+            partOfUrl=[NSString stringWithFormat:@"userid=%@&service_id=%@&type=%@&slot_type=%@&start_date=&end_date=&slot_time=&name_timezone=&day_det=",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],_productid,productType,slotType];
+        
+        }
+        else if([alwsOrSpecific isEqualToString:@"specific"])
+        {
+            slotType=@"2";
+            productType=@"service";
+            
+            postData =[NSString stringWithFormat:@"userid=%@&service_id=%@&type=%@&slot_type=%@&slot_time=&name_timezone=&day_det=&holi_start_date=&holi_end_date=&holi_reason=&start_date=%@&end_date=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],_productid,productType,slotType,start_Date,end_Date];
+            
+            partOfUrl=[NSString stringWithFormat:@"userid=%@&service_id=%@&type=%@&slot_type=%@&slot_time=&name_timezone=&day_det=&start_date=%@&end_date=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],_productid,productType,slotType,start_Date,end_Date];
+            
+        }
+        
     }
     
     
-    postData =[NSString stringWithFormat:@"userid=%@&service_id=%@&type=%@&slot_type=%@&start_date=%@&end_date=%@&slot_time=&name_timezone=%@&day_det=%@&holi_start_date=&holi_end_date=&holi_reason=",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],_productid,productType,slotType,startDateBtn.titleLabel.text,endDateBtn.titleLabel.text,timeZoneBtn.titleLabel.text,[dayDetailsData componentsJoinedByString:@","]];
-    
-    partOfUrl=[NSString stringWithFormat:@"userid=%@&service_id=%@&type=%@&slot_type=%@&start_date=%@&end_date=%@&slot_time=&name_timezone=%@&day_det=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],_productid,productType,slotType,startDateBtn.titleLabel.text,endDateBtn.titleLabel.text,timeZoneBtn.titleLabel.text,[dayDetailsData componentsJoinedByString:@","]];
+
     
     NSLog(@"Url string : %@",urlString);
     NSLog(@"Post data : %@",postData);
@@ -2364,12 +2453,7 @@
             
             manageHolidaysBtn.enabled=YES;
             manageHolidaysBtn.alpha=1.0f;
-            
-            //            FWCalendarViewController *vcObj=[self.storyboard instantiateViewControllerWithIdentifier:@"fwcalendar"];
-            //
-            //            vcObj.productType=productType;
-            //
-            //            [self PushViewController:vcObj WithAnimation:kCAMediaTimingFunctionEaseIn];
+  
             
         }
         

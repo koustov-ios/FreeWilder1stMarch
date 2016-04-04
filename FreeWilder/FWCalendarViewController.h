@@ -13,7 +13,7 @@
 
 {
     
-    NSString *start_Date,*end_Date;
+    NSString *start_Date,*end_Date,*alwsOrSpecific;
 
     UIButton *startDateBtn,*endDateBtn;
     calender_View *CalenderView;
