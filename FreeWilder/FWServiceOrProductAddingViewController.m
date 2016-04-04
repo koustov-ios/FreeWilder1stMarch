@@ -11,6 +11,7 @@
 #import "specialButton.h"
 #import "specialTable.h"
 #import "ExampleCell.h"
+#import "FWCalendarViewController.h"
 
 #pragma mark - Footer related imports
 #import "FW_JsonClass.h"
@@ -141,6 +142,8 @@ FW_JsonClass *globalobj;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    app=[[UIApplication sharedApplication]delegate];
+    
     globalobj=[FW_JsonClass new];
     
     iskeyWordTableOpen=@"no";
@@ -228,6 +231,7 @@ FW_JsonClass *globalobj;
     Footer *footer=[[Footer alloc]init];
     footer.frame=CGRectMake(0,0,footer_base.frame.size.width,footer_base.frame.size.height);
     footer.Delegate=self;
+    [footer TapCheck:4];
     [footer_base addSubview:footer];
     temp= [[NSMutableArray alloc]init];
     
@@ -710,7 +714,7 @@ FW_JsonClass *globalobj;
             
             otherViewContainer.frame=CGRectMake(0, base_view.frame.size.height+8, self.view.bounds.size.width,0);
             [base_view addSubview:otherViewContainer];
-            otherViewContainer.backgroundColor=[UIColor yellowColor];
+           // otherViewContainer.backgroundColor=[UIColor yellowColor];
             otherViewContainer.tag=[idForCreatingSubCat intValue];
 
             
@@ -1045,7 +1049,7 @@ FW_JsonClass *globalobj;
             
             base_view.frame=CGRectMake(base_view.frame.origin.x, base_view.frame.origin.y, base_view.frame.size.width, base_view.frame.size.height+otherViewContainer.frame.size.height);
             
-            base_view.backgroundColor=[UIColor greenColor];
+            //base_view.backgroundColor=[UIColor greenColor];
             
             [catgoryBtnTags addObject:[NSString stringWithFormat:@"%d",[idForCreatingSubCat intValue]]];
             
@@ -2561,7 +2565,7 @@ else
         
         otherViewContainer.frame=CGRectMake(0, currentlyTappedBtn.frame.origin.y+currentlyTappedBtn.frame.size.height+8, self.view.bounds.size.width,0);
         [baseview addSubview:otherViewContainer];
-        otherViewContainer.backgroundColor=[UIColor yellowColor];
+       // otherViewContainer.backgroundColor=[UIColor yellowColor];
         otherViewContainer.tag=tag;
         
         float updated_y=0;
@@ -2783,7 +2787,7 @@ else
         }
         
         
-        baseview.frame=CGRectMake(baseview.frame.origin.x, baseview.frame.origin.y, baseview.frame.size.width, baseview.frame.size.height+otherViewContainer.frame.size.height+8);
+        baseview.frame=CGRectMake(baseview.frame.origin.x, baseview.frame.origin.y, baseview.frame.size.width, baseview.frame.size.height+otherViewContainer.frame.size.height);//+8
         
         [catgoryBtnTags addObject:[NSString stringWithFormat:@"%d",tag]];
         
@@ -3993,6 +3997,8 @@ else
 
 -(void)saveBasicDetails
 {
+    //app.basicSaved=YES;
+    
 
     NSString *mainCatStr=@"";
     
@@ -4196,7 +4202,7 @@ else
 
     NSString *urlString;
     
-    if(_fromEditPage==YES)
+    if(_fromEditPage==YES || app.basicSaved==YES)
     {
        urlString=[NSString stringWithFormat:@"%@app_user_service/app_edit_basic_service",App_Domain_Url];
     }
@@ -4209,11 +4215,19 @@ else
     }
     NSString *postData;
     
-    if(productBaseView.bounds.size.height>0)
+    NSString *productType=@"";
+    
+    NSLog(@"Basic category- %@",basic_categoryBtn.titleLabel.text);
+    
+    
+    //if(productBaseView.bounds.size.height>0)
+     if([basic_categoryBtn.titleLabel.text isEqualToString:@"Product"])
     {
     
         
-        if(_fromEditPage==YES)
+        productType=@"product";
+        
+        if(_fromEditPage==YES || app.basicSaved==YES)
         {
             
             postData =[NSString stringWithFormat:@"userid=%@&srv_name=%@&main_cat=%@&sub_cat=%@&quantity=%@&keyword=%@&video=%@&instant_book=%@&amen_arr=%@&option_value_chk=%@&option_value_radio=%@&option_value_select=%@&option_value_other=%@&service_id=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],basic_nameField.text,mainCategoryId,subcategory,basic_quntityField.text,[keywordID componentsJoinedByString:@","],basic_videoField.text,instantBooked,[aminitiesID componentsJoinedByString:@","],checkBoxStr,radioStr,selectStr,textFieldsValue,_productId];
@@ -4226,11 +4240,13 @@ else
             
         }
 
-        //NSLog(@"post data product---%@",postData);
+        NSLog(@"post data product---%@",postData);
     
     }
-    else if(serviceBaseView.bounds.size.height>0)
+    //else if(serviceBaseView.bounds.size.height>0)
+    else if([basic_categoryBtn.titleLabel.text isEqualToString:@"Service"])
     {
+        
        // NSLog(@"-----> %@ ",service_bookingTypeBtn.titleLabel.text);
         
         NSString *bookingType=@"";
@@ -4241,17 +4257,19 @@ else
             if ([service_bookingTypeBtn.titleLabel.text isEqualToString:@"Per Day"])
             {
                 bookingType=@"per_day";
+                productType=@"perday";
             }
             else if([service_bookingTypeBtn.titleLabel.text isEqualToString:@"Slot"])
             {
                 bookingType=@"slot";
+                productType=@"slot";
 
             }
             
         }
         
         
-        if(_fromEditPage==YES)
+        if(_fromEditPage==YES || app.basicSaved==YES)
         {
         
            postData =[NSString stringWithFormat:@"userid=%@&srv_name=%@&main_cat=%@&sub_cat=%@&quantity=%@&keyword=%@&video=%@&instant_book=%@&amen_arr=%@&option_value_chk=%@&option_value_radio=%@&option_value_select=%@&option_value_other=%@&service_id=%@",[[NSUserDefaults standardUserDefaults]valueForKey:@"UserId"],basic_nameField.text,mainCategoryId,subcategory,basic_quntityField.text,[keywordID componentsJoinedByString:@","],basic_videoField.text,instantBooked,[aminitiesID componentsJoinedByString:@","],checkBoxStr,radioStr,selectStr,textFieldsValue,_productId];
@@ -4284,18 +4302,219 @@ else
         
         if([[result valueForKey:@"response"] isEqualToString:@"success"])
         {
+            app.basicSaved=YES;
+            
+            _productId=[result valueForKey:@"service_id"];
         
             UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Message" message:[result valueForKey:@"message"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
+            
+            FWCalendarViewController *vcObj=[self.storyboard instantiateViewControllerWithIdentifier:@"fwcalendar"];
+            
+            vcObj.productType=productType;
+            vcObj.productid=_productId;
+            
+            [self PushViewController:vcObj WithAnimation:kCAMediaTimingFunctionEaseIn];
         
         }
-        
+
     }];
     
     
 }
 
 #pragma mark--
+
+
+#pragma mark-Basic Button Tapped
+
+- (IBAction)basicBtnTapped:(id)sender
+{
+   /* {
+
+    blackOverLay=[UIView new];
+    blackOverLay.frame=self.view.frame;
+    blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0];
+    [self.view addSubview:blackOverLay];
+    
+    popUpBaseView=[UIView new];
+    popUpBaseView.frame=CGRectMake(basic_categoryBtn.frame.origin.x, (self.view.bounds.size.height-self.view.bounds.size.height/3.2)/2, basic_categoryBtn.frame.size.width, self.view.bounds.size.height/3.2);
+    popUpBaseView.backgroundColor=[UIColor whiteColor];
+    popUpBaseView.layer.cornerRadius=6.0f;
+    popUpBaseView.clipsToBounds=YES;
+    
+    UILabel *categorHeadingLbl=[[UILabel alloc]init];
+    NSString *tempStrHeading=[NSString stringWithFormat:@"Go To"];
+    categorHeadingLbl.font=[UIFont fontWithName:@"lato" size:15];
+    
+    categorHeadingLbl.frame=CGRectMake((popUpBaseView.frame.size.width-(tempStrHeading.length*8))/2, 7, tempStrHeading.length*8,self.view.bounds.size.height/19);
+    categorHeadingLbl.textAlignment=NSTextAlignmentCenter;
+    
+    categorHeadingLbl.text=tempStrHeading;
+    [popUpBaseView addSubview:categorHeadingLbl];
+    
+    UIImageView *dividerView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dividerline"]];
+    
+    dividerView.frame=CGRectMake(0, categorHeadingLbl.frame.size.height+categorHeadingLbl.frame.origin.y+5, popUpBaseView.bounds.size.width, 1);
+    
+    
+    [popUpBaseView addSubview:dividerView];
+    UIButton *closeBtn=[UIButton new];
+    [closeBtn setTitleColor:[UIColor colorWithRed:16.0f/255 green:95.0f/255 blue:250.0f/255 alpha:1] forState:UIControlStateNormal];
+    closeBtn.frame=CGRectMake((popUpBaseView.frame.size.width-150)/2, basic_categoryTable.frame.origin.y+basic_categoryTable.frame.size.height+8, 150, 40);
+    [closeBtn setTitle:[NSString stringWithFormat:@"OK"] forState:UIControlStateNormal];
+    closeBtn.backgroundColor=[UIColor clearColor];
+    [popUpBaseView addSubview:closeBtn];
+    [closeBtn addTarget:self action:@selector(closeCatTable) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    [blackOverLay addSubview:popUpBaseView];
+    [UIView animateWithDuration:0.4 animations:^{
+        
+        
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.1];
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.2];
+        blackOverLay.backgroundColor=[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.3];
+        
+        
+    }];
+   
+    } */
+    
+    UIActionSheet *popUpSheet=[[UIActionSheet alloc]init];
+    
+    NSArray *buttonTitles=@[@"Basic",@"Calendar",@"Pricing",@"Overview",@"Photos",@"Location"];
+    
+    popUpSheet.cancelButtonIndex = [popUpSheet addButtonWithTitle:@"Cancel"];
+    
+    popUpSheet.delegate=self;
+    
+    for (NSString *title in buttonTitles)
+    {
+        [popUpSheet addButtonWithTitle:title];
+        
+    }
+    
+    [popUpSheet showInView:self.view];
+    
+}
+
+#pragma mark--
+
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+
+    NSLog(@"Index-- %ld",buttonIndex);
+    
+    
+  if(buttonIndex==1)
+  {
+  
+    // Basic tapped
+  
+  }
+  else if(buttonIndex==2)
+  {
+    
+//        FWCalendarViewController *vcObj=[self.storyboard instantiateViewControllerWithIdentifier:@"fwcalendar"];
+//        
+//        [self PushViewController:vcObj WithAnimation:kCAMediaTimingFunctionEaseIn];
+        
+      if(app.basicSaved==YES)
+      {
+
+          
+          
+          FWCalendarViewController *vcObj=[self.storyboard instantiateViewControllerWithIdentifier:@"fwcalendar"];
+          
+          [self PushViewController:vcObj WithAnimation:kCAMediaTimingFunctionEaseIn];
+      
+      }
+      else
+      {
+        
+          UIAlertView *alert=[[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"Message"] message:[NSString stringWithFormat:@"Save the Basic Details first"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+          [alert show];
+        
+      }
+    
+    }
+    else if(buttonIndex==3)
+    {
+        
+        if(app.basicSaved==YES)
+        {
+            
+            
+            
+        }
+        else
+        {
+            
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"Message"] message:[NSString stringWithFormat:@"Save the Basic Details first"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+            
+        }
+        
+    }
+    else if(buttonIndex==4)
+    {
+        
+        if(app.basicSaved==YES)
+        {
+            
+          
+            
+        }
+        else
+        {
+            
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"Message"] message:[NSString stringWithFormat:@"Save the Basic Details first"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+            
+        }
+        
+    }
+    else if(buttonIndex==5)
+    {
+        
+        if(app.basicSaved==YES)
+        {
+            
+            
+            
+        }
+        else
+        {
+            
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"Message"] message:[NSString stringWithFormat:@"Save the Basic Details first"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+            
+        }
+        
+    }
+    else if(buttonIndex==6)
+    {
+        
+        if(app.basicSaved==YES)
+        {
+            
+           
+            
+        }
+        else
+        {
+            
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"Message"] message:[NSString stringWithFormat:@"Save the Basic Details first"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+            
+        }
+        
+    }
+
+
+}
 
 #pragma mark-Getting Keyword List
 
@@ -4312,6 +4531,14 @@ else
         [self openKeywordtable];
         
     }
+    
+}
+
+- (IBAction)backToPrevViewController:(id)sender
+{
+    
+    
+    [self.navigationController popToRootViewControllerAnimated:NO];
     
 }
 

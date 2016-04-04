@@ -17,7 +17,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-
+@property(nonatomic)BOOL basicSaved,calendarSaved,pricingSaved,overviewSaved,imageSaved,locationSaved;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;

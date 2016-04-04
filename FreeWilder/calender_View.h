@@ -15,4 +15,8 @@
 @property (strong,nonatomic)IBOutlet UIView *productview;
 @property (strong,nonatomic)IBOutlet UIView *serviceview;
 
+@property (weak, nonatomic) IBOutlet UILabel *ifOpenHeaderLbl;
+@property (weak, nonatomic) IBOutlet UILabel *ifBreakHeaderLbl;
+@property (weak, nonatomic) IBOutlet UILabel *daysHeaderLbl;
+
 @end

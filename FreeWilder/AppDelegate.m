@@ -37,6 +37,8 @@
 
 @synthesize currentLangDic,locationData,location_lat,location_long,sw_lat,sw_long,ne_lat,ne_long;
 
+@synthesize basicSaved,calendarSaved,pricingSaved,overviewSaved,imageSaved,locationSaved;
+
 
 //- (BOOL)prefersStatusBarHidden
 //{
@@ -53,6 +55,13 @@
     }
     
 
+    basicSaved=NO;
+    calendarSaved=NO;
+    pricingSaved=NO;
+    overviewSaved=NO;
+    imageSaved=NO;
+    locationSaved=NO;
+    
     
   Reachability *reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
     

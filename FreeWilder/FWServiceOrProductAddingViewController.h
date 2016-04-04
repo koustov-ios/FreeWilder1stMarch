@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 
-@interface FWServiceOrProductAddingViewController : UIViewController<UITextViewDelegate>
+@interface FWServiceOrProductAddingViewController : UIViewController<UITextViewDelegate,UIActionSheetDelegate>
 
 
 {
+    
+    AppDelegate *app;
     
     __weak IBOutlet UIButton *saveBtn;
     
@@ -58,7 +61,9 @@
 - (IBAction)basic_instant_noTapped:(id)sender;
 - (IBAction)save:(UIButton *)sender;
 - (IBAction)keywordBtnTapped:(id)sender;
+- (IBAction)backToPrevViewController:(id)sender;
 
+- (IBAction)basicBtnTapped:(id)sender;
 
 
 

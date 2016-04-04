@@ -12,6 +12,11 @@
 		E001BA561C97E0B000C54750 /* ExampleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E001BA551C97E0B000C54750 /* ExampleCell.m */; };
 		E001BA5A1C99903100C54750 /* specialTable.m in Sources */ = {isa = PBXBuildFile; fileRef = E001BA591C99903100C54750 /* specialTable.m */; };
 		E001BA5D1C9994AB00C54750 /* specialButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E001BA5C1C9994AB00C54750 /* specialButton.m */; };
+		E014C01A1CA9011900E954E1 /* FWCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E014C0191CA9011900E954E1 /* FWCalendarViewController.m */; };
+		E014C01B1CAA4E5E00E954E1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A5390F1C857BD6000553ED /* Foundation.framework */; };
+		E014C01E1CACE72C00E954E1 /* FWManageHolidaysViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E014C01D1CACE72C00E954E1 /* FWManageHolidaysViewController.m */; };
+		E014C0201CB23B3500E954E1 /* perDayCelendar.xib in Resources */ = {isa = PBXBuildFile; fileRef = E014C01F1CB23B3500E954E1 /* perDayCelendar.xib */; };
+		E014C0231CB246FB00E954E1 /* perDayCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = E014C0221CB246FB00E954E1 /* perDayCalendar.m */; };
 		E0A5372B1C857878000553ED /* DetailReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A536DA1C857878000553ED /* DetailReviewViewController.m */; };
 		E0A5372C1C857878000553ED /* ProductPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A536DC1C857878000553ED /* ProductPaymentViewController.m */; };
 		E0A5372D1C857878000553ED /* payoutsecondpageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0A536DE1C857878000553ED /* payoutsecondpageViewController.m */; };
@@ -208,27 +213,16 @@
 		E0A539081C857BC5000553ED /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A539071C857BC5000553ED /* CoreGraphics.framework */; };
 		E0A5390A1C857BCB000553ED /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A539091C857BCB000553ED /* CoreLocation.framework */; };
 		E0A5390C1C857BCF000553ED /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A5390B1C857BCF000553ED /* MapKit.framework */; };
-		E0A539101C857BD6000553ED /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A5390D1C857BD6000553ED /* AVFoundation.framework */; };
-		E0A539111C857BD6000553ED /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A5390E1C857BD6000553ED /* CoreFoundation.framework */; };
-		E0A539121C857BD6000553ED /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A5390F1C857BD6000553ED /* Foundation.framework */; };
 		E0A539141C857BDB000553ED /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A539131C857BDB000553ED /* UIKit.framework */; };
 		E0A539161C857BE7000553ED /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A539151C857BE7000553ED /* SystemConfiguration.framework */; };
 		E0A539181C857C0A000553ED /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A539171C857C0A000553ED /* MobileCoreServices.framework */; };
 		E0A5391E1C859579000553ED /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E0A539201C859579000553ED /* Localizable.strings */; };
 		E0B8F3A81C92921200F26022 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B8F3A71C92921200F26022 /* QuartzCore.framework */; };
-		E0C66A951C8FF6AC00CCA383 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C66A941C8FF6AC00CCA383 /* AFNetworking.framework */; };
-		E0C9C8001C913F6000DA903C /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C9C7FF1C913F6000DA903C /* AFNetworking.framework */; };
-		E0C9C8011C913F6500DA903C /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C9C7FF1C913F6000DA903C /* AFNetworking.framework */; };
-		E0C9C8021C913F6500DA903C /* AFNetworking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0C9C7FF1C913F6000DA903C /* AFNetworking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E0C9C8061C91437400DA903C /* FWAddService.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0C9C8051C91437400DA903C /* FWAddService.storyboard */; };
 		E0C9C8091C91504500DA903C /* FWServiceOrProductAddingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C9C8081C91504500DA903C /* FWServiceOrProductAddingViewController.m */; };
 		E0C9C80C1C9153E300DA903C /* FWServiceOrProductAddTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C9C80B1C9153E300DA903C /* FWServiceOrProductAddTableViewCell.m */; };
-		E0CB539C1C92EBE700790362 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A5390F1C857BD6000553ED /* Foundation.framework */; };
-		E0CB539D1C92EBE700790362 /* Foundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0A5390F1C857BD6000553ED /* Foundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E0CB539E1C92EBEE00790362 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A5390D1C857BD6000553ED /* AVFoundation.framework */; };
-		E0CB539F1C92EBEE00790362 /* AVFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0A5390D1C857BD6000553ED /* AVFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E0CB53A01C92EBF400790362 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A5390E1C857BD6000553ED /* CoreFoundation.framework */; };
-		E0CB53A11C92EBF400790362 /* CoreFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0A5390E1C857BD6000553ED /* CoreFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E0DAA2A71C8996A60035064B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0DAA2A61C8996A60035064B /* LaunchScreen.xib */; };
 		E0E491DA1C85727600564622 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E0E491D91C85727600564622 /* main.m */; };
 		E0E491DD1C85727600564622 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0E491DC1C85727600564622 /* AppDelegate.m */; };
@@ -237,23 +231,6 @@
 		E0E491E61C85727600564622 /* FreeWilder.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E0E491E41C85727600564622 /* FreeWilder.xcdatamodeld */; };
 		E0E491E81C85727600564622 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0E491E71C85727600564622 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		E0C66AA01C8FF89300CCA383 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				E0CB53A11C92EBF400790362 /* CoreFoundation.framework in Embed Frameworks */,
-				E0C9C8021C913F6500DA903C /* AFNetworking.framework in Embed Frameworks */,
-				E0CB539D1C92EBE700790362 /* Foundation.framework in Embed Frameworks */,
-				E0CB539F1C92EBEE00790362 /* AVFoundation.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		7C5BB99B425F347386FC1767 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -267,6 +244,13 @@
 		E001BA591C99903100C54750 /* specialTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = specialTable.m; sourceTree = "<group>"; };
 		E001BA5B1C9994AB00C54750 /* specialButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = specialButton.h; sourceTree = "<group>"; };
 		E001BA5C1C9994AB00C54750 /* specialButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = specialButton.m; sourceTree = "<group>"; };
+		E014C0181CA9011900E954E1 /* FWCalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FWCalendarViewController.h; sourceTree = "<group>"; };
+		E014C0191CA9011900E954E1 /* FWCalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FWCalendarViewController.m; sourceTree = "<group>"; };
+		E014C01C1CACE72B00E954E1 /* FWManageHolidaysViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FWManageHolidaysViewController.h; sourceTree = "<group>"; };
+		E014C01D1CACE72C00E954E1 /* FWManageHolidaysViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FWManageHolidaysViewController.m; sourceTree = "<group>"; };
+		E014C01F1CB23B3500E954E1 /* perDayCelendar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = perDayCelendar.xib; sourceTree = "<group>"; };
+		E014C0211CB246FB00E954E1 /* perDayCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = perDayCalendar.h; sourceTree = "<group>"; };
+		E014C0221CB246FB00E954E1 /* perDayCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = perDayCalendar.m; sourceTree = "<group>"; };
 		E0A536CF1C8577E4000553ED /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Main.strings; sourceTree = "<group>"; };
 		E0A536D71C85784B000553ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		E0A536D91C857878000553ED /* DetailReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReviewViewController.h; sourceTree = "<group>"; };
@@ -647,21 +631,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E014C01B1CAA4E5E00E954E1 /* Foundation.framework in Frameworks */,
 				E0CB53A01C92EBF400790362 /* CoreFoundation.framework in Frameworks */,
 				E0B8F3A81C92921200F26022 /* QuartzCore.framework in Frameworks */,
-				E0CB539C1C92EBE700790362 /* Foundation.framework in Frameworks */,
-				E0C9C8001C913F6000DA903C /* AFNetworking.framework in Frameworks */,
 				E0CB539E1C92EBEE00790362 /* AVFoundation.framework in Frameworks */,
-				E0C9C8011C913F6500DA903C /* AFNetworking.framework in Frameworks */,
 				E0A539181C857C0A000553ED /* MobileCoreServices.framework in Frameworks */,
 				E0A539161C857BE7000553ED /* SystemConfiguration.framework in Frameworks */,
 				E0A539141C857BDB000553ED /* UIKit.framework in Frameworks */,
-				E0A539101C857BD6000553ED /* AVFoundation.framework in Frameworks */,
-				E0A539111C857BD6000553ED /* CoreFoundation.framework in Frameworks */,
-				E0A539121C857BD6000553ED /* Foundation.framework in Frameworks */,
 				E0A5390C1C857BCF000553ED /* MapKit.framework in Frameworks */,
 				E0A5390A1C857BCB000553ED /* CoreLocation.framework in Frameworks */,
-				E0C66A951C8FF6AC00CCA383 /* AFNetworking.framework in Frameworks */,
 				E0A539081C857BC5000553ED /* CoreGraphics.framework in Frameworks */,
 				E0A539051C857BBF000553ED /* AddressBook.framework in Frameworks */,
 				E0A539061C857BBF000553ED /* AddressBookUI.framework in Frameworks */,
@@ -806,6 +784,10 @@
 				E0A5372A1C857878000553ED /* FWlocationSearchViewController.m */,
 				E0C9C8071C91504500DA903C /* FWServiceOrProductAddingViewController.h */,
 				E0C9C8081C91504500DA903C /* FWServiceOrProductAddingViewController.m */,
+				E014C0181CA9011900E954E1 /* FWCalendarViewController.h */,
+				E014C0191CA9011900E954E1 /* FWCalendarViewController.m */,
+				E014C01C1CACE72B00E954E1 /* FWManageHolidaysViewController.h */,
+				E014C01D1CACE72C00E954E1 /* FWManageHolidaysViewController.m */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -1191,6 +1173,9 @@
 				E0A538EA1C857AD1000553ED /* photo_View.xib */,
 				E0A538EB1C857AD1000553ED /* photos_View.h */,
 				E0A538EC1C857AD1000553ED /* photos_View.m */,
+				E014C01F1CB23B3500E954E1 /* perDayCelendar.xib */,
+				E014C0211CB246FB00E954E1 /* perDayCalendar.h */,
+				E014C0221CB246FB00E954E1 /* perDayCalendar.m */,
 			);
 			name = "Add  Service";
 			sourceTree = "<group>";
@@ -1316,7 +1301,6 @@
 				E0E491D11C85727600564622 /* Sources */,
 				E0E491D21C85727600564622 /* Frameworks */,
 				E0E491D31C85727600564622 /* Resources */,
-				E0C66AA01C8FF89300CCA383 /* Embed Frameworks */,
 				2E31FCB8E7EFEB7F901C41FB /* Embed Pods Frameworks */,
 				C62507CC24127769F8A2C962 /* Copy Pods Resources */,
 			);
@@ -1386,6 +1370,7 @@
 				E0A5384E1C857A27000553ED /* slider-default-track.png in Resources */,
 				E0A538221C8579F7000553ED /* close_btn.png in Resources */,
 				E0DAA2A71C8996A60035064B /* LaunchScreen.xib in Resources */,
+				E014C0201CB23B3500E954E1 /* perDayCelendar.xib in Resources */,
 				E0A538ED1C857AD1000553ED /* calender_View.xib in Resources */,
 				E0A538201C8579F7000553ED /* PEAR-AutoLayout-iOS.xcconfig in Resources */,
 				E0A538561C857A27000553ED /* slider-default7-track.png in Resources */,
@@ -1553,6 +1538,7 @@
 				E0A538DB1C857AB2000553ED /* servicelTableViewCell.m in Sources */,
 				E0A538D41C857AB2000553ED /* ReviewsAboutMeCell.m in Sources */,
 				E0A5372F1C857878000553ED /* PayoutPreferenceViewController.m in Sources */,
+				E014C0231CB246FB00E954E1 /* perDayCalendar.m in Sources */,
 				E0A538D01C857AB2000553ED /* ServiceListCell.m in Sources */,
 				E0A537E81C8579A0000553ED /* NSString+Language.m in Sources */,
 				E0A537421C857878000553ED /* ProductDetailsViewController.m in Sources */,
@@ -1624,12 +1610,14 @@
 				E0A5388E1C857A69000553ED /* AFURLConnectionOperation.m in Sources */,
 				E0A538271C8579F7000553ED /* PEARImageSlideViewController.m in Sources */,
 				E0A538011C8579CA000553ED /* BKCardNumberFormatter.m in Sources */,
+				E014C01E1CACE72C00E954E1 /* FWManageHolidaysViewController.m in Sources */,
 				E0A538D51C857AB2000553ED /* ReviewsFromSellerCell.m in Sources */,
 				E0A538CB1C857AB2000553ED /* MybookingCell.m in Sources */,
 				E0A5377B1C85789C000553ED /* SDWebImageDownloader.m in Sources */,
 				E0A5373E1C857878000553ED /* EditProfileViewController.m in Sources */,
 				E0A538071C8579CA000553ED /* BKMoneyUtils.m in Sources */,
 				E0A537351C857878000553ED /* SettingsViewController.m in Sources */,
+				E014C01A1CA9011900E954E1 /* FWCalendarViewController.m in Sources */,
 				E0A5372E1C857878000553ED /* SearchResult.m in Sources */,
 				E0E491DA1C85727600564622 /* main.m in Sources */,
 			);
@@ -1776,6 +1764,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hih7.FreeWilder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "e634e5ca-d660-462e-91f3-dac9581de926";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1786,6 +1775,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: hih7 webtech pvt ltd (HVFEBCENV9)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: hih7 webtech pvt ltd (HVFEBCENV9)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1796,6 +1786,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hih7.FreeWilder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "e634e5ca-d660-462e-91f3-dac9581de926";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
